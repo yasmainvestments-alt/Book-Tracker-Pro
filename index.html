@@ -2,7 +2,7 @@
 <html lang="es" class="h-full bg-[#070709] text-gray-100">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Book Tracker Pro By: YasmaStak</title>
   
   <!-- Neon Red Book Favicon via Data URI SVG -->
@@ -41,7 +41,7 @@
           },
           keyframes: {
             fadeIn: {
-              '0%': { opacity: '0', transform: 'scale(0.95)' },
+              '0%': { opacity: '0', transform: 'scale(0.96)' },
               '100%': { opacity: '1', transform: 'scale(1)' },
             },
             pulseGlow: {
@@ -55,9 +55,14 @@
   </script>
 
   <style>
+    /* iOS Safe area utility */
+    body {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    
     ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 4px;
+      height: 4px;
     }
     ::-webkit-scrollbar-track {
       background: #0a0a0d;
@@ -71,18 +76,18 @@
     }
 
     .glass-panel {
-      background: rgba(18, 18, 24, 0.85);
+      background: rgba(18, 18, 24, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .glass-card {
-      background: rgba(22, 22, 30, 0.65);
+      background: rgba(22, 22, 30, 0.7);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 0, 51, 0.15);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .glass-card:hover {
@@ -96,10 +101,11 @@
     }
 
     .ios-btn-tap {
-      transition: transform 0.15s ease, filter 0.15s ease;
+      touch-action: manipulation;
+      transition: transform 0.12s ease, filter 0.12s ease;
     }
     .ios-btn-tap:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
       filter: brightness(0.9);
     }
 
@@ -114,34 +120,55 @@
     .modal-centered-container {
       transition: opacity 0.25s ease-out, transform 0.25s ease-out;
     }
+
+    /* Prevent mobile input zoom */
+    @media (max-width: 640px) {
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+    }
   </style>
 </head>
 <body class="h-full flex flex-col antialiased selection:bg-neon-red selection:text-white bg-[#070709] text-gray-200 overflow-x-hidden">
 
-  <header class="sticky top-0 z-40 w-full glass-panel border-b border-white/10 px-4 lg:px-8 py-3 transition-all">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="app.navigateTo('dashboard')">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-neon-red to-red-900 flex items-center justify-center shadow-neon-sm animate-pulse-glow">
-          <i class="ph-bold ph-book-open text-xl text-white"></i>
+  <header class="sticky top-0 z-40 w-full glass-panel border-b border-white/10 px-3 sm:px-6 py-2.5 transition-all">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-4">
+      
+      <!-- Logo & Profile Row for Mobile -->
+      <div class="w-full sm:w-auto flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 cursor-pointer" onclick="app.navigateTo('dashboard')">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-neon-red to-red-900 flex items-center justify-center shadow-neon-sm animate-pulse-glow flex-shrink-0">
+            <i class="ph-bold ph-book-open text-lg sm:text-xl text-white"></i>
+          </div>
+          <div class="min-w-0">
+            <h1 class="font-bold text-base sm:text-lg tracking-wide text-white flex items-center gap-1.5 leading-tight">
+              BOOK TRACKER<span class="text-neon-red neon-text-glow">PRO</span>
+              <span class="text-[9px] sm:text-[10px] uppercase tracking-wider bg-neon-red/20 text-neon-crimson px-1.5 py-0.5 rounded-full border border-neon-red/30 font-semibold truncate">By: YasmaStak</span>
+            </h1>
+            <p class="text-[10px] text-gray-400 -mt-0.5 hidden xs:block sm:block">Plataforma de Lectura & Estudio Profundo</p>
+          </div>
         </div>
-        <div>
-          <h1 class="font-bold text-lg tracking-wide text-white flex items-center gap-1.5">
-            BOOK TRACKER<span class="text-neon-red neon-text-glow">PRO</span>
-            <span class="text-[10px] uppercase tracking-wider bg-neon-red/20 text-neon-crimson px-2 py-0.5 rounded-full border border-neon-red/30 font-semibold">By: YasmaStak</span>
-          </h1>
-          <p class="text-[11px] text-gray-400 -mt-0.5 hidden sm:block">Plataforma de Lectura & Estudio Profundo</p>
+
+        <div class="flex items-center gap-2 sm:hidden">
+          <button onclick="app.openBookModal()" class="w-8 h-8 rounded-full bg-neon-red flex items-center justify-center text-white shadow-neon-sm ios-btn-tap">
+            <i class="ph-bold ph-plus text-base"></i>
+          </button>
+          <button onclick="app.openModal('profileModal')" class="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-800 to-gray-700 border border-neon-red/40 flex items-center justify-center text-white ios-btn-tap overflow-hidden">
+            <span id="userAvatarTextMobile" class="font-bold text-[11px] text-neon-crimson">US</span>
+          </button>
         </div>
       </div>
 
-      <div class="flex-1 max-w-md mx-2">
-        <div class="relative">
-          <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      <!-- Search Bar -->
+      <div class="w-full sm:flex-1 sm:max-w-md">
+        <div class="relative w-full">
+          <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
           <input 
             type="text" 
             id="searchInput"
             oninput="app.handleSearch(this.value)"
             placeholder="Buscar libro, autor o género..." 
-            class="w-full bg-black/40 border border-white/10 rounded-full pl-10 pr-4 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-red focus:ring-1 focus:ring-neon-red transition-all"
+            class="w-full bg-black/50 border border-white/10 rounded-full pl-9 pr-8 py-1.5 text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-red focus:ring-1 focus:ring-neon-red transition-all"
           />
           <button id="clearSearchBtn" onclick="app.clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
             <i class="ph-bold ph-x-circle text-sm"></i>
@@ -149,16 +176,17 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <button onclick="app.openModal('genreModal')" class="hidden sm:flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
+      <!-- Desktop Header Quick Actions -->
+      <div class="hidden sm:flex items-center gap-2">
+        <button onclick="app.openModal('genreModal')" class="flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
           <i class="ph-bold ph-folder-plus text-sm"></i>
           <span>Género</span>
         </button>
-        <button onclick="app.openModal('authorModal')" class="hidden sm:flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
+        <button onclick="app.openModal('authorModal')" class="flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
           <i class="ph-bold ph-user-plus text-sm"></i>
           <span>Autor</span>
         </button>
-        <button onclick="app.openBookModal()" class="flex items-center gap-1.5 bg-neon-red hover:bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-semibold shadow-neon-sm transition-all ios-btn-tap">
+        <button onclick="app.openBookModal()" class="flex items-center gap-1.5 bg-neon-red hover:bg-red-600 text-white px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-neon-sm transition-all ios-btn-tap">
           <i class="ph-bold ph-plus text-sm"></i>
           <span>Nuevo Libro</span>
         </button>
@@ -170,25 +198,30 @@
     </div>
   </header>
 
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 flex flex-col gap-6">
-    <div id="breadcrumb" class="flex items-center gap-2 text-xs text-gray-400 overflow-x-auto pb-1 hide-scrollbar">
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col gap-4 sm:gap-6 pb-20 sm:pb-8">
+    <div id="breadcrumb" class="flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-400 overflow-x-auto pb-1 hide-scrollbar">
     </div>
 
     <div id="viewContainer" class="flex-1 flex flex-col">
     </div>
   </main>
 
-  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-white/10 px-6 py-2 flex items-center justify-around">
-    <button onclick="app.navigateTo('dashboard')" class="flex flex-col items-center gap-1 text-neon-red">
-      <i class="ph-bold ph-house text-xl"></i>
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-white/10 px-4 py-2 flex items-center justify-around bg-[#08080c]/90">
+    <button onclick="app.navigateTo('dashboard')" class="flex flex-col items-center gap-0.5 text-neon-red ios-btn-tap min-w-[50px] py-1">
+      <i class="ph-bold ph-house text-lg"></i>
       <span class="text-[10px] font-medium">Inicio</span>
     </button>
-    <button onclick="app.openBookModal()" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white">
-      <i class="ph-bold ph-plus-circle text-xl text-neon-crimson"></i>
-      <span class="text-[10px] font-medium">Añadir</span>
+    <button onclick="app.openModal('genreModal')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white ios-btn-tap min-w-[50px] py-1">
+      <i class="ph-bold ph-folder-plus text-lg"></i>
+      <span class="text-[10px] font-medium">Géneros</span>
     </button>
-    <button onclick="app.openModal('profileModal')" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white">
-      <i class="ph-bold ph-user text-xl"></i>
+    <button onclick="app.openBookModal()" class="flex flex-col items-center gap-0.5 text-neon-crimson ios-btn-tap min-w-[50px] py-1">
+      <i class="ph-bold ph-plus-circle text-xl"></i>
+      <span class="text-[10px] font-semibold">Añadir</span>
+    </button>
+    <button onclick="app.openModal('profileModal')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white ios-btn-tap min-w-[50px] py-1">
+      <i class="ph-bold ph-user text-lg"></i>
       <span class="text-[10px] font-medium">Perfil</span>
     </button>
   </nav>
@@ -196,161 +229,159 @@
   <div id="modalBackdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden transition-opacity duration-300 opacity-0" onclick="app.closeAllModals()"></div>
 
   <!-- 1. GENRE MODAL -->
-  <div id="genreModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
-    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-md max-h-[85vh] flex flex-col pointer-events-auto">
-      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
-        <h3 id="genreModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+  <div id="genreModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-md max-h-[88vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
+        <h3 id="genreModalTitle" class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           <i class="ph-bold ph-folder-plus text-neon-red"></i> Nuevo Género
         </h3>
-        <button onclick="app.closeModal('genreModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+        <button onclick="app.closeModal('genreModal')" class="text-gray-400 hover:text-white p-1 ios-btn-tap"><i class="ph-bold ph-x text-lg"></i></button>
       </div>
 
-      <form id="genreForm" onsubmit="app.saveGenre(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+      <form id="genreForm" onsubmit="app.saveGenre(event)" class="space-y-3.5 sm:space-y-4 pt-3 sm:pt-4 overflow-y-auto pr-1">
         <input type="hidden" id="genreId" />
         <div>
           <label class="block text-xs text-gray-400 font-medium mb-1">Nombre del Género</label>
-          <input type="text" id="genreName" required placeholder="Ej: Desarrollo Personal, Ciencia Ficción..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          <input type="text" id="genreName" required placeholder="Ej: Desarrollo Personal..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
         </div>
         <div>
           <label class="block text-xs text-gray-400 font-medium mb-1">Color / Icono Decorativo</label>
           <div class="flex gap-2">
-            <input type="color" id="genreColor" value="#ff0033" class="h-10 w-14 rounded-xl bg-transparent border border-white/10 cursor-pointer p-1" />
-            <input type="text" id="genreIcon" placeholder="Ej: ph-brain, ph-rocket" value="ph-books" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <input type="color" id="genreColor" value="#ff0033" class="h-10 w-12 rounded-xl bg-transparent border border-white/10 cursor-pointer p-1 flex-shrink-0" />
+            <input type="text" id="genreIcon" placeholder="Ej: ph-brain, ph-rocket" value="ph-books" class="flex-1 min-w-0 bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
-          <p class="text-[10px] text-gray-500 mt-1">Usa iconos de Phosphor (ej: ph-lightbulb, ph-code, ph-atom)</p>
+          <p class="text-[10px] text-gray-500 mt-1">Usa iconos de Phosphor (ej: ph-lightbulb, ph-code)</p>
         </div>
-        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
-          <button type="button" onclick="app.closeModal('genreModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Género</button>
+        <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('genreModal')" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Género</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- 2. AUTHOR MODAL -->
-  <div id="authorModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
-    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-md max-h-[85vh] flex flex-col pointer-events-auto">
-      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
-        <h3 id="authorModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+  <div id="authorModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-md max-h-[88vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
+        <h3 id="authorModalTitle" class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           <i class="ph-bold ph-user-plus text-neon-red"></i> Nuevo Autor
         </h3>
-        <button onclick="app.closeModal('authorModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+        <button onclick="app.closeModal('authorModal')" class="text-gray-400 hover:text-white p-1 ios-btn-tap"><i class="ph-bold ph-x text-lg"></i></button>
       </div>
 
-      <form id="authorForm" onsubmit="app.saveAuthor(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+      <form id="authorForm" onsubmit="app.saveAuthor(event)" class="space-y-3.5 sm:space-y-4 pt-3 sm:pt-4 overflow-y-auto pr-1">
         <input type="hidden" id="authorId" />
         <div>
           <label class="block text-xs text-gray-400 font-medium mb-1">Nombre Completo del Autor</label>
-          <input type="text" id="authorName" required placeholder="Ej: James Clear, Robert Greene..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          <input type="text" id="authorName" required placeholder="Ej: James Clear..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
         </div>
         <div>
-          <label class="block text-xs text-gray-400 font-medium mb-1">Género Asignado (Selecciona o Escribe)</label>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Género Asignado</label>
           <div class="relative">
-            <input type="text" id="authorGenreInput" list="existingGenresList" required placeholder="Escribe o selecciona un género..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <input type="text" id="authorGenreInput" list="existingGenresList" required placeholder="Escribe o selecciona género..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
             <datalist id="existingGenresList">
             </datalist>
           </div>
         </div>
         <div>
-          <label class="block text-xs text-gray-400 font-medium mb-1">Biografía Breve o Nota</label>
-          <textarea id="authorBio" rows="2" placeholder="Información destacada del autor..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Biografía Breve</label>
+          <textarea id="authorBio" rows="2" placeholder="Información destacada del autor..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
         </div>
-        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
-          <button type="button" onclick="app.closeModal('authorModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Autor</button>
+        <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('authorModal')" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Autor</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 3. BOOK MODAL (WITH PAGE TRACKING) -->
-  <div id="bookModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
-    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-lg max-h-[85vh] flex flex-col pointer-events-auto">
-      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
-        <h3 id="bookModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+  <!-- 3. BOOK MODAL -->
+  <div id="bookModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-lg max-h-[88vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
+        <h3 id="bookModalTitle" class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
           <i class="ph-bold ph-book-bookmark text-neon-red"></i> Agregar Nuevo Libro
         </h3>
-        <button onclick="app.closeModal('bookModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+        <button onclick="app.closeModal('bookModal')" class="text-gray-400 hover:text-white p-1 ios-btn-tap"><i class="ph-bold ph-x text-lg"></i></button>
       </div>
 
-      <form id="bookForm" onsubmit="app.saveBook(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+      <form id="bookForm" onsubmit="app.saveBook(event)" class="space-y-3.5 sm:space-y-4 pt-3 sm:pt-4 overflow-y-auto pr-1">
         <input type="hidden" id="bookId" />
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div class="sm:col-span-2">
             <label class="block text-xs text-gray-400 font-medium mb-1">Título del Libro *</label>
-            <input type="text" id="bookTitle" required placeholder="Ej: Hábitos Atómicos" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <input type="text" id="bookTitle" required placeholder="Ej: Hábitos Atómicos" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
 
           <div>
             <label class="block text-xs text-gray-400 font-medium mb-1">Género *</label>
-            <select id="bookGenreId" onchange="app.updateAuthorDropdown(this.value)" required class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none">
+            <select id="bookGenreId" onchange="app.updateAuthorDropdown(this.value)" required class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none">
             </select>
           </div>
 
           <div>
             <label class="block text-xs text-gray-400 font-medium mb-1">Autor *</label>
-            <select id="bookAuthorId" required class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none">
+            <select id="bookAuthorId" required class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none">
             </select>
           </div>
 
           <div class="sm:col-span-2">
-            <label class="block text-xs text-gray-400 font-medium mb-1">URL de Portada (Cover Image)</label>
-            <input type="url" id="bookCover" placeholder="https://ejemplo.com/portada.jpg" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
-            <p class="text-[10px] text-gray-500 mt-1">Si se deja en blanco, se generará una portada estilo neón automáticamente.</p>
+            <label class="block text-xs text-gray-400 font-medium mb-1">URL de Portada (Image Link)</label>
+            <input type="url" id="bookCover" placeholder="https://ejemplo.com/portada.jpg" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
 
           <div>
             <label class="block text-xs text-gray-400 font-medium mb-1">Estado de Lectura</label>
-            <select id="bookStatus" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none">
+            <select id="bookStatus" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none">
               <option value="Leyendo">📖 Leyendo</option>
               <option value="Por Leer">⏳ Por Leer</option>
               <option value="Completado">✅ Completado</option>
             </select>
           </div>
 
-          <!-- Page Tracking Inputs -->
           <div>
             <label class="block text-xs text-gray-400 font-medium mb-1">Página Actual Leída</label>
-            <input type="number" id="bookCurrentPage" min="0" value="0" placeholder="Ej: 20" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <input type="number" id="bookCurrentPage" min="0" value="0" placeholder="0" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
 
           <div class="sm:col-span-2">
             <label class="block text-xs text-neon-crimson font-semibold mb-1">Páginas Totales del Libro *</label>
-            <input type="number" id="bookTotalPages" min="1" required value="150" placeholder="Ej: 150" class="w-full bg-black/50 border border-neon-red/40 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <input type="number" id="bookTotalPages" min="1" required value="150" placeholder="150" class="w-full bg-black/50 border border-neon-red/40 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
         </div>
 
-        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
-          <button type="button" onclick="app.closeModal('bookModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Libro</button>
+        <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('bookModal')" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Libro</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 4. CHAPTER / STUDY NOTE MODAL -->
-  <div id="noteModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
-    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-2xl max-h-[85vh] flex flex-col pointer-events-auto">
-      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
-        <h3 id="noteModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota de Estudio por Capítulo
+  <!-- 4. NOTE MODAL -->
+  <div id="noteModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-2xl max-h-[88vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
+        <h3 id="noteModalTitle" class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota por Capítulo
         </h3>
-        <button onclick="app.closeModal('noteModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+        <button onclick="app.closeModal('noteModal')" class="text-gray-400 hover:text-white p-1 ios-btn-tap"><i class="ph-bold ph-x text-lg"></i></button>
       </div>
 
-      <form id="noteForm" onsubmit="app.saveNote(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+      <form id="noteForm" onsubmit="app.saveNote(event)" class="space-y-3.5 sm:space-y-4 pt-3 sm:pt-4 overflow-y-auto pr-1">
         <input type="hidden" id="noteId" />
         <input type="hidden" id="noteBookId" />
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           <div class="sm:col-span-1">
             <label class="block text-xs text-gray-400 font-medium mb-1">Capítulo / Sección *</label>
-            <input type="text" id="noteChapter" required placeholder="Ej: Cap. 1 o Págs 15-30" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <input type="text" id="noteChapter" required placeholder="Ej: Cap. 1" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs text-gray-400 font-medium mb-1">Título de la Nota / Idea Clave *</label>
-            <input type="text" id="noteTitle" required placeholder="Ej: Los 4 pilares del cambio de hábito" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <label class="block text-xs text-gray-400 font-medium mb-1">Título de la Nota *</label>
+            <input type="text" id="noteTitle" required placeholder="Ej: Idea clave..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
         </div>
 
@@ -358,112 +389,112 @@
           <label class="block text-xs font-semibold text-neon-crimson uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <i class="ph-bold ph-list-checks"></i> 1. Resumen & Puntos Claves
           </label>
-          <textarea id="noteSummary" rows="3" required placeholder="Resumen directo, citas relevantes o ideas principales..." class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+          <textarea id="noteSummary" rows="2" required placeholder="Resumen o citas principales..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-yellow-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <i class="ph-bold ph-lightbulb"></i> 2. Enseñanzas Principales
           </label>
-          <textarea id="noteTeachings" rows="3" required placeholder="¿Qué principio o verdad profunda revela este capítulo?" class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+          <textarea id="noteTeachings" rows="2" required placeholder="Principios descubiertos..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
         </div>
 
-        <div class="bg-neon-red/5 p-3.5 rounded-2xl border border-neon-red/20">
+        <div class="bg-neon-red/5 p-3 rounded-2xl border border-neon-red/20">
           <label class="block text-xs font-bold text-neon-red uppercase tracking-wider mb-1 flex items-center gap-1.5">
-            <i class="ph-bold ph-lightning"></i> 3. ¿Cómo Aplicarlo a mi Vida Real? (Acción Concreta)
+            <i class="ph-bold ph-lightning"></i> 3. ¿Cómo Aplicarlo a mi Vida Real?
           </label>
-          <textarea id="noteApplication" rows="3" required placeholder="Pasos de acción inmediatos..." class="w-full bg-black/70 border border-neon-red/30 rounded-xl p-3 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+          <textarea id="noteApplication" rows="2" required placeholder="Acciones concretas inmediatas..." class="w-full bg-black/70 border border-neon-red/30 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
         </div>
 
-        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
-          <button type="button" onclick="app.closeModal('noteModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Nota de Estudio</button>
+        <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('noteModal')" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Nota</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- 5. PROFILE MODAL -->
-  <div id="profileModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
-    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-lg max-h-[85vh] flex flex-col pointer-events-auto">
-      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="ph-bold ph-users-three text-neon-red"></i> Gestión de Perfiles y Cuentas
+  <div id="profileModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-lg max-h-[88vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
+        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-users-three text-neon-red"></i> Perfiles de Usuario
         </h3>
-        <button onclick="app.closeModal('profileModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+        <button onclick="app.closeModal('profileModal')" class="text-gray-400 hover:text-white p-1 ios-btn-tap"><i class="ph-bold ph-x text-lg"></i></button>
       </div>
 
-      <div class="space-y-5 pt-4 overflow-y-auto pr-1">
+      <div class="space-y-4 pt-3 overflow-y-auto pr-1">
         <div>
-          <label class="block text-xs font-semibold text-neon-crimson uppercase tracking-wider mb-2">Perfiles de Usuario Registrados</label>
+          <label class="block text-xs font-semibold text-neon-crimson uppercase tracking-wider mb-2">Seleccionar Perfil</label>
           <div id="profilesList" class="space-y-2">
           </div>
-          <button onclick="app.createNewProfilePrompt()" class="w-full mt-3 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson text-xs py-2 rounded-xl font-medium flex items-center justify-center gap-1.5 ios-btn-tap">
+          <button onclick="app.createNewProfilePrompt()" class="w-full mt-2 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson text-xs py-2 rounded-xl font-medium flex items-center justify-center gap-1.5 ios-btn-tap">
             <i class="ph-bold ph-user-plus"></i> Crear Nuevo Perfil
           </button>
         </div>
 
-        <div class="border-t border-white/10 pt-4">
+        <div class="border-t border-white/10 pt-3">
           <label class="block text-xs font-semibold text-white mb-1">Nombre del Perfil Actual</label>
           <div class="flex gap-2">
-            <input type="text" id="userNameInput" value="" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white focus:border-neon-red focus:outline-none" />
-            <button onclick="app.saveUserProfileName()" class="bg-neon-red text-white text-xs px-4 rounded-xl font-semibold ios-btn-tap">Guardar</button>
+            <input type="text" id="userNameInput" value="" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
+            <button onclick="app.saveUserProfileName()" class="bg-neon-red text-white text-xs px-3.5 py-2 rounded-xl font-semibold ios-btn-tap">Guardar</button>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 py-1 text-center">
-          <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
-            <span id="statTotalBooks" class="block text-lg font-bold text-neon-red">0</span>
-            <span class="text-[10px] text-gray-400">Libros</span>
+        <div class="grid grid-cols-3 gap-2 text-center pt-1">
+          <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+            <span id="statTotalBooks" class="block text-base sm:text-lg font-bold text-neon-red">0</span>
+            <span class="text-[9px] sm:text-[10px] text-gray-400">Libros</span>
           </div>
-          <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
-            <span id="statTotalNotes" class="block text-lg font-bold text-white">0</span>
-            <span class="text-[10px] text-gray-400">Notas Estudio</span>
+          <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+            <span id="statTotalNotes" class="block text-base sm:text-lg font-bold text-white">0</span>
+            <span class="text-[9px] sm:text-[10px] text-gray-400">Notas</span>
           </div>
-          <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
-            <span id="statCompleted" class="block text-lg font-bold text-emerald-400">0</span>
-            <span class="text-[10px] text-gray-400">Completados</span>
+          <div class="bg-white/5 p-2 rounded-xl border border-white/5">
+            <span id="statCompleted" class="block text-base sm:text-lg font-bold text-emerald-400">0</span>
+            <span class="text-[9px] sm:text-[10px] text-gray-400">Listos</span>
           </div>
         </div>
 
-        <div class="border-t border-white/10 pt-4 space-y-2">
-          <span class="block text-xs font-semibold text-gray-400 mb-1">Copia de Seguridad del Perfil</span>
+        <div class="border-t border-white/10 pt-3 space-y-2">
+          <span class="block text-xs font-semibold text-gray-400">Copia de Seguridad</span>
           <div class="grid grid-cols-2 gap-2">
-            <button onclick="app.exportProfileData()" class="bg-white/5 hover:bg-white/10 text-gray-200 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1.5">
-              <i class="ph-bold ph-download-simple"></i> Exportar JSON
+            <button onclick="app.exportProfileData()" class="bg-white/5 hover:bg-white/10 text-gray-200 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1 ios-btn-tap">
+              <i class="ph-bold ph-download-simple"></i> Exportar
             </button>
-            <label class="bg-white/5 hover:bg-white/10 text-gray-200 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1.5 cursor-pointer">
-              <i class="ph-bold ph-upload-simple"></i> Importar JSON
+            <label class="bg-white/5 hover:bg-white/10 text-gray-200 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1 cursor-pointer ios-btn-tap">
+              <i class="ph-bold ph-upload-simple"></i> Importar
               <input type="file" accept=".json" class="hidden" onchange="app.importProfileData(event)" />
             </label>
           </div>
         </div>
 
-        <div class="border-t border-white/10 pt-4 space-y-2">
-          <button onclick="app.resetSampleData()" class="w-full bg-white/5 hover:bg-white/10 text-gray-300 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1.5">
-            <i class="ph-bold ph-arrows-counter-clockwise"></i> Restablecer Datos Demo
+        <div class="border-t border-white/10 pt-3 space-y-2">
+          <button onclick="app.resetSampleData()" class="w-full bg-white/5 hover:bg-white/10 text-gray-300 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1.5 ios-btn-tap">
+            <i class="ph-bold ph-arrows-counter-clockwise"></i> Restablecer Demo
           </button>
-          <button onclick="app.deleteCurrentProfile()" class="w-full bg-red-950/40 hover:bg-red-900/40 text-red-400 py-2 rounded-xl text-xs border border-red-500/20 flex items-center justify-center gap-1.5">
-            <i class="ph-bold ph-trash"></i> Eliminar Perfil Definitivamente
+          <button onclick="app.deleteCurrentProfile()" class="w-full bg-red-950/40 hover:bg-red-900/40 text-red-400 py-2 rounded-xl text-xs border border-red-500/20 flex items-center justify-center gap-1.5 ios-btn-tap">
+            <i class="ph-bold ph-trash"></i> Eliminar Perfil
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="glass-panel border border-neon-red/50 shadow-neon-md px-4 py-3 rounded-2xl flex items-center gap-3">
-      <div id="toastIcon" class="w-7 h-7 rounded-full bg-neon-red/20 text-neon-red flex items-center justify-center">
-        <i class="ph-bold ph-check text-sm"></i>
+  <div id="toast" class="fixed top-3 right-3 left-3 sm:left-auto z-50 transform -translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="glass-panel border border-neon-red/50 shadow-neon-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 max-w-sm mx-auto">
+      <div id="toastIcon" class="w-6 h-6 rounded-full bg-neon-red/20 text-neon-red flex items-center justify-center flex-shrink-0">
+        <i class="ph-bold ph-check text-xs"></i>
       </div>
-      <p id="toastMessage" class="text-xs font-medium text-white">Notificación</p>
+      <p id="toastMessage" class="text-xs font-medium text-white truncate">Notificación</p>
     </div>
   </div>
 
   <script>
     /* 
       Book Tracker Pro By: YasmaStak
-      Features Page-by-Page Reading Progress (X / Y páginas & %)
+      Fully Mobile Responsive & Page Progress Tracking
     */
 
     const SAMPLE_PROFILE_DATA = {
@@ -560,7 +591,7 @@
         this.data = this.loadProfileData(profileId);
         this.renderView();
         this.updateProfileUI();
-        this.showToast('Perfil cambiado a: ' + this.data.user.name);
+        this.showToast('Perfil: ' + this.data.user.name);
       }
 
       loadProfileData(profileId) {
@@ -644,7 +675,7 @@
 
         this.updateProfileUI();
         this.renderView();
-        this.showToast('Nombre de perfil actualizado');
+        this.showToast('Nombre actualizado');
       }
 
       renderProfilesList() {
@@ -654,18 +685,18 @@
         container.innerHTML = this.profilesIndex.map(p => {
           const isActive = p.id === this.activeProfileId;
           return `
-            <div onclick="app.setActiveProfileId('${p.id}')" class="p-3 rounded-2xl cursor-pointer flex items-center justify-between transition-all ${
+            <div onclick="app.setActiveProfileId('${p.id}')" class="p-2.5 rounded-xl cursor-pointer flex items-center justify-between transition-all ${
               isActive 
                 ? 'bg-neon-red/20 border border-neon-red/50 text-white shadow-neon-sm' 
                 : 'bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300'
             }">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full ${isActive ? 'bg-neon-red text-white' : 'bg-gray-800 text-gray-400'} flex items-center justify-center font-bold text-xs">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-7 h-7 rounded-full ${isActive ? 'bg-neon-red text-white' : 'bg-gray-800 text-gray-400'} flex items-center justify-center font-bold text-xs flex-shrink-0">
                   ${p.name.charAt(0).toUpperCase()}
                 </div>
-                <span class="text-xs font-medium">${this.escapeHTML(p.name)}</span>
+                <span class="text-xs font-medium truncate">${this.escapeHTML(p.name)}</span>
               </div>
-              ${isActive ? '<span class="text-[10px] bg-neon-red text-white font-bold px-2 py-0.5 rounded-full">Activo</span>' : ''}
+              ${isActive ? '<span class="text-[9px] bg-neon-red text-white font-bold px-2 py-0.5 rounded-full flex-shrink-0">Activo</span>' : ''}
             </div>
           `;
         }).join('');
@@ -680,7 +711,7 @@
         a.download = `BookTrackerPro_${this.data.user.name.replace(/\s+/g, '_')}_Backup.json`;
         a.click();
         URL.revokeObjectURL(url);
-        this.showToast('Copia de seguridad descargada');
+        this.showToast('Respaldo descargado');
       }
 
       importProfileData(event) {
@@ -696,12 +727,12 @@
               this.saveData();
               this.renderView();
               this.updateProfileUI();
-              this.showToast('Datos de perfil importados');
+              this.showToast('Datos importados');
             } else {
               alert('Formato JSON no válido.');
             }
           } catch (err) {
-            alert('Error al leer el archivo JSON.');
+            alert('Error al leer el archivo.');
           }
         };
         reader.readAsText(file);
@@ -715,7 +746,6 @@
         this.showToast('Datos demo restaurados');
       }
 
-      // Page Progress Math Helpers
       calcBookProgress(currentPage, totalPages) {
         const current = Math.max(0, parseInt(currentPage) || 0);
         const total = Math.max(1, parseInt(totalPages) || 150);
@@ -739,7 +769,7 @@
 
         this.saveData();
         this.renderView();
-        this.showToast(`Página actualizada: ${pageVal} / ${total}`);
+        this.showToast(`Lectura: ${pageVal} / ${total} págs`);
       }
 
       navigateTo(view, params = {}) {
@@ -752,7 +782,7 @@
       renderBreadcrumb() {
         const breadcrumbEl = document.getElementById('breadcrumb');
         let html = `
-          <button onclick="app.navigateTo('dashboard')" class="hover:text-neon-red flex items-center gap-1 transition-colors">
+          <button onclick="app.navigateTo('dashboard')" class="hover:text-neon-red flex items-center gap-1 transition-colors flex-shrink-0">
             <i class="ph-bold ph-house"></i> Inicio
           </button>
         `;
@@ -760,19 +790,19 @@
         if (this.currentView === 'genre' && this.viewParams.genreId) {
           const genre = this.data.genres.find(g => g.id === this.viewParams.genreId);
           if (genre) {
-            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
-            html += `<span class="text-white font-medium flex items-center gap-1"><i class="ph-bold ${genre.icon}"></i> ${this.escapeHTML(genre.name)}</span>`;
+            html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
+            html += `<span class="text-white font-medium flex items-center gap-1 flex-shrink-0"><i class="ph-bold ${genre.icon}"></i> ${this.escapeHTML(genre.name)}</span>`;
           }
         } else if (this.currentView === 'author' && this.viewParams.authorId) {
           const author = this.data.authors.find(a => a.id === this.viewParams.authorId);
           const genre = author ? this.data.genres.find(g => g.id === author.genreId) : null;
           if (genre) {
-            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
-            html += `<button onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="hover:text-neon-red">${this.escapeHTML(genre.name)}</button>`;
+            html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
+            html += `<button onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="hover:text-neon-red flex-shrink-0">${this.escapeHTML(genre.name)}</button>`;
           }
           if (author) {
-            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
-            html += `<span class="text-white font-medium">${this.escapeHTML(author.name)}</span>`;
+            html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
+            html += `<span class="text-white font-medium flex-shrink-0">${this.escapeHTML(author.name)}</span>`;
           }
         } else if (this.currentView === 'bookDetail' && this.viewParams.bookId) {
           const book = this.data.books.find(b => b.id === this.viewParams.bookId);
@@ -780,20 +810,20 @@
           const genre = book ? this.data.genres.find(g => g.id === book.genreId) : null;
 
           if (genre) {
-            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
-            html += `<button onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="hover:text-neon-red">${this.escapeHTML(genre.name)}</button>`;
+            html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
+            html += `<button onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="hover:text-neon-red flex-shrink-0">${this.escapeHTML(genre.name)}</button>`;
           }
           if (author) {
-            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
-            html += `<button onclick="app.navigateTo('author', {authorId: '${author.id}'})" class="hover:text-neon-red">${this.escapeHTML(author.name)}</button>`;
+            html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
+            html += `<button onclick="app.navigateTo('author', {authorId: '${author.id}'})" class="hover:text-neon-red flex-shrink-0">${this.escapeHTML(author.name)}</button>`;
           }
           if (book) {
-            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
-            html += `<span class="text-neon-crimson font-medium truncate max-w-[150px] inline-block align-bottom">${this.escapeHTML(book.title)}</span>`;
+            html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
+            html += `<span class="text-neon-crimson font-medium truncate max-w-[120px] inline-block align-bottom flex-shrink-0">${this.escapeHTML(book.title)}</span>`;
           }
         } else if (this.currentView === 'search') {
-          html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
-          html += `<span class="text-white font-medium">Búsqueda: "${this.escapeHTML(this.searchQuery)}"</span>`;
+          html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
+          html += `<span class="text-white font-medium flex-shrink-0">Búsqueda: "${this.escapeHTML(this.searchQuery)}"</span>`;
         }
 
         breadcrumbEl.innerHTML = html;
@@ -828,27 +858,27 @@
         const currentlyReading = this.data.books.filter(b => b.status === 'Leyendo');
         
         return `
-          <div class="animate-fade-in space-y-8">
-            <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden bg-gradient-to-r from-neon-dark via-[#12121c] to-black border-neon-red/30">
-              <div class="absolute right-[-20px] top-[-20px] w-60 h-60 bg-neon-red/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="animate-fade-in space-y-6 sm:space-y-8">
+            <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 relative overflow-hidden bg-gradient-to-r from-neon-dark via-[#12121c] to-black border-neon-red/30">
+              <div class="absolute right-[-20px] top-[-20px] w-40 sm:w-60 h-40 sm:h-60 bg-neon-red/10 rounded-full blur-3xl pointer-events-none"></div>
               
               <div class="relative z-10 max-w-2xl">
-                <span class="inline-flex items-center gap-1.5 bg-neon-red/20 text-neon-crimson text-xs px-3 py-1 rounded-full font-semibold mb-3 border border-neon-red/30">
-                  <i class="ph-bold ph-lightning"></i> Espacio de Aprendizaje Activo
+                <span class="inline-flex items-center gap-1.5 bg-neon-red/20 text-neon-crimson text-[10px] sm:text-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full font-semibold mb-2 sm:mb-3 border border-neon-red/30">
+                  <i class="ph-bold ph-lightning"></i> Espacio de Lectura Activa
                 </span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                <h2 class="text-xl sm:text-3xl font-extrabold text-white tracking-tight">
                   Hola, <span class="text-neon-red neon-text-glow">${this.escapeHTML(this.data.user.name)}</span>
                 </h2>
-                <p class="text-sm text-gray-300 mt-2 leading-relaxed">
-                  Lleva el registro de tus páginas leídas, organiza géneros y autores, y convierte la lectura en hábitos prácticos para tu vida.
+                <p class="text-xs sm:text-sm text-gray-300 mt-1.5 sm:mt-2 leading-relaxed">
+                  Lleva el registro de tus páginas leídas, organiza géneros y autores, y convierte la lectura en hábitos prácticos.
                 </p>
 
-                <div class="flex flex-wrap gap-3 mt-5">
-                  <button onclick="app.openBookModal()" class="bg-neon-red hover:bg-red-600 text-white font-semibold text-xs px-5 py-2.5 rounded-2xl shadow-neon-sm flex items-center gap-2 ios-btn-tap">
-                    <i class="ph-bold ph-plus text-base"></i> Agregar Libro a Estudiar
+                <div class="flex flex-wrap gap-2 sm:gap-3 mt-4 sm:mt-5">
+                  <button onclick="app.openBookModal()" class="bg-neon-red hover:bg-red-600 text-white font-semibold text-xs px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl shadow-neon-sm flex items-center gap-1.5 sm:gap-2 ios-btn-tap">
+                    <i class="ph-bold ph-plus text-sm sm:text-base"></i> Agregar Libro
                   </button>
-                  <button onclick="app.openModal('genreModal')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-4 py-2.5 rounded-2xl border border-white/10 flex items-center gap-2 ios-btn-tap">
-                    <i class="ph-bold ph-folder-plus text-base text-neon-crimson"></i> Crear Carpeta Género
+                  <button onclick="app.openModal('genreModal')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/10 flex items-center gap-1.5 sm:gap-2 ios-btn-tap">
+                    <i class="ph-bold ph-folder-plus text-sm sm:text-base text-neon-crimson"></i> Crear Género
                   </button>
                 </div>
               </div>
@@ -856,53 +886,53 @@
 
             ${currentlyReading.length > 0 ? `
               <section>
-                <div class="flex items-center justify-between mb-4">
-                  <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <div class="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                     <i class="ph-bold ph-book-open text-neon-red"></i> Leyendo Actualmente
                   </h3>
-                  <span class="text-xs text-gray-400">${currentlyReading.length} en curso</span>
+                  <span class="text-[11px] sm:text-xs text-gray-400">${currentlyReading.length} en curso</span>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                   ${currentlyReading.map(book => this.renderBookCardHorizontal(book)).join('')}
                 </div>
               </section>
             ` : ''}
 
             <section>
-              <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center justify-between mb-3 sm:mb-4">
                 <div>
-                  <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                     <i class="ph-bold ph-folders text-neon-red"></i> Carpetas por Géneros
                   </h3>
-                  <p class="text-xs text-gray-400">Navega por categorías temáticas</p>
+                  <p class="text-[11px] sm:text-xs text-gray-400">Categorías temáticas</p>
                 </div>
                 <button onclick="app.openModal('genreModal')" class="text-xs text-neon-crimson hover:underline flex items-center gap-1 font-medium">
-                  + Nuevo Género
+                  + Nuevo
                 </button>
               </div>
 
               ${this.data.genres.length === 0 ? `
-                <div class="glass-panel p-8 rounded-2xl text-center border-dashed border-white/10">
-                  <p class="text-sm text-gray-400">No hay géneros creados aún.</p>
-                  <button onclick="app.openModal('genreModal')" class="mt-3 text-xs bg-neon-red text-white px-4 py-2 rounded-xl">Crear primer género</button>
+                <div class="glass-panel p-6 rounded-2xl text-center border-dashed border-white/10">
+                  <p class="text-xs sm:text-sm text-gray-400">No hay géneros creados aún.</p>
+                  <button onclick="app.openModal('genreModal')" class="mt-2 text-xs bg-neon-red text-white px-3 py-1.5 rounded-xl">Crear primer género</button>
                 </div>
               ` : `
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   ${this.data.genres.map(genre => this.renderGenreFolderCard(genre)).join('')}
                 </div>
               `}
             </section>
 
             <section>
-              <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <div class="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                   <i class="ph-bold ph-books text-neon-red"></i> Todos los Libros
                 </h3>
-                <span class="text-xs text-gray-400">Total: ${this.data.books.length}</span>
+                <span class="text-[11px] sm:text-xs text-gray-400">Total: ${this.data.books.length}</span>
               </div>
 
-              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <div class="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
                 ${this.data.books.map(book => this.renderBookGridCard(book)).join('')}
               </div>
             </section>
@@ -915,25 +945,25 @@
         const booksCount = this.data.books.filter(b => b.genreId === genre.id).length;
 
         return `
-          <div onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="glass-card rounded-2xl p-5 cursor-pointer relative group flex flex-col justify-between">
+          <div onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="glass-card rounded-2xl p-4 cursor-pointer relative group flex flex-col justify-between">
             <div class="flex items-start justify-between">
-              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-neon-red/20 to-transparent border border-neon-red/30 flex items-center justify-center text-neon-red group-hover:scale-110 transition-transform">
-                <i class="ph-bold ${genre.icon || 'ph-folder'} text-2xl" style="color: ${genre.color || '#ff0033'}"></i>
+              <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-neon-red/20 to-transparent border border-neon-red/30 flex items-center justify-center text-neon-red group-hover:scale-110 transition-transform">
+                <i class="ph-bold ${genre.icon || 'ph-folder'} text-xl sm:text-2xl" style="color: ${genre.color || '#ff0033'}"></i>
               </div>
               
               <div class="flex items-center gap-1 opacity-80 hover:opacity-100" onclick="event.stopPropagation()">
                 <button onclick="app.editGenre('${genre.id}')" title="Editar Género" class="text-gray-400 hover:text-white p-1">
-                  <i class="ph-bold ph-pencil-simple text-sm"></i>
+                  <i class="ph-bold ph-pencil-simple text-xs sm:text-sm"></i>
                 </button>
                 <button onclick="app.deleteGenre('${genre.id}')" title="Eliminar Género" class="text-gray-400 hover:text-red-400 p-1">
-                  <i class="ph-bold ph-trash text-sm"></i>
+                  <i class="ph-bold ph-trash text-xs sm:text-sm"></i>
                 </button>
               </div>
             </div>
 
-            <div class="mt-4">
-              <h4 class="font-bold text-base text-white group-hover:text-neon-crimson transition-colors">${this.escapeHTML(genre.name)}</h4>
-              <div class="flex items-center gap-3 text-xs text-gray-400 mt-2">
+            <div class="mt-3">
+              <h4 class="font-bold text-sm sm:text-base text-white group-hover:text-neon-crimson transition-colors truncate">${this.escapeHTML(genre.name)}</h4>
+              <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-400 mt-1">
                 <span><i class="ph-bold ph-user"></i> ${authorsCount} Autores</span>
                 <span>•</span>
                 <span><i class="ph-bold ph-book"></i> ${booksCount} Libros</span>
@@ -949,32 +979,32 @@
         const { current, total, pct } = this.calcBookProgress(book.currentPage, book.totalPages);
 
         return `
-          <div onclick="app.navigateTo('bookDetail', {bookId: '${book.id}'})" class="glass-card rounded-2xl p-4 cursor-pointer flex gap-4 items-center group">
-            <div class="w-20 h-28 flex-shrink-0 rounded-xl overflow-hidden border border-white/10 relative bg-black">
+          <div onclick="app.navigateTo('bookDetail', {bookId: '${book.id}'})" class="glass-card rounded-2xl p-3.5 cursor-pointer flex gap-3.5 items-center group">
+            <div class="w-16 h-24 sm:w-20 sm:h-28 flex-shrink-0 rounded-xl overflow-hidden border border-white/10 relative bg-black">
               <img src="${book.cover || 'https://placehold.co/200x300/121218/ff0033?text=' + encodeURIComponent(book.title)}" 
                    onerror="this.src='https://placehold.co/200x300/121218/ff0033?text=Portada'" 
                    alt="${this.escapeHTML(book.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
             </div>
             <div class="flex-1 min-w-0">
-              <span class="text-[10px] uppercase font-bold tracking-wider text-neon-crimson bg-neon-red/10 px-2 py-0.5 rounded-full border border-neon-red/20">
+              <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-neon-crimson bg-neon-red/10 px-2 py-0.5 rounded-full border border-neon-red/20 inline-block">
                 ${book.status}
               </span>
-              <h4 class="font-bold text-base text-white truncate mt-1 group-hover:text-neon-red transition-colors">${this.escapeHTML(book.title)}</h4>
-              <p class="text-xs text-gray-400 truncate">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</p>
+              <h4 class="font-bold text-xs sm:text-base text-white truncate mt-0.5 group-hover:text-neon-red transition-colors">${this.escapeHTML(book.title)}</h4>
+              <p class="text-[11px] sm:text-xs text-gray-400 truncate">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</p>
               
               <!-- Pages Read Display -->
-              <div class="mt-3">
-                <div class="flex justify-between text-[11px] text-gray-400 mb-1">
-                  <span><i class="ph-bold ph-bookmark text-neon-crimson"></i> ${current} / ${total} páginas</span>
+              <div class="mt-2.5">
+                <div class="flex justify-between text-[10px] sm:text-[11px] text-gray-400 mb-1">
+                  <span><i class="ph-bold ph-bookmark text-neon-crimson"></i> ${current} / ${total} págs</span>
                   <span class="font-bold text-white">${pct}%</span>
                 </div>
-                <div class="w-full h-2 bg-black/60 rounded-full overflow-hidden border border-white/10">
+                <div class="w-full h-1.5 bg-black/60 rounded-full overflow-hidden border border-white/10">
                   <div class="h-full bg-gradient-to-r from-red-800 to-neon-red rounded-full transition-all duration-500" style="width: ${pct}%"></div>
                 </div>
               </div>
 
-              <div class="mt-2 text-[11px] text-gray-400 flex items-center gap-2">
-                <i class="ph-bold ph-notebook text-neon-crimson"></i> ${notesCount} notas de estudio
+              <div class="mt-1.5 text-[10px] sm:text-[11px] text-gray-400 flex items-center gap-1.5">
+                <i class="ph-bold ph-notebook text-neon-crimson"></i> ${notesCount} notas
               </div>
             </div>
           </div>
@@ -986,19 +1016,19 @@
         const { current, total, pct } = this.calcBookProgress(book.currentPage, book.totalPages);
 
         return `
-          <div onclick="app.navigateTo('bookDetail', {bookId: '${book.id}'})" class="glass-card rounded-2xl p-3 cursor-pointer group flex flex-col justify-between">
+          <div onclick="app.navigateTo('bookDetail', {bookId: '${book.id}'})" class="glass-card rounded-2xl p-2.5 sm:p-3 cursor-pointer group flex flex-col justify-between">
             <div>
-              <div class="aspect-[2/3] w-full rounded-xl overflow-hidden border border-white/10 relative bg-black mb-2">
+              <div class="aspect-[2/3] w-full rounded-xl overflow-hidden border border-white/10 relative bg-black mb-1.5">
                 <img src="${book.cover || 'https://placehold.co/200x300/121218/ff0033?text=' + encodeURIComponent(book.title)}" 
                      onerror="this.src='https://placehold.co/200x300/121218/ff0033?text=Portada'" 
                      alt="${this.escapeHTML(book.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                <div class="absolute bottom-1 right-1 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-bold text-white border border-white/10">
+                <div class="absolute bottom-1 right-1 bg-black/80 backdrop-blur-md px-1 py-0.5 rounded text-[9px] font-bold text-white border border-white/10">
                   ${pct}%
                 </div>
               </div>
               <h5 class="font-bold text-xs text-white line-clamp-1 group-hover:text-neon-red transition-colors">${this.escapeHTML(book.title)}</h5>
-              <p class="text-[11px] text-gray-400 truncate">${author ? this.escapeHTML(author.name) : ''}</p>
-              <p class="text-[10px] text-neon-crimson mt-0.5 font-medium">${current}/${total} págs</p>
+              <p class="text-[10px] text-gray-400 truncate">${author ? this.escapeHTML(author.name) : ''}</p>
+              <p class="text-[9px] sm:text-[10px] text-neon-crimson mt-0.5 font-medium">${current}/${total} págs</p>
             </div>
           </div>
         `;
@@ -1011,55 +1041,55 @@
         const authorsInGenre = this.data.authors.filter(a => a.genreId === genre.id);
 
         return `
-          <div class="animate-fade-in space-y-6">
-            <div class="glass-card rounded-3xl p-6 border-neon-red/30 flex items-center justify-between">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-neon-red/10 border border-neon-red/30 flex items-center justify-center text-neon-red text-3xl">
+          <div class="animate-fade-in space-y-4 sm:space-y-6">
+            <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/30 flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-neon-red/10 border border-neon-red/30 flex items-center justify-center text-neon-red text-2xl sm:text-3xl flex-shrink-0">
                   <i class="ph-bold ${genre.icon || 'ph-folder'}"></i>
                 </div>
                 <div>
-                  <h2 class="text-2xl font-bold text-white">${this.escapeHTML(genre.name)}</h2>
-                  <p class="text-xs text-gray-400 mt-0.5">Carpeta de Género • ${authorsInGenre.length} Autores registrados</p>
+                  <h2 class="text-lg sm:text-2xl font-bold text-white leading-tight">${this.escapeHTML(genre.name)}</h2>
+                  <p class="text-[11px] sm:text-xs text-gray-400">Carpeta • ${authorsInGenre.length} Autores</p>
                 </div>
               </div>
 
-              <button onclick="app.openAuthorModalForGenre('${genre.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-4 py-2 rounded-2xl font-semibold shadow-neon-sm flex items-center gap-1.5 ios-btn-tap">
-                <i class="ph-bold ph-user-plus text-sm"></i> Nuevo Autor en este Género
+              <button onclick="app.openAuthorModalForGenre('${genre.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 rounded-xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap w-full sm:w-auto">
+                <i class="ph-bold ph-user-plus text-sm"></i> Nuevo Autor
               </button>
             </div>
 
             <div>
-              <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <h3 class="text-base sm:text-lg font-bold text-white mb-3 flex items-center gap-2">
                 <i class="ph-bold ph-users text-neon-red"></i> Autores en ${this.escapeHTML(genre.name)}
               </h3>
 
               ${authorsInGenre.length === 0 ? `
-                <div class="glass-panel p-8 rounded-2xl text-center border-dashed border-white/10">
-                  <p class="text-sm text-gray-400">Aún no hay autores en este género.</p>
-                  <button onclick="app.openAuthorModalForGenre('${genre.id}')" class="mt-3 text-xs bg-neon-red/20 text-neon-crimson border border-neon-red/30 px-4 py-2 rounded-xl">Añadir Autor</button>
+                <div class="glass-panel p-6 rounded-2xl text-center border-dashed border-white/10">
+                  <p class="text-xs sm:text-sm text-gray-400">Aún no hay autores en este género.</p>
+                  <button onclick="app.openAuthorModalForGenre('${genre.id}')" class="mt-2 text-xs bg-neon-red/20 text-neon-crimson border border-neon-red/30 px-3 py-1.5 rounded-xl">Añadir Autor</button>
                 </div>
               ` : `
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   ${authorsInGenre.map(author => {
                     const booksCount = this.data.books.filter(b => b.authorId === author.id).length;
                     return `
-                      <div onclick="app.navigateTo('author', {authorId: '${author.id}'})" class="glass-card rounded-2xl p-5 cursor-pointer group flex flex-col justify-between">
+                      <div onclick="app.navigateTo('author', {authorId: '${author.id}'})" class="glass-card rounded-2xl p-4 cursor-pointer group flex flex-col justify-between">
                         <div>
                           <div class="flex items-start justify-between">
-                            <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white font-bold text-sm group-hover:border-neon-red transition-colors">
+                            <div class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white font-bold text-xs group-hover:border-neon-red transition-colors">
                               ${author.name.charAt(0)}
                             </div>
                             <div onclick="event.stopPropagation()" class="flex items-center gap-1">
-                              <button onclick="app.editAuthor('${author.id}')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
-                              <button onclick="app.deleteAuthor('${author.id}')" class="text-gray-400 hover:text-red-400 p-1"><i class="ph-bold ph-trash text-sm"></i></button>
+                              <button onclick="app.editAuthor('${author.id}')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-pencil-simple text-xs"></i></button>
+                              <button onclick="app.deleteAuthor('${author.id}')" class="text-gray-400 hover:text-red-400 p-1"><i class="ph-bold ph-trash text-xs"></i></button>
                             </div>
                           </div>
-                          <h4 class="font-bold text-base text-white mt-3 group-hover:text-neon-crimson transition-colors">${this.escapeHTML(author.name)}</h4>
-                          <p class="text-xs text-gray-400 mt-1 line-clamp-2">${author.bio ? this.escapeHTML(author.bio) : 'Sin biografía disponible'}</p>
+                          <h4 class="font-bold text-sm sm:text-base text-white mt-2 group-hover:text-neon-crimson transition-colors truncate">${this.escapeHTML(author.name)}</h4>
+                          <p class="text-[11px] sm:text-xs text-gray-400 mt-1 line-clamp-2">${author.bio ? this.escapeHTML(author.bio) : 'Sin biografía'}</p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-400">
+                        <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] sm:text-xs text-gray-400">
                           <span><i class="ph-bold ph-book"></i> ${booksCount} Libros</span>
-                          <span class="text-neon-red group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">Ver carpeta <i class="ph-bold ph-arrow-right"></i></span>
+                          <span class="text-neon-red font-medium flex items-center gap-1">Ver <i class="ph-bold ph-arrow-right"></i></span>
                         </div>
                       </div>
                     `;
@@ -1078,35 +1108,35 @@
         const booksByAuthor = this.data.books.filter(b => b.authorId === author.id);
 
         return `
-          <div class="animate-fade-in space-y-6">
-            <div class="glass-card rounded-3xl p-6 border-neon-red/30 flex items-center justify-between">
-              <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-gray-800 to-gray-700 border border-neon-red/40 flex items-center justify-center text-neon-crimson text-2xl font-extrabold">
+          <div class="animate-fade-in space-y-4 sm:space-y-6">
+            <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/30 flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-gray-800 to-gray-700 border border-neon-red/40 flex items-center justify-center text-neon-crimson text-xl sm:text-2xl font-extrabold flex-shrink-0">
                   ${author.name.charAt(0)}
                 </div>
                 <div>
-                  <h2 class="text-2xl font-bold text-white">${this.escapeHTML(author.name)}</h2>
-                  <p class="text-xs text-gray-400 mt-0.5">${author.bio ? this.escapeHTML(author.bio) : 'Carpeta de Autor'}</p>
+                  <h2 class="text-lg sm:text-2xl font-bold text-white leading-tight">${this.escapeHTML(author.name)}</h2>
+                  <p class="text-[11px] sm:text-xs text-gray-400 line-clamp-1">${author.bio ? this.escapeHTML(author.bio) : 'Carpeta de Autor'}</p>
                 </div>
               </div>
 
-              <button onclick="app.openBookModalForAuthor('${author.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-4 py-2 rounded-2xl font-semibold shadow-neon-sm flex items-center gap-1.5 ios-btn-tap">
+              <button onclick="app.openBookModalForAuthor('${author.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 rounded-xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap w-full sm:w-auto">
                 <i class="ph-bold ph-plus text-sm"></i> Añadir Libro
               </button>
             </div>
 
             <div>
-              <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <i class="ph-bold ph-books text-neon-red"></i> Libros Escritos por este Autor
+              <h3 class="text-base sm:text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <i class="ph-bold ph-books text-neon-red"></i> Libros de este Autor
               </h3>
 
               ${booksByAuthor.length === 0 ? `
-                <div class="glass-panel p-8 rounded-2xl text-center border-dashed border-white/10">
-                  <p class="text-sm text-gray-400">Aún no has agregado libros de este autor.</p>
-                  <button onclick="app.openBookModalForAuthor('${author.id}')" class="mt-3 text-xs bg-neon-red text-white px-4 py-2 rounded-xl">Añadir Primer Libro</button>
+                <div class="glass-panel p-6 rounded-2xl text-center border-dashed border-white/10">
+                  <p class="text-xs sm:text-sm text-gray-400">Aún no hay libros de este autor.</p>
+                  <button onclick="app.openBookModalForAuthor('${author.id}')" class="mt-2 text-xs bg-neon-red text-white px-3 py-1.5 rounded-xl">Añadir Primer Libro</button>
                 </div>
               ` : `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                   ${booksByAuthor.map(book => this.renderBookCardHorizontal(book)).join('')}
                 </div>
               `}
@@ -1125,69 +1155,68 @@
         const { current, total, pct } = this.calcBookProgress(book.currentPage, book.totalPages);
 
         return `
-          <div class="animate-fade-in space-y-8">
-            <div class="glass-card rounded-3xl p-6 border-neon-red/30 flex flex-col md:flex-row gap-6 items-start">
-              <div class="w-36 h-52 sm:w-44 sm:h-64 rounded-2xl overflow-hidden border border-white/20 shadow-neon-md flex-shrink-0 bg-black">
+          <div class="animate-fade-in space-y-6 sm:space-y-8">
+            <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/30 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
+              <div class="w-28 h-40 sm:w-40 sm:h-56 rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 shadow-neon-md flex-shrink-0 bg-black mx-auto sm:mx-0">
                 <img src="${book.cover || 'https://placehold.co/200x300/121218/ff0033?text=' + encodeURIComponent(book.title)}" 
                      onerror="this.src='https://placehold.co/200x300/121218/ff0033?text=Portada'" 
                      alt="${this.escapeHTML(book.title)}" class="w-full h-full object-cover" />
               </div>
 
-              <div class="flex-1 min-w-0 flex flex-col justify-between h-full space-y-4">
+              <div class="flex-1 min-w-0 flex flex-col justify-between h-full space-y-3 sm:space-y-4 w-full">
                 <div>
-                  <div class="flex items-center gap-2 flex-wrap mb-2">
-                    <span class="text-xs uppercase font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/30 px-2.5 py-0.5 rounded-full">
+                  <div class="flex items-center gap-1.5 flex-wrap mb-1.5">
+                    <span class="text-[10px] uppercase font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/30 px-2 py-0.5 rounded-full">
                       ${book.status}
                     </span>
-                    ${genre ? `<span class="text-xs text-gray-300 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full"><i class="ph-bold ${genre.icon}"></i> ${this.escapeHTML(genre.name)}</span>` : ''}
+                    ${genre ? `<span class="text-[10px] text-gray-300 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full"><i class="ph-bold ${genre.icon}"></i> ${this.escapeHTML(genre.name)}</span>` : ''}
                   </div>
 
-                  <h2 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">${this.escapeHTML(book.title)}</h2>
-                  <p class="text-sm text-gray-300 mt-1">Por <span class="text-white font-semibold">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</span></p>
+                  <h2 class="text-xl sm:text-2xl font-extrabold text-white leading-tight">${this.escapeHTML(book.title)}</h2>
+                  <p class="text-xs sm:text-sm text-gray-300 mt-0.5">Por <span class="text-white font-semibold">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</span></p>
                 </div>
 
                 <!-- Page Reading Progress Control Box -->
-                <div class="bg-black/50 p-4 rounded-2xl border border-neon-red/30 space-y-3">
+                <div class="bg-black/50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-neon-red/30 space-y-2.5">
                   <div class="flex items-center justify-between text-xs text-gray-300">
-                    <span class="font-semibold text-white flex items-center gap-1.5">
-                      <i class="ph-bold ph-book-open text-neon-red"></i> Progreso de Lectura
+                    <span class="font-semibold text-white flex items-center gap-1 text-[11px] sm:text-xs">
+                      <i class="ph-bold ph-book-open text-neon-red"></i> Progreso
                     </span>
-                    <span class="font-extrabold text-neon-crimson text-sm">${pct}% Completado</span>
+                    <span class="font-extrabold text-neon-crimson text-xs sm:text-sm">${pct}% Completado</span>
                   </div>
 
-                  <div class="w-full h-3 bg-black rounded-full overflow-hidden border border-white/10">
+                  <div class="w-full h-2 sm:h-2.5 bg-black rounded-full overflow-hidden border border-white/10">
                     <div class="h-full bg-gradient-to-r from-red-800 to-neon-red rounded-full transition-all duration-500 shadow-neon-sm" style="width: ${pct}%"></div>
                   </div>
 
-                  <div class="flex items-center justify-between pt-1 gap-2">
-                    <div class="text-xs text-gray-300 flex items-center gap-1">
-                      <span class="text-white font-bold text-sm">${current}</span> / <span class="text-gray-400">${total} páginas</span>
+                  <div class="flex items-center justify-between pt-0.5 gap-2 flex-wrap">
+                    <div class="text-[11px] sm:text-xs text-gray-300 flex items-center gap-1">
+                      <span class="text-white font-bold">${current}</span> / <span class="text-gray-400">${total} páginas</span>
                     </div>
 
-                    <!-- Quick Page Update Input -->
-                    <div class="flex items-center gap-2">
-                      <label class="text-[11px] text-gray-400">Actualizar pág:</label>
+                    <div class="flex items-center gap-1.5">
+                      <label class="text-[10px] sm:text-[11px] text-gray-400">Pág actual:</label>
                       <input 
                         type="number" 
                         min="0" 
                         max="${total}" 
                         value="${current}" 
                         onchange="app.updateQuickPageProgress('${book.id}', this.value)"
-                        class="w-20 bg-black border border-neon-red/40 rounded-lg px-2 py-1 text-xs text-white text-center focus:border-neon-red focus:outline-none"
+                        class="w-16 sm:w-20 bg-black border border-neon-red/40 rounded-lg px-1.5 py-0.5 text-xs text-white text-center focus:border-neon-red focus:outline-none"
                       />
                     </div>
                   </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex items-center gap-3 pt-2">
-                  <button onclick="app.openNoteModal('${book.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-5 py-2.5 rounded-2xl font-semibold shadow-neon-sm flex items-center gap-2 ios-btn-tap">
-                    <i class="ph-bold ph-note-pencil text-base"></i> Nueva Nota de Capítulo
+                <div class="flex items-center gap-2 pt-1">
+                  <button onclick="app.openNoteModal('${book.id}')" class="flex-1 sm:flex-none bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap">
+                    <i class="ph-bold ph-note-pencil text-sm sm:text-base"></i> Nueva Nota
                   </button>
-                  <button onclick="app.editBook('${book.id}')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3.5 py-2.5 rounded-2xl border border-white/10 flex items-center gap-1.5 ios-btn-tap">
-                    <i class="ph-bold ph-pencil-simple text-sm"></i> Editar
+                  <button onclick="app.editBook('${book.id}')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/10 flex items-center justify-center gap-1 ios-btn-tap">
+                    <i class="ph-bold ph-pencil-simple text-sm"></i>
                   </button>
-                  <button onclick="app.deleteBook('${book.id}')" class="bg-red-950/30 hover:bg-red-900/40 text-red-400 text-xs px-3.5 py-2.5 rounded-2xl border border-red-500/20 flex items-center gap-1.5 ios-btn-tap">
+                  <button onclick="app.deleteBook('${book.id}')" class="bg-red-950/30 hover:bg-red-900/40 text-red-400 text-xs px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl border border-red-500/20 flex items-center justify-center gap-1 ios-btn-tap">
                     <i class="ph-bold ph-trash text-sm"></i>
                   </button>
                 </div>
@@ -1196,30 +1225,30 @@
 
             <!-- Chapter Notes Section -->
             <section>
-              <div class="flex items-center justify-between mb-5">
+              <div class="flex items-center justify-between mb-4">
                 <div>
-                  <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i class="ph-bold ph-notebook text-neon-red"></i> Notas y Estudio por Capítulo
+                  <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    <i class="ph-bold ph-notebook text-neon-red"></i> Notas por Capítulo
                   </h3>
-                  <p class="text-xs text-gray-400">Resúmenes, enseñanzas clave y cómo aplicarlo a tu vida</p>
+                  <p class="text-[11px] sm:text-xs text-gray-400">Estudio activo y aplicación práctica</p>
                 </div>
                 
                 <button onclick="app.openNoteModal('${book.id}')" class="text-xs text-neon-crimson hover:underline flex items-center gap-1 font-medium">
-                  + Agregar Capítulo
+                  + Agregar
                 </button>
               </div>
 
               ${notes.length === 0 ? `
-                <div class="glass-panel p-10 rounded-3xl text-center border-dashed border-white/10">
-                  <i class="ph-bold ph-notepad text-5xl text-gray-600 mb-3"></i>
-                  <h4 class="text-base font-bold text-white">No hay notas registradas para este libro</h4>
-                  <p class="text-xs text-gray-400 mt-1 max-w-md mx-auto">Registra tus resúmenes por capítulo y define cómo aplicar la lectura en tu día a día.</p>
-                  <button onclick="app.openNoteModal('${book.id}')" class="mt-4 bg-neon-red text-white text-xs px-5 py-2.5 rounded-2xl font-semibold shadow-neon-sm">
-                    Crear primera nota de estudio
+                <div class="glass-panel p-6 sm:p-10 rounded-2xl sm:rounded-3xl text-center border-dashed border-white/10">
+                  <i class="ph-bold ph-notepad text-3xl sm:text-5xl text-gray-600 mb-2 sm:mb-3"></i>
+                  <h4 class="text-sm sm:text-base font-bold text-white">No hay notas para este libro</h4>
+                  <p class="text-[11px] sm:text-xs text-gray-400 mt-1 max-w-md mx-auto">Registra resúmenes y define cómo aplicar lo aprendido.</p>
+                  <button onclick="app.openNoteModal('${book.id}')" class="mt-3 sm:mt-4 bg-neon-red text-white text-xs px-4 py-2 rounded-xl sm:rounded-2xl font-semibold shadow-neon-sm">
+                    Crear nota de estudio
                   </button>
                 </div>
               ` : `
-                <div class="space-y-4">
+                <div class="space-y-3 sm:space-y-4">
                   ${notes.map(note => this.renderNoteCard(note)).join('')}
                 </div>
               `}
@@ -1230,40 +1259,40 @@
 
       renderNoteCard(note) {
         return `
-          <div class="glass-card rounded-2xl p-5 border-neon-red/20 hover:border-neon-red/40 transition-all space-y-4">
-            <div class="flex items-start justify-between border-b border-white/10 pb-3">
-              <div>
-                <span class="text-xs font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2.5 py-0.5 rounded-full inline-block mb-1">
+          <div class="glass-card rounded-2xl p-4 sm:p-5 border-neon-red/20 space-y-3">
+            <div class="flex items-start justify-between border-b border-white/10 pb-2.5">
+              <div class="min-w-0 pr-2">
+                <span class="text-[10px] font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2 py-0.5 rounded-full inline-block mb-1">
                   ${this.escapeHTML(note.chapter)}
                 </span>
-                <h4 class="text-base font-bold text-white">${this.escapeHTML(note.title)}</h4>
+                <h4 class="text-sm sm:text-base font-bold text-white truncate">${this.escapeHTML(note.title)}</h4>
               </div>
               
-              <div class="flex items-center gap-1">
-                <button onclick="app.editNote('${note.id}')" class="text-gray-400 hover:text-white p-1.5"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
-                <button onclick="app.deleteNote('${note.id}')" class="text-gray-400 hover:text-red-400 p-1.5"><i class="ph-bold ph-trash text-sm"></i></button>
+              <div class="flex items-center gap-1 flex-shrink-0">
+                <button onclick="app.editNote('${note.id}')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-pencil-simple text-xs sm:text-sm"></i></button>
+                <button onclick="app.deleteNote('${note.id}')" class="text-gray-400 hover:text-red-400 p-1"><i class="ph-bold ph-trash text-xs sm:text-sm"></i></button>
               </div>
             </div>
 
             <div class="space-y-1">
-              <h5 class="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+              <h5 class="text-[11px] sm:text-xs font-bold text-gray-300 flex items-center gap-1">
                 <i class="ph-bold ph-list-checks text-neon-crimson"></i> Resumen & Puntos Clave:
               </h5>
-              <p class="text-xs text-gray-300 leading-relaxed pl-5 whitespace-pre-line">${this.escapeHTML(note.summary)}</p>
+              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-line">${this.escapeHTML(note.summary)}</p>
             </div>
 
             <div class="space-y-1">
-              <h5 class="text-xs font-bold text-yellow-400 flex items-center gap-1.5">
+              <h5 class="text-[11px] sm:text-xs font-bold text-yellow-400 flex items-center gap-1">
                 <i class="ph-bold ph-lightbulb"></i> Enseñanzas Principales:
               </h5>
-              <p class="text-xs text-gray-300 leading-relaxed pl-5 whitespace-pre-line">${this.escapeHTML(note.teachings)}</p>
+              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-line">${this.escapeHTML(note.teachings)}</p>
             </div>
 
-            <div class="bg-gradient-to-r from-neon-red/15 to-transparent border-l-4 border-neon-red p-3.5 rounded-r-xl">
-              <h5 class="text-xs font-extrabold text-neon-red uppercase tracking-wider flex items-center gap-1.5">
-                <i class="ph-bold ph-lightning"></i> ¿Cómo aplicarlo a mi vida?:
+            <div class="bg-gradient-to-r from-neon-red/15 to-transparent border-l-2 sm:border-l-4 border-neon-red p-2.5 sm:p-3.5 rounded-r-xl">
+              <h5 class="text-[11px] sm:text-xs font-extrabold text-neon-red uppercase tracking-wider flex items-center gap-1">
+                <i class="ph-bold ph-lightning"></i> Aplicación en mi Vida:
               </h5>
-              <p class="text-xs text-white font-medium mt-1 leading-relaxed whitespace-pre-line">${this.escapeHTML(note.application)}</p>
+              <p class="text-xs text-white font-medium mt-0.5 leading-relaxed whitespace-pre-line">${this.escapeHTML(note.application)}</p>
             </div>
           </div>
         `;
@@ -1271,7 +1300,7 @@
 
       renderSearchViewHTML() {
         const query = this.searchQuery.toLowerCase().trim();
-        if (!query) return `<p class="text-gray-400">Escribe algo en la barra de búsqueda superior.</p>`;
+        if (!query) return `<p class="text-gray-400">Escribe algo en la barra de búsqueda.</p>`;
 
         const matchedBooks = this.data.books.filter(b => {
           const author = this.data.authors.find(a => a.id === b.authorId);
@@ -1282,16 +1311,16 @@
         });
 
         return `
-          <div class="animate-fade-in space-y-6">
-            <h2 class="text-xl font-bold text-white">Resultados de búsqueda para: "<span class="text-neon-red">${this.escapeHTML(this.searchQuery)}</span>"</h2>
+          <div class="animate-fade-in space-y-4">
+            <h2 class="text-base sm:text-lg font-bold text-white">Búsqueda: "<span class="text-neon-red">${this.escapeHTML(this.searchQuery)}</span>"</h2>
 
             ${matchedBooks.length === 0 ? `
-              <div class="glass-panel p-8 rounded-2xl text-center">
-                <i class="ph-bold ph-magnifying-glass text-4xl text-gray-600 mb-2"></i>
-                <p class="text-sm text-gray-400">No se encontraron libros que coincidan con tu búsqueda.</p>
+              <div class="glass-panel p-6 rounded-2xl text-center">
+                <i class="ph-bold ph-magnifying-glass text-3xl text-gray-600 mb-2"></i>
+                <p class="text-xs text-gray-400">No se encontraron libros coincidentes.</p>
               </div>
             ` : `
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 ${matchedBooks.map(book => this.renderBookCardHorizontal(book)).join('')}
               </div>
             `}
@@ -1371,7 +1400,7 @@
         this.saveData();
         this.renderView();
         this.closeModal('genreModal');
-        this.showToast('Género guardado correctamente');
+        this.showToast('Género guardado');
         document.getElementById('genreForm').reset();
       }
 
@@ -1460,7 +1489,7 @@
         this.saveData();
         this.renderView();
         this.closeModal('authorModal');
-        this.showToast('Autor guardado correctamente');
+        this.showToast('Autor guardado');
         document.getElementById('authorForm').reset();
       }
 
@@ -1574,7 +1603,7 @@
         this.saveData();
         this.renderView();
         this.closeModal('bookModal');
-        this.showToast('Libro guardado con éxito');
+        this.showToast('Libro guardado');
       }
 
       editBook(bookId) {
@@ -1599,7 +1628,7 @@
           this.data.notes = this.data.notes.filter(n => n.bookId !== bookId);
           this.saveData();
           this.navigateTo('dashboard');
-          this.showToast('Libro y notas eliminados');
+          this.showToast('Libro eliminado');
         }
       }
 
@@ -1607,7 +1636,7 @@
         document.getElementById('noteForm').reset();
         document.getElementById('noteId').value = '';
         document.getElementById('noteBookId').value = bookId;
-        document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota de Estudio`;
+        document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota`;
         this.openModal('noteModal');
       }
 
@@ -1657,13 +1686,13 @@
         document.getElementById('noteSummary').value = note.summary;
         document.getElementById('noteTeachings').value = note.teachings;
         document.getElementById('noteApplication').value = note.application;
-        document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Nota de Estudio`;
+        document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Nota`;
 
         this.openModal('noteModal');
       }
 
       deleteNote(noteId) {
-        if (confirm('¿Eliminar esta nota de estudio?')) {
+        if (confirm('¿Eliminar esta nota?')) {
           this.data.notes = this.data.notes.filter(n => n.id !== noteId);
           this.saveData();
           this.renderView();
@@ -1672,11 +1701,13 @@
       }
 
       updateProfileUI() {
+        const initials = (this.data.user.name || '').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'US';
+
         const avatarEl = document.getElementById('userAvatarText');
-        if (avatarEl && this.data.user.name) {
-          const initials = this.data.user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-          avatarEl.innerText = initials || 'US';
-        }
+        const avatarElMobile = document.getElementById('userAvatarTextMobile');
+
+        if (avatarEl) avatarEl.innerText = initials;
+        if (avatarElMobile) avatarElMobile.innerText = initials;
 
         const totalBooks = document.getElementById('statTotalBooks');
         const totalNotes = document.getElementById('statTotalNotes');
@@ -1692,10 +1723,10 @@
         const toastMsg = document.getElementById('toastMessage');
         toastMsg.innerText = message;
 
-        toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+        toast.classList.remove('-translate-y-20', 'opacity-0');
         setTimeout(() => {
-          toast.classList.add('translate-y-[-100px]', 'opacity-0');
-        }, 3000);
+          toast.classList.add('-translate-y-20', 'opacity-0');
+        }, 2800);
       }
 
       escapeHTML(str) {
