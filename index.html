@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-[#070709] text-gray-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Tracker Pro By: YasmaStak</title>
+  
+  <!-- Neon Red Book Favicon via Data URI SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23070709'/><rect x='2' y='2' width='96' height='96' rx='20' fill='none' stroke='%23ff0033' stroke-width='4' opacity='0.8'/><path d='M25 30 C 35 25, 45 28, 50 32 C 55 28, 65 25, 75 30 L 75 75 C 65 70, 55 73, 50 77 C 45 73, 35 70, 25 75 Z' fill='%23ff0033' opacity='0.25' stroke='%23ff0033' stroke-width='5' stroke-linejoin='round'/><path d='M50 32 L 50 77' stroke='%23ff0033' stroke-width='5' stroke-linecap='round'/><circle cx='50' cy='32' r='4' fill='%23ff2a55'/></svg>" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons for smooth iOS style icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            neon: {
+              red: '#ff0033',
+              crimson: '#ff2a55',
+              glow: '#ff003380',
+              dark: '#0a0a0d',
+              card: '#121218',
+              cardHover: '#1a1a24',
+              glass: 'rgba(18, 18, 24, 0.85)',
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+          boxShadow: {
+            'neon-sm': '0 0 10px rgba(255, 0, 51, 0.3)',
+            'neon-md': '0 0 20px rgba(255, 0, 51, 0.45)',
+            'neon-lg': '0 0 35px rgba(255, 0, 51, 0.6)',
+            'glass': '0 12px 40px 0 rgba(0, 0, 0, 0.6)',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.25s ease-out forwards',
+            'pulse-glow': 'pulseGlow 2.5s infinite ease-in-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'scale(0.95)' },
+              '100%': { opacity: '1', transform: 'scale(1)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { boxShadow: '0 0 15px rgba(255, 0, 51, 0.3)' },
+              '50%': { boxShadow: '0 0 30px rgba(255, 0, 51, 0.7)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar for iOS feel */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0a0d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2a35;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff0033;
+    }
+
+    .glass-panel {
+      background: rgba(18, 18, 24, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card {
+      background: rgba(22, 22, 30, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 0, 51, 0.15);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 0, 51, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 0, 51, 0.25);
+    }
+
+    .neon-text-glow {
+      text-shadow: 0 0 12px rgba(255, 0, 51, 0.7);
+    }
+
+    .ios-btn-tap {
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .ios-btn-tap:active {
+      transform: scale(0.95);
+      filter: brightness(0.9);
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Centered Modal Container Transition */
+    .modal-centered-container {
+      transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col antialiased selection:bg-neon-red selection:text-white bg-[#070709] text-gray-200 overflow-x-hidden">
+
+  <header class="sticky top-0 z-40 w-full glass-panel border-b border-white/10 px-4 lg:px-8 py-3 transition-all">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <!-- App Brand Title -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="app.navigateTo('dashboard')">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-neon-red to-red-900 flex items-center justify-center shadow-neon-sm animate-pulse-glow">
+          <i class="ph-bold ph-book-open text-xl text-white"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg tracking-wide text-white flex items-center gap-1.5">
+            BOOK TRACKER<span class="text-neon-red neon-text-glow">PRO</span>
+            <span class="text-[10px] uppercase tracking-wider bg-neon-red/20 text-neon-crimson px-2 py-0.5 rounded-full border border-neon-red/30 font-semibold">By: YasmaStak</span>
+          </h1>
+          <p class="text-[11px] text-gray-400 -mt-0.5 hidden sm:block">Plataforma de Lectura & Estudio Profundo</p>
+        </div>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <div class="flex-1 max-w-md mx-2">
+        <div class="relative">
+          <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          <input 
+            type="text" 
+            id="searchInput"
+            oninput="app.handleSearch(this.value)"
+            placeholder="Buscar libro, autor o género..." 
+            class="w-full bg-black/40 border border-white/10 rounded-full pl-10 pr-4 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-red focus:ring-1 focus:ring-neon-red transition-all"
+          />
+          <button id="clearSearchBtn" onclick="app.clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+            <i class="ph-bold ph-x-circle text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Header Actions / Profile Nav -->
+      <div class="flex items-center gap-2">
+        <button onclick="app.openModal('genreModal')" class="hidden sm:flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
+          <i class="ph-bold ph-folder-plus text-sm"></i>
+          <span>Género</span>
+        </button>
+        <button onclick="app.openModal('authorModal')" class="hidden sm:flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
+          <i class="ph-bold ph-user-plus text-sm"></i>
+          <span>Autor</span>
+        </button>
+        <button onclick="app.openBookModal()" class="flex items-center gap-1.5 bg-neon-red hover:bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-semibold shadow-neon-sm transition-all ios-btn-tap">
+          <i class="ph-bold ph-plus text-sm"></i>
+          <span>Nuevo Libro</span>
+        </button>
+        
+        <!-- Profile Switcher Dropdown Button -->
+        <button onclick="app.openModal('profileModal')" class="w-9 h-9 rounded-full bg-gradient-to-tr from-gray-800 to-gray-700 border border-neon-red/40 flex items-center justify-center text-white ml-1 hover:border-neon-red transition-all ios-btn-tap overflow-hidden">
+          <span id="userAvatarText" class="font-bold text-xs text-neon-crimson">US</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 flex flex-col gap-6">
+    <!-- Breadcrumb & Nav Indicator -->
+    <div id="breadcrumb" class="flex items-center gap-2 text-xs text-gray-400 overflow-x-auto pb-1 hide-scrollbar">
+      <!-- Dynamic Breadcrumbs -->
+    </div>
+
+    <!-- Container where screens load dynamically -->
+    <div id="viewContainer" class="flex-1 flex flex-col">
+      <!-- SPA Content injected here -->
+    </div>
+  </main>
+
+  <!-- Bottom Nav Mobile -->
+  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-white/10 px-6 py-2 flex items-center justify-around">
+    <button onclick="app.navigateTo('dashboard')" class="flex flex-col items-center gap-1 text-neon-red">
+      <i class="ph-bold ph-house text-xl"></i>
+      <span class="text-[10px] font-medium">Inicio</span>
+    </button>
+    <button onclick="app.openBookModal()" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white">
+      <i class="ph-bold ph-plus-circle text-xl text-neon-crimson"></i>
+      <span class="text-[10px] font-medium">Añadir</span>
+    </button>
+    <button onclick="app.openModal('profileModal')" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white">
+      <i class="ph-bold ph-user text-xl"></i>
+      <span class="text-[10px] font-medium">Perfil</span>
+    </button>
+  </nav>
+
+  <!-- Global Backdrop -->
+  <div id="modalBackdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden transition-opacity duration-300 opacity-0" onclick="app.closeAllModals()"></div>
+
+
+  <!-- 1. GENRE MODAL (CENTERED) -->
+  <div id="genreModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-md max-h-[85vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
+        <h3 id="genreModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-folder-plus text-neon-red"></i> Nuevo Género
+        </h3>
+        <button onclick="app.closeModal('genreModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+
+      <form id="genreForm" onsubmit="app.saveGenre(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+        <input type="hidden" id="genreId" />
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Nombre del Género</label>
+          <input type="text" id="genreName" required placeholder="Ej: Desarrollo Personal, Ciencia Ficción..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Color / Icono Decorativo</label>
+          <div class="flex gap-2">
+            <input type="color" id="genreColor" value="#ff0033" class="h-10 w-14 rounded-xl bg-transparent border border-white/10 cursor-pointer p-1" />
+            <input type="text" id="genreIcon" placeholder="Ej: ph-brain, ph-rocket" value="ph-books" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          </div>
+          <p class="text-[10px] text-gray-500 mt-1">Usa iconos de Phosphor (ej: ph-lightbulb, ph-code, ph-atom)</p>
+        </div>
+        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('genreModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Género</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. AUTHOR MODAL (CENTERED) -->
+  <div id="authorModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-md max-h-[85vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
+        <h3 id="authorModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-user-plus text-neon-red"></i> Nuevo Autor
+        </h3>
+        <button onclick="app.closeModal('authorModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+
+      <form id="authorForm" onsubmit="app.saveAuthor(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+        <input type="hidden" id="authorId" />
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Nombre Completo del Autor</label>
+          <input type="text" id="authorName" required placeholder="Ej: James Clear, Robert Greene..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Género Asignado (Selecciona o Escribe)</label>
+          <div class="relative">
+            <input type="text" id="authorGenreInput" list="existingGenresList" required placeholder="Escribe o selecciona un género..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <datalist id="existingGenresList">
+              <!-- Populated dynamically via JS -->
+            </datalist>
+          </div>
+          <p class="text-[10px] text-gray-500 mt-1">Puedes elegir uno existente o escribir un nuevo género libremente.</p>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Biografía Breve o Nota</label>
+          <textarea id="authorBio" rows="2" placeholder="Información destacada del autor..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+        </div>
+        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('authorModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Autor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. BOOK MODAL (CENTERED) -->
+  <div id="bookModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-lg max-h-[85vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
+        <h3 id="bookModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-book-bookmark text-neon-red"></i> Agregar Nuevo Libro
+        </h3>
+        <button onclick="app.closeModal('bookModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+
+      <form id="bookForm" onsubmit="app.saveBook(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+        <input type="hidden" id="bookId" />
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block text-xs text-gray-400 font-medium mb-1">Título del Libro *</label>
+            <input type="text" id="bookTitle" required placeholder="Ej: Hábitos Atómicos" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          </div>
+
+          <div>
+            <label class="block text-xs text-gray-400 font-medium mb-1">Género *</label>
+            <select id="bookGenreId" onchange="app.updateAuthorDropdown(this.value)" required class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none">
+              <!-- JS Populated -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs text-gray-400 font-medium mb-1">Autor *</label>
+            <select id="bookAuthorId" required class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none">
+              <!-- JS Populated -->
+            </select>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs text-gray-400 font-medium mb-1">URL de Portada (Cover Image)</label>
+            <input type="url" id="bookCover" placeholder="https://ejemplo.com/portada.jpg" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <p class="text-[10px] text-gray-500 mt-1">Si se deja en blanco, se generará una portada estilo neón automáticamente.</p>
+          </div>
+
+          <div>
+            <label class="block text-xs text-gray-400 font-medium mb-1">Estado de Lectura</label>
+            <select id="bookStatus" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none">
+              <option value="Leyendo">📖 Leyendo</option>
+              <option value="Por Leer">⏳ Por Leer</option>
+              <option value="Completado">✅ Completado</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs text-gray-400 font-medium mb-1">Progreso (%)</label>
+            <input type="number" id="bookProgress" min="0" max="100" value="0" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs text-gray-400 font-medium mb-1">Total Capítulos Estimados</label>
+            <input type="number" id="bookTotalChapters" min="1" value="10" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('bookModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Libro</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. CHAPTER / STUDY NOTE MODAL (CENTERED) -->
+  <div id="noteModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-2xl max-h-[85vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
+        <h3 id="noteModalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota de Estudio por Capítulo
+        </h3>
+        <button onclick="app.closeModal('noteModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+
+      <form id="noteForm" onsubmit="app.saveNote(event)" class="space-y-4 pt-4 overflow-y-auto pr-1">
+        <input type="hidden" id="noteId" />
+        <input type="hidden" id="noteBookId" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-1">
+            <label class="block text-xs text-gray-400 font-medium mb-1">Capítulo / Sección *</label>
+            <input type="text" id="noteChapter" required placeholder="Ej: Cap. 1 o Págs 15-30" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs text-gray-400 font-medium mb-1">Título de la Nota / Idea Clave *</label>
+            <input type="text" id="noteTitle" required placeholder="Ej: Los 4 pilares del cambio de hábito" class="w-full bg-black/50 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-neon-red focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Section 1: Key Points -->
+        <div>
+          <label class="block text-xs font-semibold text-neon-crimson uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <i class="ph-bold ph-list-checks"></i> 1. Resumen & Puntos Claves
+          </label>
+          <textarea id="noteSummary" rows="3" required placeholder="Resumen directo, citas relevantes o ideas principales de este capítulo..." class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+        </div>
+
+        <!-- Section 2: Core Teachings -->
+        <div>
+          <label class="block text-xs font-semibold text-yellow-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <i class="ph-bold ph-lightbulb"></i> 2. Enseñanzas Principales
+          </label>
+          <textarea id="noteTeachings" rows="3" required placeholder="¿Qué principio o verdad profunda revela este capítulo? ¿Qué aprendiste de nuevo?" class="w-full bg-black/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+        </div>
+
+        <!-- Section 3: Practical Life Application -->
+        <div class="bg-neon-red/5 p-3.5 rounded-2xl border border-neon-red/20">
+          <label class="block text-xs font-bold text-neon-red uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <i class="ph-bold ph-lightning"></i> 3. ¿Cómo Aplicarlo a mi Vida Real? (Acción Concreta)
+          </label>
+          <textarea id="noteApplication" rows="3" required placeholder="Pasos de acción inmediatos. Ej: 'A partir de mañana voy a preparar mi ropa de gimnasio la noche anterior para reducir fricción...'" class="w-full bg-black/70 border border-neon-red/30 rounded-xl p-3 text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-4 border-t border-white/10 flex justify-end gap-3 flex-shrink-0">
+          <button type="button" onclick="app.closeModal('noteModal')" class="px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-neon-red text-white hover:bg-red-600 shadow-neon-sm ios-btn-tap">Guardar Nota de Estudio</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. MULTI-PROFILE & SETTINGS MODAL (CENTERED) -->
+  <div id="profileModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-3xl p-6 shadow-2xl bg-[#0e0e14] w-full max-w-lg max-h-[85vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-shrink-0">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-users-three text-neon-red"></i> Gestión de Perfiles y Cuentas
+        </h3>
+        <button onclick="app.closeModal('profileModal')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+
+      <div class="space-y-5 pt-4 overflow-y-auto pr-1">
+        
+        <!-- Profile Switcher Section -->
+        <div>
+          <label class="block text-xs font-semibold text-neon-crimson uppercase tracking-wider mb-2">Perfiles de Usuario Registrados</label>
+          <div id="profilesList" class="space-y-2">
+            <!-- JS Populated Profile Item Cards -->
+          </div>
+          <button onclick="app.createNewProfilePrompt()" class="w-full mt-3 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson text-xs py-2 rounded-xl font-medium flex items-center justify-center gap-1.5 ios-btn-tap">
+            <i class="ph-bold ph-user-plus"></i> Crear Nuevo Perfil
+          </button>
+        </div>
+
+        <!-- Current Active Profile Edit Section -->
+        <div class="border-t border-white/10 pt-4">
+          <label class="block text-xs font-semibold text-white mb-1">Nombre del Perfil Actual</label>
+          <div class="flex gap-2">
+            <input type="text" id="userNameInput" value="" class="flex-1 bg-black/50 border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white focus:border-neon-red focus:outline-none" />
+            <button onclick="app.saveUserProfileName()" class="bg-neon-red text-white text-xs px-4 rounded-xl font-semibold ios-btn-tap">Guardar</button>
+          </div>
+        </div>
+
+        <!-- Stats for Active Profile -->
+        <div class="grid grid-cols-3 gap-2 py-1 text-center">
+          <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
+            <span id="statTotalBooks" class="block text-lg font-bold text-neon-red">0</span>
+            <span class="text-[10px] text-gray-400">Libros</span>
+          </div>
+          <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
+            <span id="statTotalNotes" class="block text-lg font-bold text-white">0</span>
+            <span class="text-[10px] text-gray-400">Notas Estudio</span>
+          </div>
+          <div class="bg-white/5 p-2.5 rounded-xl border border-white/5">
+            <span id="statCompleted" class="block text-lg font-bold text-emerald-400">0</span>
+            <span class="text-[10px] text-gray-400">Completados</span>
+          </div>
+        </div>
+
+        <!-- Import / Export Data Section -->
+        <div class="border-t border-white/10 pt-4 space-y-2">
+          <span class="block text-xs font-semibold text-gray-400 mb-1">Copia de Seguridad del Perfil</span>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="app.exportProfileData()" class="bg-white/5 hover:bg-white/10 text-gray-200 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1.5">
+              <i class="ph-bold ph-download-simple"></i> Exportar JSON
+            </button>
+            <label class="bg-white/5 hover:bg-white/10 text-gray-200 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1.5 cursor-pointer">
+              <i class="ph-bold ph-upload-simple"></i> Importar JSON
+              <input type="file" accept=".json" class="hidden" onchange="app.importProfileData(event)" />
+            </label>
+          </div>
+        </div>
+
+        <!-- System Reset Actions -->
+        <div class="border-t border-white/10 pt-4 space-y-2">
+          <button onclick="app.resetSampleData()" class="w-full bg-white/5 hover:bg-white/10 text-gray-300 py-2 rounded-xl text-xs border border-white/10 flex items-center justify-center gap-1.5">
+            <i class="ph-bold ph-arrows-counter-clockwise"></i> Restablecer Datos Demo en este Perfil
+          </button>
+          <button onclick="app.deleteCurrentProfile()" class="w-full bg-red-950/40 hover:bg-red-900/40 text-red-400 py-2 rounded-xl text-xs border border-red-500/20 flex items-center justify-center gap-1.5">
+            <i class="ph-bold ph-trash"></i> Eliminar este Perfil Definitivamente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="glass-panel border border-neon-red/50 shadow-neon-md px-4 py-3 rounded-2xl flex items-center gap-3">
+      <div id="toastIcon" class="w-7 h-7 rounded-full bg-neon-red/20 text-neon-red flex items-center justify-center">
+        <i class="ph-bold ph-check text-sm"></i>
+      </div>
+      <p id="toastMessage" class="text-xs font-medium text-white">Notificación</p>
+    </div>
+  </div>
+
+  <script>
+    /* 
+      Book Tracker Pro By: YasmaStak - Multi-Profile Architecture
+      Handles multi-user profiles, independent LocalStorage state, genres, authors, books & active chapter study notes.
+    */
+
+    const SAMPLE_PROFILE_DATA = {
+      user: { name: 'Estudiante Alfa' },
+      genres: [
+        { id: 'g1', name: 'Desarrollo Personal', color: '#ff0033', icon: 'ph-brain' },
+        { id: 'g2', name: 'Filosofía & Estoicismo', color: '#e63946', icon: 'ph-scroll' },
+        { id: 'g3', name: 'Negocios & Estrategia', color: '#3a86ff', icon: 'ph-chart-line-up' }
+      ],
+      authors: [
+        { id: 'a1', genreId: 'g1', name: 'James Clear', bio: 'Especialista en creación de hábitos y mejora continua.' },
+        { id: 'a2', genreId: 'g2', name: 'Marco Aurelio', bio: 'Emperador romano y filósofo estoico.' },
+        { id: 'a3', genreId: 'g3', name: 'Alex Hormozi', bio: 'Empresario e inversionista enfocado en ofertas de alto valor.' }
+      ],
+      books: [
+        {
+          id: 'b1',
+          genreId: 'g1',
+          authorId: 'a1',
+          title: 'Hábitos Atómicos',
+          cover: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
+          status: 'Leyendo',
+          progress: 65,
+          totalChapters: 20
+        },
+        {
+          id: 'b2',
+          genreId: 'g2',
+          authorId: 'a2',
+          title: 'Meditaciones',
+          cover: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80',
+          status: 'Completado',
+          progress: 100,
+          totalChapters: 12
+        }
+      ],
+      notes: [
+        {
+          id: 'n1',
+          bookId: 'b1',
+          chapter: 'Capítulo 1',
+          title: 'El sorprendente poder de los hábitos atómicos',
+          summary: 'La regla del 1%: Mejorar un 1% cada día produce un resultado compuesto gigantesco al cabo de un año (37 veces mejor). Centrarse en el sistema, no solo en la meta.',
+          teachings: 'Los resultados son una medida diferida de tus hábitos. No te elevas al level de tus metas, caes al nivel de tus sistemas.',
+          application: 'Diseñar un checklist de 3 acciones mínimas para mi mañana antes de encender el celular.',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 'n2',
+          bookId: 'b2',
+          chapter: 'Libro II',
+          title: 'Dominio de la mente sobre los eventos externos',
+          summary: 'Tienes poder sobre tu mente, no sobre los acontecimientos externos. Date cuenta de esto y encontrarás la fuerza.',
+          teachings: 'La percepción dicta nuestra respuesta emocional. Las cosas externas no nos perturban, sino la opinión que nos formamos de ellas.',
+          application: 'Cada vez que enfrente un contratiempo técnico en el trabajo, hacer una pausa de 5 segundos y responder con neutralidad.',
+          createdAt: new Date().toISOString()
+        }
+      ]
+    };
+
+    class BookTrackerApp {
+      constructor() {
+        this.profilesIndex = this.loadProfilesIndex();
+        this.activeProfileId = this.loadActiveProfileId();
+        this.data = this.loadProfileData(this.activeProfileId);
+
+        this.currentView = 'dashboard';
+        this.viewParams = {};
+        this.searchQuery = '';
+
+        this.init();
+      }
+
+      init() {
+        this.renderView();
+        this.updateProfileUI();
+      }
+
+      // --- Multi-Profile Manager ---
+      loadProfilesIndex() {
+        const stored = localStorage.getItem('BOOK_TRACKER_PRO_PROFILES');
+        if (stored) {
+          try { return JSON.parse(stored); } catch (e) { console.error(e); }
+        }
+        const initialProfiles = [{ id: 'profile_default', name: 'Estudiante Alfa' }];
+        localStorage.setItem('BOOK_TRACKER_PRO_PROFILES', JSON.stringify(initialProfiles));
+        return initialProfiles;
+      }
+
+      saveProfilesIndex() {
+        localStorage.setItem('BOOK_TRACKER_PRO_PROFILES', JSON.stringify(this.profilesIndex));
+      }
+
+      loadActiveProfileId() {
+        const stored = localStorage.getItem('BOOK_TRACKER_PRO_ACTIVE_ID');
+        if (stored && this.profilesIndex.some(p => p.id === stored)) {
+          return stored;
+        }
+        return this.profilesIndex[0]?.id || 'profile_default';
+      }
+
+      setActiveProfileId(profileId) {
+        this.activeProfileId = profileId;
+        localStorage.setItem('BOOK_TRACKER_PRO_ACTIVE_ID', profileId);
+        this.data = this.loadProfileData(profileId);
+        this.renderView();
+        this.updateProfileUI();
+        this.showToast('Perfil cambiado a: ' + this.data.user.name);
+      }
+
+      loadProfileData(profileId) {
+        const key = 'BOOK_TRACKER_DATA_' + profileId;
+        const stored = localStorage.getItem(key);
+        if (stored) {
+          try { return JSON.parse(stored); } catch (e) { console.error(e); }
+        }
+
+        // Clone demo data for initial profile setup
+        const freshData = JSON.parse(JSON.stringify(SAMPLE_PROFILE_DATA));
+        const matchedIndex = this.profilesIndex.find(p => p.id === profileId);
+        if (matchedIndex) freshData.user.name = matchedIndex.name;
+
+        this.saveProfileData(profileId, freshData);
+        return freshData;
+      }
+
+      saveProfileData(profileId = this.activeProfileId, dataToSave = this.data) {
+        const key = 'BOOK_TRACKER_DATA_' + profileId;
+        localStorage.setItem(key, JSON.stringify(dataToSave));
+      }
+
+      saveData() {
+        this.saveProfileData(this.activeProfileId, this.data);
+      }
+
+      createNewProfilePrompt() {
+        const name = prompt('Ingresa el nombre para el nuevo perfil:');
+        if (!name || !name.trim()) return;
+
+        const cleanName = name.trim();
+        const newProfileId = 'profile_' + Date.now();
+        
+        this.profilesIndex.push({ id: newProfileId, name: cleanName });
+        this.saveProfilesIndex();
+
+        const newProfileData = {
+          user: { name: cleanName },
+          genres: [],
+          authors: [],
+          books: [],
+          notes: []
+        };
+        this.saveProfileData(newProfileId, newProfileData);
+
+        this.setActiveProfileId(newProfileId);
+      }
+
+      deleteCurrentProfile() {
+        if (this.profilesIndex.length <= 1) {
+          alert('Debes mantener al menos un perfil activo.');
+          return;
+        }
+
+        if (confirm(`¿Estás seguro de eliminar definitivamente el perfil "${this.data.user.name}" y todos sus datos?`)) {
+          const idToRemove = this.activeProfileId;
+          localStorage.removeItem('BOOK_TRACKER_DATA_' + idToRemove);
+
+          this.profilesIndex = this.profilesIndex.filter(p => p.id !== idToRemove);
+          this.saveProfilesIndex();
+
+          this.setActiveProfileId(this.profilesIndex[0].id);
+        }
+      }
+
+      saveUserProfileName() {
+        const nameInput = document.getElementById('userNameInput');
+        if (!nameInput) return;
+
+        const newName = nameInput.value.trim();
+        if (!newName) return;
+
+        this.data.user.name = newName;
+        this.saveData();
+
+        const pIdx = this.profilesIndex.find(p => p.id === this.activeProfileId);
+        if (pIdx) {
+          pIdx.name = newName;
+          this.saveProfilesIndex();
+        }
+
+        this.updateProfileUI();
+        this.renderView();
+        this.showToast('Nombre de perfil actualizado');
+      }
+
+      renderProfilesList() {
+        const container = document.getElementById('profilesList');
+        if (!container) return;
+
+        container.innerHTML = this.profilesIndex.map(p => {
+          const isActive = p.id === this.activeProfileId;
+          return `
+            <div onclick="app.setActiveProfileId('${p.id}')" class="p-3 rounded-2xl cursor-pointer flex items-center justify-between transition-all ${
+              isActive 
+                ? 'bg-neon-red/20 border border-neon-red/50 text-white shadow-neon-sm' 
+                : 'bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300'
+            }">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full ${isActive ? 'bg-neon-red text-white' : 'bg-gray-800 text-gray-400'} flex items-center justify-center font-bold text-xs">
+                  ${p.name.charAt(0).toUpperCase()}
+                </div>
+                <span class="text-xs font-medium">${this.escapeHTML(p.name)}</span>
+              </div>
+              ${isActive ? '<span class="text-[10px] bg-neon-red text-white font-bold px-2 py-0.5 rounded-full">Activo</span>' : ''}
+            </div>
+          `;
+        }).join('');
+      }
+
+      exportProfileData() {
+        const jsonStr = JSON.stringify(this.data, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `BookTrackerPro_${this.data.user.name.replace(/\s+/g, '_')}_Backup.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.showToast('Copia de seguridad descargada');
+      }
+
+      importProfileData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const imported = JSON.parse(e.target.result);
+            if (imported && imported.user && Array.isArray(imported.books)) {
+              this.data = imported;
+              this.saveData();
+              this.renderView();
+              this.updateProfileUI();
+              this.showToast('Datos de perfil importados con éxito');
+            } else {
+              alert('Formato de archivo JSON no válido.');
+            }
+          } catch (err) {
+            alert('Error al leer el archivo JSON.');
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      resetSampleData() {
+        this.data = JSON.parse(JSON.stringify(SAMPLE_PROFILE_DATA));
+        this.saveData();
+        this.renderView();
+        this.closeModal('profileModal');
+        this.showToast('Datos de muestra restaurados');
+      }
+
+      navigateTo(view, params = {}) {
+        this.currentView = view;
+        this.viewParams = params;
+        this.renderView();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      renderBreadcrumb() {
+        const breadcrumbEl = document.getElementById('breadcrumb');
+        let html = `
+          <button onclick="app.navigateTo('dashboard')" class="hover:text-neon-red flex items-center gap-1 transition-colors">
+            <i class="ph-bold ph-house"></i> Inicio
+          </button>
+        `;
+
+        if (this.currentView === 'genre' && this.viewParams.genreId) {
+          const genre = this.data.genres.find(g => g.id === this.viewParams.genreId);
+          if (genre) {
+            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
+            html += `<span class="text-white font-medium flex items-center gap-1"><i class="ph-bold ${genre.icon}"></i> ${this.escapeHTML(genre.name)}</span>`;
+          }
+        } else if (this.currentView === 'author' && this.viewParams.authorId) {
+          const author = this.data.authors.find(a => a.id === this.viewParams.authorId);
+          const genre = author ? this.data.genres.find(g => g.id === author.genreId) : null;
+          if (genre) {
+            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
+            html += `<button onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="hover:text-neon-red">${this.escapeHTML(genre.name)}</button>`;
+          }
+          if (author) {
+            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
+            html += `<span class="text-white font-medium">${this.escapeHTML(author.name)}</span>`;
+          }
+        } else if (this.currentView === 'bookDetail' && this.viewParams.bookId) {
+          const book = this.data.books.find(b => b.id === this.viewParams.bookId);
+          const author = book ? this.data.authors.find(a => a.id === book.authorId) : null;
+          const genre = book ? this.data.genres.find(g => g.id === book.genreId) : null;
+
+          if (genre) {
+            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
+            html += `<button onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="hover:text-neon-red">${this.escapeHTML(genre.name)}</button>`;
+          }
+          if (author) {
+            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
+            html += `<button onclick="app.navigateTo('author', {authorId: '${author.id}'})" class="hover:text-neon-red">${this.escapeHTML(author.name)}</button>`;
+          }
+          if (book) {
+            html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
+            html += `<span class="text-neon-crimson font-medium truncate max-w-[150px] inline-block align-bottom">${this.escapeHTML(book.title)}</span>`;
+          }
+        } else if (this.currentView === 'search') {
+          html += ` <i class="ph-bold ph-caret-right text-[10px] text-gray-600"></i> `;
+          html += `<span class="text-white font-medium">Búsqueda: "${this.escapeHTML(this.searchQuery)}"</span>`;
+        }
+
+        breadcrumbEl.innerHTML = html;
+      }
+
+      renderView() {
+        this.renderBreadcrumb();
+        const container = document.getElementById('viewContainer');
+        
+        switch (this.currentView) {
+          case 'dashboard':
+            container.innerHTML = this.renderDashboardHTML();
+            break;
+          case 'genre':
+            container.innerHTML = this.renderGenreViewHTML();
+            break;
+          case 'author':
+            container.innerHTML = this.renderAuthorViewHTML();
+            break;
+          case 'bookDetail':
+            container.innerHTML = this.renderBookDetailHTML();
+            break;
+          case 'search':
+            container.innerHTML = this.renderSearchViewHTML();
+            break;
+          default:
+            container.innerHTML = this.renderDashboardHTML();
+        }
+      }
+
+      renderDashboardHTML() {
+        const currentlyReading = this.data.books.filter(b => b.status === 'Leyendo');
+        
+        return `
+          <div class="animate-fade-in space-y-8">
+            
+            <!-- Hero Welcome Header -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden bg-gradient-to-r from-neon-dark via-[#12121c] to-black border-neon-red/30">
+              <div class="absolute right-[-20px] top-[-20px] w-60 h-60 bg-neon-red/10 rounded-full blur-3xl pointer-events-none"></div>
+              
+              <div class="relative z-10 max-w-2xl">
+                <span class="inline-flex items-center gap-1.5 bg-neon-red/20 text-neon-crimson text-xs px-3 py-1 rounded-full font-semibold mb-3 border border-neon-red/30">
+                  <i class="ph-bold ph-lightning"></i> Espacio de Aprendizaje Activo
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  Hola, <span class="text-neon-red neon-text-glow">${this.escapeHTML(this.data.user.name)}</span>
+                </h2>
+                <p class="text-sm text-gray-300 mt-2 leading-relaxed">
+                  Organiza tus carpetas de géneros y autores, lleva el control de tus lecturas y transforma libros en conocimiento aplicable a tu vida diaria.
+                </p>
+
+                <div class="flex flex-wrap gap-3 mt-5">
+                  <button onclick="app.openBookModal()" class="bg-neon-red hover:bg-red-600 text-white font-semibold text-xs px-5 py-2.5 rounded-2xl shadow-neon-sm flex items-center gap-2 ios-btn-tap">
+                    <i class="ph-bold ph-plus text-base"></i> Agregar Libro a Estudiar
+                  </button>
+                  <button onclick="app.openModal('genreModal')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-4 py-2.5 rounded-2xl border border-white/10 flex items-center gap-2 ios-btn-tap">
+                    <i class="ph-bold ph-folder-plus text-base text-neon-crimson"></i> Crear Carpeta Género
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Currently Reading Section -->
+            ${currentlyReading.length > 0 ? `
+              <section>
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="ph-bold ph-book-open text-neon-red"></i> Leyendo Actualmente
+                  </h3>
+                  <span class="text-xs text-gray-400">${currentlyReading.length} en curso</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  ${currentlyReading.map(book => this.renderBookCardHorizontal(book)).join('')}
+                </div>
+              </section>
+            ` : ''}
+
+            <!-- Genre Hierarchy Section (Folders) -->
+            <section>
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="ph-bold ph-folders text-neon-red"></i> Carpetas por Géneros
+                  </h3>
+                  <p class="text-xs text-gray-400">Navega en tu biblioteca por categorías temáticas</p>
+                </div>
+                <button onclick="app.openModal('genreModal')" class="text-xs text-neon-crimson hover:underline flex items-center gap-1 font-medium">
+                  + Nuevo Género
+                </button>
+              </div>
+
+              ${this.data.genres.length === 0 ? `
+                <div class="glass-panel p-8 rounded-2xl text-center border-dashed border-white/10">
+                  <i class="ph-bold ph-folder-open text-4xl text-gray-600 mb-2"></i>
+                  <p class="text-sm text-gray-400">No hay géneros creados aún.</p>
+                  <button onclick="app.openModal('genreModal')" class="mt-3 text-xs bg-neon-red text-white px-4 py-2 rounded-xl">Crear primer género</button>
+                </div>
+              ` : `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  ${this.data.genres.map(genre => this.renderGenreFolderCard(genre)).join('')}
+                </div>
+              `}
+            </section>
+
+            <!-- All Books Quick Access Grid -->
+            <section>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <i class="ph-bold ph-books text-neon-red"></i> Todos los Libros
+                </h3>
+                <span class="text-xs text-gray-400">Total: ${this.data.books.length}</span>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                ${this.data.books.map(book => this.renderBookGridCard(book)).join('')}
+              </div>
+            </section>
+
+          </div>
+        `;
+      }
+
+      renderGenreFolderCard(genre) {
+        const authorsCount = this.data.authors.filter(a => a.genreId === genre.id).length;
+        const booksCount = this.data.books.filter(b => b.genreId === genre.id).length;
+
+        return `
+          <div onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="glass-card rounded-2xl p-5 cursor-pointer relative group flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-neon-red/20 to-transparent border border-neon-red/30 flex items-center justify-center text-neon-red group-hover:scale-110 transition-transform">
+                <i class="ph-bold ${genre.icon || 'ph-folder'} text-2xl" style="color: ${genre.color || '#ff0033'}"></i>
+              </div>
+              
+              <!-- Action Menu Buttons -->
+              <div class="flex items-center gap-1 opacity-80 hover:opacity-100" onclick="event.stopPropagation()">
+                <button onclick="app.editGenre('${genre.id}')" title="Editar Género" class="text-gray-400 hover:text-white p-1">
+                  <i class="ph-bold ph-pencil-simple text-sm"></i>
+                </button>
+                <button onclick="app.deleteGenre('${genre.id}')" title="Eliminar Género" class="text-gray-400 hover:text-red-400 p-1">
+                  <i class="ph-bold ph-trash text-sm"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <h4 class="font-bold text-base text-white group-hover:text-neon-crimson transition-colors">${this.escapeHTML(genre.name)}</h4>
+              <div class="flex items-center gap-3 text-xs text-gray-400 mt-2">
+                <span><i class="ph-bold ph-user"></i> ${authorsCount} Autores</span>
+                <span>•</span>
+                <span><i class="ph-bold ph-book font-normal"></i> ${booksCount} Libros</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      renderBookCardHorizontal(book) {
+        const author = this.data.authors.find(a => a.id === book.authorId);
+        const notesCount = this.data.notes.filter(n => n.bookId === book.id).length;
+
+        return `
+          <div onclick="app.navigateTo('bookDetail', {bookId: '${book.id}'})" class="glass-card rounded-2xl p-4 cursor-pointer flex gap-4 items-center group">
+            <div class="w-20 h-28 flex-shrink-0 rounded-xl overflow-hidden border border-white/10 relative bg-black">
+              <img src="${book.cover || 'https://placehold.co/200x300/121218/ff0033?text=' + encodeURIComponent(book.title)}" 
+                   onerror="this.src='https://placehold.co/200x300/121218/ff0033?text=Portada'" 
+                   alt="${this.escapeHTML(book.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-neon-crimson bg-neon-red/10 px-2 py-0.5 rounded-full border border-neon-red/20">
+                ${book.status}
+              </span>
+              <h4 class="font-bold text-base text-white truncate mt-1 group-hover:text-neon-red transition-colors">${this.escapeHTML(book.title)}</h4>
+              <p class="text-xs text-gray-400 truncate">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</p>
+              
+              <!-- Progress Bar iOS style -->
+              <div class="mt-3">
+                <div class="flex justify-between text-[11px] text-gray-400 mb-1">
+                  <span>Progreso de Lectura</span>
+                  <span class="font-bold text-white">${book.progress || 0}%</span>
+                </div>
+                <div class="w-full h-2 bg-black/60 rounded-full overflow-hidden border border-white/10">
+                  <div class="h-full bg-gradient-to-r from-red-800 to-neon-red rounded-full transition-all duration-500" style="width: ${book.progress || 0}%"></div>
+                </div>
+              </div>
+
+              <div class="mt-2 text-[11px] text-gray-400 flex items-center gap-2">
+                <i class="ph-bold ph-notebook text-neon-crimson"></i> ${notesCount} notas de estudio
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      renderBookGridCard(book) {
+        const author = this.data.authors.find(a => a.id === book.authorId);
+
+        return `
+          <div onclick="app.navigateTo('bookDetail', {bookId: '${book.id}'})" class="glass-card rounded-2xl p-3 cursor-pointer group flex flex-col justify-between">
+            <div>
+              <div class="aspect-[2/3] w-full rounded-xl overflow-hidden border border-white/10 relative bg-black mb-2">
+                <img src="${book.cover || 'https://placehold.co/200x300/121218/ff0033?text=' + encodeURIComponent(book.title)}" 
+                     onerror="this.src='https://placehold.co/200x300/121218/ff0033?text=Portada'" 
+                     alt="${this.escapeHTML(book.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                <div class="absolute bottom-1 right-1 bg-black/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-bold text-white border border-white/10">
+                  ${book.progress || 0}%
+                </div>
+              </div>
+              <h5 class="font-bold text-xs text-white line-clamp-1 group-hover:text-neon-red transition-colors">${this.escapeHTML(book.title)}</h5>
+              <p class="text-[11px] text-gray-400 truncate">${author ? this.escapeHTML(author.name) : ''}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      renderGenreViewHTML() {
+        const genre = this.data.genres.find(g => g.id === this.viewParams.genreId);
+        if (!genre) return `<p class="text-white">Género no encontrado.</p>`;
+
+        const authorsInGenre = this.data.authors.filter(a => a.genreId === genre.id);
+
+        return `
+          <div class="animate-fade-in space-y-6">
+            <!-- Genre Header -->
+            <div class="glass-card rounded-3xl p-6 border-neon-red/30 flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-neon-red/10 border border-neon-red/30 flex items-center justify-center text-neon-red text-3xl">
+                  <i class="ph-bold ${genre.icon || 'ph-folder'}"></i>
+                </div>
+                <div>
+                  <h2 class="text-2xl font-bold text-white">${this.escapeHTML(genre.name)}</h2>
+                  <p class="text-xs text-gray-400 mt-0.5">Carpeta de Género • ${authorsInGenre.length} Autores registrados</p>
+                </div>
+              </div>
+
+              <button onclick="app.openAuthorModalForGenre('${genre.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-4 py-2 rounded-2xl font-semibold shadow-neon-sm flex items-center gap-1.5 ios-btn-tap">
+                <i class="ph-bold ph-user-plus text-sm"></i> Nuevo Autor en este Género
+              </button>
+            </div>
+
+            <!-- Authors Grid -->
+            <div>
+              <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i class="ph-bold ph-users text-neon-red"></i> Autores en ${this.escapeHTML(genre.name)}
+              </h3>
+
+              ${authorsInGenre.length === 0 ? `
+                <div class="glass-panel p-8 rounded-2xl text-center border-dashed border-white/10">
+                  <p class="text-sm text-gray-400">Aún no hay autores en este género.</p>
+                  <button onclick="app.openAuthorModalForGenre('${genre.id}')" class="mt-3 text-xs bg-neon-red/20 text-neon-crimson border border-neon-red/30 px-4 py-2 rounded-xl">Añadir Autor</button>
+                </div>
+              ` : `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  ${authorsInGenre.map(author => {
+                    const booksCount = this.data.books.filter(b => b.authorId === author.id).length;
+                    return `
+                      <div onclick="app.navigateTo('author', {authorId: '${author.id}'})" class="glass-card rounded-2xl p-5 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                          <div class="flex items-start justify-between">
+                            <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white font-bold text-sm group-hover:border-neon-red transition-colors">
+                              ${author.name.charAt(0)}
+                            </div>
+                            <div onclick="event.stopPropagation()" class="flex items-center gap-1">
+                              <button onclick="app.editAuthor('${author.id}')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
+                              <button onclick="app.deleteAuthor('${author.id}')" class="text-gray-400 hover:text-red-400 p-1"><i class="ph-bold ph-trash text-sm"></i></button>
+                            </div>
+                          </div>
+                          <h4 class="font-bold text-base text-white mt-3 group-hover:text-neon-crimson transition-colors">${this.escapeHTML(author.name)}</h4>
+                          <p class="text-xs text-gray-400 mt-1 line-clamp-2">${author.bio ? this.escapeHTML(author.bio) : 'Sin biografía disponible'}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-400">
+                          <span><i class="ph-bold ph-book"></i> ${booksCount} Libros</span>
+                          <span class="text-neon-red group-hover:translate-x-1 transition-transform flex items-center gap-1 font-medium">Ver carpeta <i class="ph-bold ph-arrow-right"></i></span>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }
+
+      renderAuthorViewHTML() {
+        const author = this.data.authors.find(a => a.id === this.viewParams.authorId);
+        if (!author) return `<p class="text-white">Autor no encontrado.</p>`;
+
+        const booksByAuthor = this.data.books.filter(b => b.authorId === author.id);
+
+        return `
+          <div class="animate-fade-in space-y-6">
+            <!-- Author Header Card -->
+            <div class="glass-card rounded-3xl p-6 border-neon-red/30 flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-gray-800 to-gray-700 border border-neon-red/40 flex items-center justify-center text-neon-crimson text-2xl font-extrabold">
+                  ${author.name.charAt(0)}
+                </div>
+                <div>
+                  <h2 class="text-2xl font-bold text-white">${this.escapeHTML(author.name)}</h2>
+                  <p class="text-xs text-gray-400 mt-0.5">${author.bio ? this.escapeHTML(author.bio) : 'Carpeta de Autor'}</p>
+                </div>
+              </div>
+
+              <button onclick="app.openBookModalForAuthor('${author.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-4 py-2 rounded-2xl font-semibold shadow-neon-sm flex items-center gap-1.5 ios-btn-tap">
+                <i class="ph-bold ph-plus text-sm"></i> Añadir Libro de ${this.escapeHTML(author.name.split(' ')[0])}
+              </button>
+            </div>
+
+            <!-- Books Listing -->
+            <div>
+              <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i class="ph-bold ph-books text-neon-red"></i> Libros Escritos por este Autor
+              </h3>
+
+              ${booksByAuthor.length === 0 ? `
+                <div class="glass-panel p-8 rounded-2xl text-center border-dashed border-white/10">
+                  <p class="text-sm text-gray-400">Aún no has agregado libros de este autor.</p>
+                  <button onclick="app.openBookModalForAuthor('${author.id}')" class="mt-3 text-xs bg-neon-red text-white px-4 py-2 rounded-xl">Añadir Primer Libro</button>
+                </div>
+              ` : `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  ${booksByAuthor.map(book => this.renderBookCardHorizontal(book)).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }
+
+      renderBookDetailHTML() {
+        const book = this.data.books.find(b => b.id === this.viewParams.bookId);
+        if (!book) return `<p class="text-white">Libro no encontrado.</p>`;
+
+        const author = this.data.authors.find(a => a.id === book.authorId);
+        const genre = this.data.genres.find(g => g.id === book.genreId);
+        const notes = this.data.notes.filter(n => n.bookId === book.id);
+
+        return `
+          <div class="animate-fade-in space-y-8">
+            
+            <!-- Book Cover Hero Card -->
+            <div class="glass-card rounded-3xl p-6 border-neon-red/30 flex flex-col md:flex-row gap-6 items-start">
+              <div class="w-36 h-52 sm:w-44 sm:h-64 rounded-2xl overflow-hidden border border-white/20 shadow-neon-md flex-shrink-0 bg-black">
+                <img src="${book.cover || 'https://placehold.co/200x300/121218/ff0033?text=' + encodeURIComponent(book.title)}" 
+                     onerror="this.src='https://placehold.co/200x300/121218/ff0033?text=Portada'" 
+                     alt="${this.escapeHTML(book.title)}" class="w-full h-full object-cover" />
+              </div>
+
+              <div class="flex-1 min-w-0 flex flex-col justify-between h-full space-y-4">
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap mb-2">
+                    <span class="text-xs uppercase font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/30 px-2.5 py-0.5 rounded-full">
+                      ${book.status}
+                    </span>
+                    ${genre ? `<span class="text-xs text-gray-300 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full"><i class="ph-bold ${genre.icon}"></i> ${this.escapeHTML(genre.name)}</span>` : ''}
+                  </div>
+
+                  <h2 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">${this.escapeHTML(book.title)}</h2>
+                  <p class="text-sm text-gray-300 mt-1">Por <span class="text-white font-semibold">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</span></p>
+                </div>
+
+                <!-- Reading Progress Bar -->
+                <div class="bg-black/40 p-4 rounded-2xl border border-white/10">
+                  <div class="flex justify-between text-xs text-gray-300 mb-1">
+                    <span>Progreso del Estudio</span>
+                    <span class="font-bold text-neon-red">${book.progress || 0}%</span>
+                  </div>
+                  <div class="w-full h-2.5 bg-black rounded-full overflow-hidden border border-white/10">
+                    <div class="h-full bg-gradient-to-r from-red-800 to-neon-red rounded-full transition-all duration-500" style="width: ${book.progress || 0}%"></div>
+                  </div>
+                </div>
+
+                <!-- Actions Bar -->
+                <div class="flex items-center gap-3 pt-2">
+                  <button onclick="app.openNoteModal('${book.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-5 py-2.5 rounded-2xl font-semibold shadow-neon-sm flex items-center gap-2 ios-btn-tap">
+                    <i class="ph-bold ph-note-pencil text-base"></i> Nueva Nota de Capítulo
+                  </button>
+                  <button onclick="app.editBook('${book.id}')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3.5 py-2.5 rounded-2xl border border-white/10 flex items-center gap-1.5 ios-btn-tap">
+                    <i class="ph-bold ph-pencil-simple text-sm"></i> Editar
+                  </button>
+                  <button onclick="app.deleteBook('${book.id}')" class="bg-red-950/30 hover:bg-red-900/40 text-red-400 text-xs px-3.5 py-2.5 rounded-2xl border border-red-500/20 flex items-center gap-1.5 ios-btn-tap">
+                    <i class="ph-bold ph-trash text-sm"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chapter Study Notes Section -->
+            <section>
+              <div class="flex items-center justify-between mb-5">
+                <div>
+                  <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="ph-bold ph-notebook text-neon-red"></i> Notas y Estudio por Capítulo
+                  </h3>
+                  <p class="text-xs text-gray-400">Resúmenes, enseñanzas clave y cómo aplicarlo a tu vida</p>
+                </div>
+                
+                <button onclick="app.openNoteModal('${book.id}')" class="text-xs text-neon-crimson hover:underline flex items-center gap-1 font-medium">
+                  + Agregar Capítulo
+                </button>
+              </div>
+
+              ${notes.length === 0 ? `
+                <div class="glass-panel p-10 rounded-3xl text-center border-dashed border-white/10">
+                  <i class="ph-bold ph-notepad text-5xl text-gray-600 mb-3"></i>
+                  <h4 class="text-base font-bold text-white">No hay notas registradas para este libro</h4>
+                  <p class="text-xs text-gray-400 mt-1 max-w-md mx-auto">Comienza a estudiar activamente. Registra resúmenes por capítulo y define acciones para tu vida real.</p>
+                  <button onclick="app.openNoteModal('${book.id}')" class="mt-4 bg-neon-red text-white text-xs px-5 py-2.5 rounded-2xl font-semibold shadow-neon-sm">
+                    Crear primera nota de estudio
+                  </button>
+                </div>
+              ` : `
+                <div class="space-y-4">
+                  ${notes.map(note => this.renderNoteCard(note)).join('')}
+                </div>
+              `}
+            </section>
+
+          </div>
+        `;
+      }
+
+      renderNoteCard(note) {
+        return `
+          <div class="glass-card rounded-2xl p-5 border-neon-red/20 hover:border-neon-red/40 transition-all space-y-4">
+            
+            <!-- Header: Chapter & Title -->
+            <div class="flex items-start justify-between border-b border-white/10 pb-3">
+              <div>
+                <span class="text-xs font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2.5 py-0.5 rounded-full inline-block mb-1">
+                  ${this.escapeHTML(note.chapter)}
+                </span>
+                <h4 class="text-base font-bold text-white">${this.escapeHTML(note.title)}</h4>
+              </div>
+              
+              <div class="flex items-center gap-1">
+                <button onclick="app.editNote('${note.id}')" title="Editar Nota" class="text-gray-400 hover:text-white p-1.5"><i class="ph-bold ph-pencil-simple text-sm"></i></button>
+                <button onclick="app.deleteNote('${note.id}')" title="Eliminar Nota" class="text-gray-400 hover:text-red-400 p-1.5"><i class="ph-bold ph-trash text-sm"></i></button>
+              </div>
+            </div>
+
+            <!-- Section 1: Summary -->
+            <div class="space-y-1">
+              <h5 class="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+                <i class="ph-bold ph-list-checks text-neon-crimson"></i> Resumen & Puntos Clave:
+              </h5>
+              <p class="text-xs text-gray-300 leading-relaxed pl-5 whitespace-pre-line">${this.escapeHTML(note.summary)}</p>
+            </div>
+
+            <!-- Section 2: Core Teachings -->
+            <div class="space-y-1">
+              <h5 class="text-xs font-bold text-yellow-400 flex items-center gap-1.5">
+                <i class="ph-bold ph-lightbulb"></i> Enseñanzas Principales:
+              </h5>
+              <p class="text-xs text-gray-300 leading-relaxed pl-5 whitespace-pre-line">${this.escapeHTML(note.teachings)}</p>
+            </div>
+
+            <!-- Section 3: Life Application (Neon Highlight) -->
+            <div class="bg-gradient-to-r from-neon-red/15 to-transparent border-l-4 border-neon-red p-3.5 rounded-r-xl">
+              <h5 class="text-xs font-extrabold text-neon-red uppercase tracking-wider flex items-center gap-1.5">
+                <i class="ph-bold ph-lightning"></i> ¿Cómo aplicarlo a mi vida?:
+              </h5>
+              <p class="text-xs text-white font-medium mt-1 leading-relaxed whitespace-pre-line">${this.escapeHTML(note.application)}</p>
+            </div>
+
+          </div>
+        `;
+      }
+
+      renderSearchViewHTML() {
+        const query = this.searchQuery.toLowerCase().trim();
+        if (!query) return `<p class="text-gray-400">Escribe algo en la barra de búsqueda superior.</p>`;
+
+        const matchedBooks = this.data.books.filter(b => {
+          const author = this.data.authors.find(a => a.id === b.authorId);
+          const genre = this.data.genres.find(g => g.id === b.genreId);
+          return b.title.toLowerCase().includes(query) || 
+                 (author && author.name.toLowerCase().includes(query)) ||
+                 (genre && genre.name.toLowerCase().includes(query));
+        });
+
+        return `
+          <div class="animate-fade-in space-y-6">
+            <h2 class="text-xl font-bold text-white">Resultados de búsqueda para: "<span class="text-neon-red">${this.escapeHTML(this.searchQuery)}</span>"</h2>
+
+            ${matchedBooks.length === 0 ? `
+              <div class="glass-panel p-8 rounded-2xl text-center">
+                <i class="ph-bold ph-magnifying-glass text-4xl text-gray-600 mb-2"></i>
+                <p class="text-sm text-gray-400">No se encontraron libros que coincidan con tu búsqueda.</p>
+              </div>
+            ` : `
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${matchedBooks.map(book => this.renderBookCardHorizontal(book)).join('')}
+              </div>
+            `}
+          </div>
+        `;
+      }
+
+      handleSearch(query) {
+        this.searchQuery = query;
+        const clearBtn = document.getElementById('clearSearchBtn');
+        if (query) {
+          clearBtn.classList.remove('hidden');
+          this.navigateTo('search');
+        } else {
+          clearBtn.classList.add('hidden');
+          this.navigateTo('dashboard');
+        }
+      }
+
+      clearSearch() {
+        document.getElementById('searchInput').value = '';
+        this.handleSearch('');
+      }
+
+      openModal(modalId) {
+        if (modalId === 'profileModal') {
+          this.renderProfilesList();
+          document.getElementById('userNameInput').value = this.data.user.name;
+        }
+
+        const backdrop = document.getElementById('modalBackdrop');
+        const modal = document.getElementById(modalId);
+        
+        backdrop.classList.remove('hidden');
+        modal.classList.remove('hidden');
+
+        setTimeout(() => {
+          backdrop.classList.add('opacity-100');
+          modal.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+          modal.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+        }, 10);
+      }
+
+      closeModal(modalId) {
+        const backdrop = document.getElementById('modalBackdrop');
+        const modal = document.getElementById(modalId);
+
+        backdrop.classList.remove('opacity-100');
+        modal.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+        modal.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+
+        setTimeout(() => {
+          backdrop.classList.add('hidden');
+          modal.classList.add('hidden');
+        }, 250);
+      }
+
+      closeAllModals() {
+        ['genreModal', 'authorModal', 'bookModal', 'noteModal', 'profileModal'].forEach(m => this.closeModal(m));
+      }
+
+      saveGenre(e) {
+        e.preventDefault();
+        const id = document.getElementById('genreId').value;
+        const name = document.getElementById('genreName').value.trim();
+        const color = document.getElementById('genreColor').value;
+        const icon = document.getElementById('genreIcon').value.trim() || 'ph-books';
+
+        if (id) {
+          const index = this.data.genres.findIndex(g => g.id === id);
+          if (index !== -1) this.data.genres[index] = { ...this.data.genres[index], name, color, icon };
+        } else {
+          const newGenre = { id: 'g_' + Date.now(), name, color, icon };
+          this.data.genres.push(newGenre);
+        }
+
+        this.saveData();
+        this.renderView();
+        this.closeModal('genreModal');
+        this.showToast('Género guardado correctamente');
+        document.getElementById('genreForm').reset();
+      }
+
+      editGenre(genreId) {
+        const genre = this.data.genres.find(g => g.id === genreId);
+        if (!genre) return;
+
+        document.getElementById('genreId').value = genre.id;
+        document.getElementById('genreName').value = genre.name;
+        document.getElementById('genreColor').value = genre.color || '#ff0033';
+        document.getElementById('genreIcon').value = genre.icon || 'ph-books';
+        document.getElementById('genreModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Género`;
+
+        this.openModal('genreModal');
+      }
+
+      deleteGenre(genreId) {
+        if (confirm('¿Eliminar género? Se mantendrán los libros pero quedarán sin categoría.')) {
+          this.data.genres = this.data.genres.filter(g => g.id !== genreId);
+          this.saveData();
+          this.renderView();
+          this.showToast('Género eliminado');
+        }
+      }
+
+      // Author Handlers
+      openAuthorModalForGenre(genreId = '') {
+        const genre = this.data.genres.find(g => g.id === genreId);
+        this.populateGenreDatalist();
+        document.getElementById('authorForm').reset();
+        document.getElementById('authorId').value = '';
+        document.getElementById('authorGenreInput').value = genre ? genre.name : '';
+        document.getElementById('authorModalTitle').innerHTML = `<i class="ph-bold ph-user-plus text-neon-red"></i> Nuevo Autor`;
+        this.openModal('authorModal');
+      }
+
+      populateGenreDatalist() {
+        const datalist = document.getElementById('existingGenresList');
+        if (datalist) {
+          datalist.innerHTML = this.data.genres.map(g => 
+            `<option value="${this.escapeHTML(g.name)}"></option>`
+          ).join('');
+        }
+      }
+
+      saveAuthor(e) {
+        e.preventDefault();
+        const id = document.getElementById('authorId').value;
+        const name = document.getElementById('authorName').value.trim();
+        const genreInputText = document.getElementById('authorGenreInput').value.trim();
+        const bio = document.getElementById('authorBio').value.trim();
+
+        if (!genreInputText) {
+          alert('Por favor ingresa un género para el autor.');
+          return;
+        }
+
+        // Search for existing genre (case-insensitive)
+        let genre = this.data.genres.find(g => g.name.toLowerCase() === genreInputText.toLowerCase());
+
+        // Create new genre dynamically if not existing
+        if (!genre) {
+          genre = {
+            id: 'g_' + Date.now(),
+            name: genreInputText,
+            color: '#ff0033',
+            icon: 'ph-folders'
+          };
+          this.data.genres.push(genre);
+        }
+
+        if (id) {
+          const index = this.data.authors.findIndex(a => a.id === id);
+          if (index !== -1) {
+            const oldGenreId = this.data.authors[index].genreId;
+            this.data.authors[index] = { ...this.data.authors[index], name, genreId: genre.id, bio };
+
+            if (oldGenreId !== genre.id) {
+              this.data.books.forEach(b => {
+                if (b.authorId === id) {
+                  b.genreId = genre.id;
+                }
+              });
+            }
+          }
+        } else {
+          const newAuthor = { id: 'a_' + Date.now(), genreId: genre.id, name, bio };
+          this.data.authors.push(newAuthor);
+        }
+
+        this.saveData();
+        this.renderView();
+        this.closeModal('authorModal');
+        this.showToast('Autor guardado correctamente');
+        document.getElementById('authorForm').reset();
+      }
+
+      editAuthor(authorId) {
+        const author = this.data.authors.find(a => a.id === authorId);
+        if (!author) return;
+
+        const genre = this.data.genres.find(g => g.id === author.genreId);
+
+        this.populateGenreDatalist();
+        document.getElementById('authorId').value = author.id;
+        document.getElementById('authorName').value = author.name;
+        document.getElementById('authorGenreInput').value = genre ? genre.name : '';
+        document.getElementById('authorBio').value = author.bio || '';
+        document.getElementById('authorModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Autor`;
+
+        this.openModal('authorModal');
+      }
+
+      deleteAuthor(authorId) {
+        if (confirm('¿Eliminar autor?')) {
+          this.data.authors = this.data.authors.filter(a => a.id !== authorId);
+          this.saveData();
+          this.renderView();
+          this.showToast('Autor eliminado');
+        }
+      }
+
+      // Book Handlers
+      openBookModal() {
+        this.populateBookDropdowns();
+        document.getElementById('bookForm').reset();
+        document.getElementById('bookId').value = '';
+        document.getElementById('bookModalTitle').innerHTML = `<i class="ph-bold ph-book-bookmark text-neon-red"></i> Agregar Nuevo Libro`;
+        this.openModal('bookModal');
+      }
+
+      openBookModalForAuthor(authorId) {
+        const author = this.data.authors.find(a => a.id === authorId);
+        this.openBookModal();
+        if (author) {
+          document.getElementById('bookGenreId').value = author.genreId;
+          this.updateAuthorDropdown(author.genreId, author.id);
+        }
+      }
+
+      populateBookDropdowns(selectedGenreId = '', selectedAuthorId = '') {
+        const genreSelect = document.getElementById('bookGenreId');
+        if (this.data.genres.length === 0) {
+          genreSelect.innerHTML = `<option value="">Crea primero un género</option>`;
+          return;
+        }
+
+        genreSelect.innerHTML = this.data.genres.map(g => 
+          `<option value="${g.id}" ${g.id === selectedGenreId ? 'selected' : ''}>${this.escapeHTML(g.name)}</option>`
+        ).join('');
+
+        const targetGenreId = selectedGenreId || this.data.genres[0]?.id;
+        this.updateAuthorDropdown(targetGenreId, selectedAuthorId);
+      }
+
+      updateAuthorDropdown(genreId, selectedAuthorId = '') {
+        const authorSelect = document.getElementById('bookAuthorId');
+        const filteredAuthors = this.data.authors.filter(a => a.genreId === genreId);
+
+        if (filteredAuthors.length === 0) {
+          authorSelect.innerHTML = `<option value="">No hay autores en este género</option>`;
+          return;
+        }
+
+        authorSelect.innerHTML = filteredAuthors.map(a => 
+          `<option value="${a.id}" ${a.id === selectedAuthorId ? 'selected' : ''}>${this.escapeHTML(a.name)}</option>`
+        ).join('');
+      }
+
+      saveBook(e) {
+        e.preventDefault();
+        const id = document.getElementById('bookId').value;
+        const title = document.getElementById('bookTitle').value.trim();
+        const genreId = document.getElementById('bookGenreId').value;
+        const authorId = document.getElementById('bookAuthorId').value;
+        const cover = document.getElementById('bookCover').value.trim();
+        const status = document.getElementById('bookStatus').value;
+        const progress = parseInt(document.getElementById('bookProgress').value) || 0;
+        const totalChapters = parseInt(document.getElementById('bookTotalChapters').value) || 10;
+
+        if (!genreId || !authorId) {
+          alert('Por favor selecciona un género y autor válidos.');
+          return;
+        }
+
+        if (id) {
+          const index = this.data.books.findIndex(b => b.id === id);
+          if (index !== -1) {
+            this.data.books[index] = { ...this.data.books[index], title, genreId, authorId, cover, status, progress, totalChapters };
+          }
+        } else {
+          const newBook = { id: 'b_' + Date.now(), genreId, authorId, title, cover, status, progress, totalChapters };
+          this.data.books.push(newBook);
+        }
+
+        this.saveData();
+        this.renderView();
+        this.closeModal('bookModal');
+        this.showToast('Libro guardado con éxito');
+      }
+
+      editBook(bookId) {
+        const book = this.data.books.find(b => b.id === bookId);
+        if (!book) return;
+
+        this.populateBookDropdowns(book.genreId, book.authorId);
+        document.getElementById('bookId').value = book.id;
+        document.getElementById('bookTitle').value = book.title;
+        document.getElementById('bookCover').value = book.cover || '';
+        document.getElementById('bookStatus').value = book.status;
+        document.getElementById('bookProgress').value = book.progress || 0;
+        document.getElementById('bookTotalChapters').value = book.totalChapters || 10;
+        document.getElementById('bookModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Libro`;
+
+        this.openModal('bookModal');
+      }
+
+      deleteBook(bookId) {
+        if (confirm('¿Seguro que deseas eliminar este libro y todas sus notas de estudio?')) {
+          this.data.books = this.data.books.filter(b => b.id !== bookId);
+          this.data.notes = this.data.notes.filter(n => n.bookId !== bookId);
+          this.saveData();
+          this.navigateTo('dashboard');
+          this.showToast('Libro y notas eliminados');
+        }
+      }
+
+      openNoteModal(bookId) {
+        document.getElementById('noteForm').reset();
+        document.getElementById('noteId').value = '';
+        document.getElementById('noteBookId').value = bookId;
+        document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota de Estudio`;
+        this.openModal('noteModal');
+      }
+
+      saveNote(e) {
+        e.preventDefault();
+        const id = document.getElementById('noteId').value;
+        const bookId = document.getElementById('noteBookId').value;
+        const chapter = document.getElementById('noteChapter').value.trim();
+        const title = document.getElementById('noteTitle').value.trim();
+        const summary = document.getElementById('noteSummary').value.trim();
+        const teachings = document.getElementById('noteTeachings').value.trim();
+        const application = document.getElementById('noteApplication').value.trim();
+
+        if (id) {
+          const index = this.data.notes.findIndex(n => n.id === id);
+          if (index !== -1) {
+            this.data.notes[index] = { ...this.data.notes[index], chapter, title, summary, teachings, application };
+          }
+        } else {
+          const newNote = {
+            id: 'n_' + Date.now(),
+            bookId,
+            chapter,
+            title,
+            summary,
+            teachings,
+            application,
+            createdAt: new Date().toISOString()
+          };
+          this.data.notes.push(newNote);
+        }
+
+        this.saveData();
+        this.renderView();
+        this.closeModal('noteModal');
+        this.showToast('Nota de estudio guardada');
+      }
+
+      editNote(noteId) {
+        const note = this.data.notes.find(n => n.id === noteId);
+        if (!note) return;
+
+        document.getElementById('noteId').value = note.id;
+        document.getElementById('noteBookId').value = note.bookId;
+        document.getElementById('noteChapter').value = note.chapter;
+        document.getElementById('noteTitle').value = note.title;
+        document.getElementById('noteSummary').value = note.summary;
+        document.getElementById('noteTeachings').value = note.teachings;
+        document.getElementById('noteApplication').value = note.application;
+        document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Nota de Estudio`;
+
+        this.openModal('noteModal');
+      }
+
+      deleteNote(noteId) {
+        if (confirm('¿Eliminar esta nota de estudio?')) {
+          this.data.notes = this.data.notes.filter(n => n.id !== noteId);
+          this.saveData();
+          this.renderView();
+          this.showToast('Nota eliminada');
+        }
+      }
+
+      updateProfileUI() {
+        const avatarEl = document.getElementById('userAvatarText');
+        if (avatarEl && this.data.user.name) {
+          const initials = this.data.user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+          avatarEl.innerText = initials || 'US';
+        }
+
+        // Stats
+        const totalBooks = document.getElementById('statTotalBooks');
+        const totalNotes = document.getElementById('statTotalNotes');
+        const totalCompleted = document.getElementById('statCompleted');
+
+        if (totalBooks) totalBooks.innerText = this.data.books.length;
+        if (totalNotes) totalNotes.innerText = this.data.notes.length;
+        if (totalCompleted) totalCompleted.innerText = this.data.books.filter(b => b.status === 'Completado').length;
+      }
+
+      showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMessage');
+        toastMsg.innerText = message;
+
+        toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+        setTimeout(() => {
+          toast.classList.add('translate-y-[-100px]', 'opacity-0');
+        }, 3000);
+      }
+
+      escapeHTML(str) {
+        return (str || '').replace(/[&<>'"]/g, 
+          tag => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+          }[tag] || tag)
+        );
+      }
+    }
+
+    let app;
+    window.onload = function() {
+      app = new BookTrackerApp();
+    };
+  </script>
+</body>
+</html>
