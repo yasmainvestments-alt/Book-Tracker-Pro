@@ -55,7 +55,6 @@
   </script>
 
   <style>
-    /* iOS Safe area utility */
     body {
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -121,7 +120,33 @@
       transition: opacity 0.25s ease-out, transform 0.25s ease-out;
     }
 
-    /* Prevent mobile input zoom */
+    /* Custom Neon Range Inputs */
+    input[type=range].neon-range {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    input[type=range].neon-range:focus {
+      outline: none;
+    }
+    input[type=range].neon-range::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: #1a1a24;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 0, 51, 0.3);
+    }
+    input[type=range].neon-range::-webkit-slider-thumb {
+      height: 14px;
+      width: 14px;
+      border-radius: 50%;
+      background: #ff0033;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -4px;
+      box-shadow: 0 0 10px #ff0033, 0 0 15px #ff0033;
+    }
+
     @media (max-width: 640px) {
       input, select, textarea {
         font-size: 16px !important;
@@ -134,7 +159,6 @@
   <header class="sticky top-0 z-40 w-full glass-panel border-b border-white/10 px-3 sm:px-6 py-2.5 transition-all">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-4">
       
-      <!-- Logo & Profile Row for Mobile -->
       <div class="w-full sm:w-auto flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5 cursor-pointer" onclick="app.navigateTo('dashboard')">
           <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-neon-red to-red-900 flex items-center justify-center shadow-neon-sm animate-pulse-glow flex-shrink-0">
@@ -159,7 +183,6 @@
         </div>
       </div>
 
-      <!-- Search Bar -->
       <div class="w-full sm:flex-1 sm:max-w-md">
         <div class="relative w-full">
           <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -176,13 +199,12 @@
         </div>
       </div>
 
-      <!-- Desktop Header Quick Actions -->
       <div class="hidden sm:flex items-center gap-2">
         <button onclick="app.openModal('genreModal')" class="flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
           <i class="ph-bold ph-folder-plus text-sm"></i>
           <span>Género</span>
         </button>
-        <button onclick="app.openModal('authorModal')" class="flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
+        <button onclick="app.openAuthorModalForGenre()" class="flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
           <i class="ph-bold ph-user-plus text-sm"></i>
           <span>Autor</span>
         </button>
@@ -206,7 +228,6 @@
     </div>
   </main>
 
-  <!-- Mobile Bottom Navigation Bar -->
   <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-white/10 px-4 py-2 flex items-center justify-around bg-[#08080c]/90">
     <button onclick="app.navigateTo('dashboard')" class="flex flex-col items-center gap-0.5 text-neon-red ios-btn-tap min-w-[50px] py-1">
       <i class="ph-bold ph-house text-lg"></i>
@@ -277,12 +298,17 @@
           <input type="text" id="authorName" required placeholder="Ej: James Clear..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
         </div>
         <div>
-          <label class="block text-xs text-gray-400 font-medium mb-1">Género Asignado</label>
-          <div class="relative">
-            <input type="text" id="authorGenreInput" list="existingGenresList" required placeholder="Escribe o selecciona género..." class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
-            <datalist id="existingGenresList">
-            </datalist>
-          </div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">URL Foto del Autor (Image Link)</label>
+          <input type="url" id="authorPhoto" placeholder="https://ejemplo.com/foto.jpg" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1 flex items-center justify-between">
+            <span>Géneros Asignados (Selección Múltiple)</span>
+            <button type="button" onclick="app.openModal('genreModal')" class="text-neon-crimson hover:underline text-[11px] font-normal">+ Crear Nuevo Género</button>
+          </label>
+          <select id="authorGenreSelect" multiple required class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none h-28">
+          </select>
+          <p class="text-[10px] text-gray-500 mt-1">Mantén presionado Ctrl (Cmd) para elegir varios géneros.</p>
         </div>
         <div>
           <label class="block text-xs text-gray-400 font-medium mb-1">Biografía Breve</label>
@@ -350,6 +376,21 @@
             <label class="block text-xs text-neon-crimson font-semibold mb-1">Páginas Totales del Libro *</label>
             <input type="number" id="bookTotalPages" min="1" required value="150" placeholder="150" class="w-full bg-black/50 border border-neon-red/40 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
+
+          <div class="sm:col-span-2 border-t border-white/10 pt-3">
+            <label class="block text-xs text-neon-crimson font-semibold mb-1 flex items-center gap-1.5">
+              <i class="ph-bold ph-headphones text-sm"></i> URL del Audiolibro (Local o Web)
+            </label>
+            <input type="text" id="bookAudioUrl" placeholder="Ej: https://domain.com/audio.mp3" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
+            <p class="text-[10px] text-gray-500 mt-1">Puedes pegar un enlace web o seleccionar un archivo local debajo.</p>
+            <div class="mt-2 flex items-center gap-2">
+              <label class="cursor-pointer bg-white/5 hover:bg-white/10 text-xs px-3 py-1.5 rounded-xl border border-white/10 text-gray-300 flex items-center gap-1.5 transition-colors">
+                <i class="ph-bold ph-upload-simple"></i> Seleccionar archivo local
+                <input type="file" id="localAudioFileInput" accept="audio/*" class="hidden" onchange="app.handleLocalAudioFile(event)" />
+              </label>
+              <span id="localAudioFileName" class="text-[10px] text-gray-400 truncate flex-1"></span>
+            </div>
+          </div>
         </div>
 
         <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
@@ -386,24 +427,43 @@
         </div>
 
         <div>
+          <label class="block text-xs text-neon-crimson font-medium mb-1.5 flex items-center justify-between">
+            <span class="flex items-center gap-1"><i class="ph-bold ph-bookmarks"></i> Marcadores del Audiolibro Vinculados</span>
+          </label>
+
+          <!-- Badges de Marcadores Seleccionados -->
+          <div id="selectedBookmarksBadges" class="flex flex-wrap gap-1.5 mb-2"></div>
+
+          <!-- Botón de Agregar Marcadores con Dropdown Flotante -->
+          <div class="relative">
+            <button type="button" onclick="app.toggleBookmarksDropdown()" class="bg-white/5 hover:bg-white/10 border border-white/10 text-xs px-3 py-1.5 rounded-xl text-neon-crimson flex items-center gap-1.5 font-medium transition-colors ios-btn-tap">
+              <i class="ph-bold ph-plus-circle text-sm"></i> Agregar Marcador
+            </button>
+
+            <div id="bookmarksDropdown" class="hidden absolute top-full left-0 mt-1.5 z-30 w-full sm:w-80 glass-panel border border-neon-red/30 rounded-xl p-2 shadow-2xl bg-[#121218] max-h-48 overflow-y-auto space-y-1">
+            </div>
+          </div>
+        </div>
+
+        <div>
           <label class="block text-xs font-semibold text-neon-crimson uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <i class="ph-bold ph-list-checks"></i> 1. Resumen & Puntos Claves
           </label>
-          <textarea id="noteSummary" rows="2" required placeholder="Resumen o citas principales..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+          <textarea id="noteSummary" rows="3" required placeholder="Resumen o citas principales..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-yellow-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <i class="ph-bold ph-lightbulb"></i> 2. Enseñanzas Principales
           </label>
-          <textarea id="noteTeachings" rows="2" required placeholder="Principios descubiertos..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+          <textarea id="noteTeachings" rows="3" required placeholder="Principios descubiertos..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
         </div>
 
         <div class="bg-neon-red/5 p-3 rounded-2xl border border-neon-red/20">
           <label class="block text-xs font-bold text-neon-red uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <i class="ph-bold ph-lightning"></i> 3. ¿Cómo Aplicarlo a mi Vida Real?
           </label>
-          <textarea id="noteApplication" rows="2" required placeholder="Acciones concretas inmediatas..." class="w-full bg-black/70 border border-neon-red/30 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none"></textarea>
+          <textarea id="noteApplication" rows="3" required placeholder="Acciones concretas inmediatas..." class="w-full bg-black/70 border border-neon-red/30 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
         </div>
 
         <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
@@ -492,11 +552,6 @@
   </div>
 
   <script>
-    /* 
-      Book Tracker Pro By: YasmaStak
-      Fully Mobile Responsive & Page Progress Tracking
-    */
-
     const SAMPLE_PROFILE_DATA = {
       user: { name: 'Estudiante Alfa' },
       genres: [
@@ -505,9 +560,9 @@
         { id: 'g3', name: 'Negocios & Estrategia', color: '#3a86ff', icon: 'ph-chart-line-up' }
       ],
       authors: [
-        { id: 'a1', genreId: 'g1', name: 'James Clear', bio: 'Especialista en creación de hábitos y mejora continua.' },
-        { id: 'a2', genreId: 'g2', name: 'Marco Aurelio', bio: 'Emperador romano y filósofo estoico.' },
-        { id: 'a3', genreId: 'g3', name: 'Alex Hormozi', bio: 'Empresario e inversionista.' }
+        { id: 'a1', genreIds: ['g1'], name: 'James Clear', photo: '', bio: 'Especialista en creación de hábitos y mejora continua.' },
+        { id: 'a2', genreIds: ['g2'], name: 'Marco Aurelio', photo: '', bio: 'Emperador romano y filósofo estoico.' },
+        { id: 'a3', genreIds: ['g3'], name: 'Alex Hormozi', photo: '', bio: 'Empresario e inversionista.' }
       ],
       books: [
         {
@@ -545,22 +600,112 @@
       ]
     };
 
+    class AudioStorage {
+      constructor() {
+        this.dbName = 'BookTrackerAudioDB';
+        this.storeName = 'audios';
+      }
+
+      openDB() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(this.dbName, 1);
+          request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(this.storeName)) {
+              db.createObjectStore(this.storeName);
+            }
+          };
+          request.onsuccess = (e) => resolve(e.target.result);
+          request.onerror = (e) => reject(e.target.error);
+        });
+      }
+
+      async saveAudio(bookId, blob) {
+        const db = await this.openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(this.storeName, 'readwrite');
+          const store = tx.objectStore(this.storeName);
+          const request = store.put(blob, bookId);
+          request.onsuccess = () => resolve();
+          request.onerror = (e) => reject(e.target.error);
+        });
+      }
+
+      async getAudio(bookId) {
+        const db = await this.openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(this.storeName, 'readonly');
+          const store = tx.objectStore(this.storeName);
+          const request = store.get(bookId);
+          request.onsuccess = (e) => resolve(e.target.result);
+          request.onerror = (e) => reject(e.target.error);
+        });
+      }
+
+      async deleteAudio(bookId) {
+        const db = await this.openDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(this.storeName, 'readwrite');
+          const store = tx.objectStore(this.storeName);
+          const request = store.delete(bookId);
+          request.onsuccess = () => resolve();
+          request.onerror = (e) => reject(e.target.error);
+        });
+      }
+    }
+
     class BookTrackerApp {
       constructor() {
+        this.audioStore = new AudioStorage();
         this.profilesIndex = this.loadProfilesIndex();
         this.activeProfileId = this.loadActiveProfileId();
         this.data = this.loadProfileData(this.activeProfileId);
 
+        this.normalizeAuthorGenres();
+
         this.currentView = 'dashboard';
         this.viewParams = {};
         this.searchQuery = '';
+        this.selectedLocalFile = null;
+        this.selectedNoteBookmarkIds = [];
 
         this.init();
+      }
+
+      normalizeAuthorGenres() {
+        if (this.data && Array.isArray(this.data.authors)) {
+          this.data.authors.forEach(a => {
+            if (!a.genreIds) {
+              a.genreIds = a.genreId ? [a.genreId] : [];
+              delete a.genreId;
+            }
+            if (a.photo === undefined) {
+              a.photo = '';
+            }
+          });
+        }
+        if (this.data && Array.isArray(this.data.books)) {
+          this.data.books.forEach(b => {
+            if (b.audioUrl === undefined) b.audioUrl = '';
+            if (b.hasStoredAudio === undefined) b.hasStoredAudio = false;
+            if (b.audioCurrentTime === undefined) b.audioCurrentTime = 0;
+            if (!Array.isArray(b.audioBookmarks)) b.audioBookmarks = [];
+          });
+        }
+        if (this.data && Array.isArray(this.data.notes)) {
+          this.data.notes.forEach(n => {
+            if (!Array.isArray(n.bookmarkIds)) {
+              n.bookmarkIds = n.bookmarkId ? [n.bookmarkId] : [];
+              delete n.bookmarkId;
+            }
+          });
+        }
       }
 
       init() {
         this.renderView();
         this.updateProfileUI();
+        this.updateAllGenreDropdowns();
       }
 
       loadProfilesIndex() {
@@ -589,6 +734,8 @@
         this.activeProfileId = profileId;
         localStorage.setItem('BOOK_TRACKER_PRO_ACTIVE_ID', profileId);
         this.data = this.loadProfileData(profileId);
+        this.normalizeAuthorGenres();
+        this.updateAllGenreDropdowns();
         this.renderView();
         this.updateProfileUI();
         this.showToast('Perfil: ' + this.data.user.name);
@@ -616,6 +763,7 @@
 
       saveData() {
         this.saveProfileData(this.activeProfileId, this.data);
+        this.updateAllGenreDropdowns();
       }
 
       createNewProfilePrompt() {
@@ -724,6 +872,7 @@
             const imported = JSON.parse(e.target.result);
             if (imported && imported.user && Array.isArray(imported.books)) {
               this.data = imported;
+              this.normalizeAuthorGenres();
               this.saveData();
               this.renderView();
               this.updateProfileUI();
@@ -740,6 +889,7 @@
 
       resetSampleData() {
         this.data = JSON.parse(JSON.stringify(SAMPLE_PROFILE_DATA));
+        this.normalizeAuthorGenres();
         this.saveData();
         this.renderView();
         this.closeModal('profileModal');
@@ -795,10 +945,10 @@
           }
         } else if (this.currentView === 'author' && this.viewParams.authorId) {
           const author = this.data.authors.find(a => a.id === this.viewParams.authorId);
-          const genre = author ? this.data.genres.find(g => g.id === author.genreId) : null;
-          if (genre) {
+          const firstGenre = (author && author.genreIds && author.genreIds.length > 0) ? this.data.genres.find(g => g.id === author.genreIds[0]) : null;
+          if (firstGenre) {
             html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
-            html += `<button onclick="app.navigateTo('genre', {genreId: '${genre.id}'})" class="hover:text-neon-red flex-shrink-0">${this.escapeHTML(genre.name)}</button>`;
+            html += `<button onclick="app.navigateTo('genre', {genreId: '${firstGenre.id}'})" class="hover:text-neon-red flex-shrink-0">${this.escapeHTML(firstGenre.name)}</button>`;
           }
           if (author) {
             html += ` <i class="ph-bold ph-caret-right text-[9px] text-gray-600 flex-shrink-0"></i> `;
@@ -857,6 +1007,23 @@
       renderDashboardHTML() {
         const currentlyReading = this.data.books.filter(b => b.status === 'Leyendo');
         
+        const booksByAuthor = {};
+        this.data.books.forEach(book => {
+          const authorId = book.authorId || 'unknown';
+          if (!booksByAuthor[authorId]) {
+            booksByAuthor[authorId] = [];
+          }
+          booksByAuthor[authorId].push(book);
+        });
+
+        const authorKeys = Object.keys(booksByAuthor).sort((a, b) => {
+          const authorA = this.data.authors.find(item => item.id === a);
+          const authorB = this.data.authors.find(item => item.id === b);
+          const nameA = authorA ? authorA.name : 'Z_Sin Autor';
+          const nameB = authorB ? authorB.name : 'Z_Sin Autor';
+          return nameA.localeCompare(nameB);
+        });
+
         return `
           <div class="animate-fade-in space-y-6 sm:space-y-8">
             <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 relative overflow-hidden bg-gradient-to-r from-neon-dark via-[#12121c] to-black border-neon-red/30">
@@ -924,7 +1091,7 @@
               `}
             </section>
 
-            <section>
+            <section class="space-y-6">
               <div class="flex items-center justify-between mb-3 sm:mb-4">
                 <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                   <i class="ph-bold ph-books text-neon-red"></i> Todos los Libros
@@ -932,16 +1099,58 @@
                 <span class="text-[11px] sm:text-xs text-gray-400">Total: ${this.data.books.length}</span>
               </div>
 
-              <div class="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-                ${this.data.books.map(book => this.renderBookGridCard(book)).join('')}
-              </div>
+              ${this.data.books.length === 0 ? `
+                <div class="glass-panel p-6 rounded-2xl text-center border-dashed border-white/10">
+                  <p class="text-xs sm:text-sm text-gray-400">No hay libros guardados aún.</p>
+                </div>
+              ` : `
+                <div class="space-y-6">
+                  ${authorKeys.map(authorId => {
+                    const authorObj = this.data.authors.find(a => a.id === authorId);
+                    const authorName = authorObj ? authorObj.name : 'Autor Desconocido';
+                    const booksList = booksByAuthor[authorId];
+
+                    return `
+                      <div class="glass-panel p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0c0c12]">
+                        <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-white/10">
+                          <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neon-red/20 border border-neon-red/40 flex items-center justify-center text-neon-crimson font-bold text-xs sm:text-sm overflow-hidden flex-shrink-0">
+                              ${authorObj && authorObj.photo ? `<img src="${authorObj.photo}" alt="${this.escapeHTML(authorName)}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100?text=${authorName.charAt(0)}'"/>` : `<i class="ph-bold ph-user"></i>`}
+                            </div>
+                            <div>
+                              <h4 class="font-bold text-sm sm:text-base text-white hover:text-neon-red cursor-pointer transition-colors" ${authorObj ? `onclick="app.navigateTo('author', {authorId: '${authorObj.id}'})"` : ''}>
+                                ${this.escapeHTML(authorName)}
+                              </h4>
+                              <span class="text-[10px] sm:text-[11px] text-gray-400">${booksList.length} ${booksList.length === 1 ? 'libro' : 'libros'}</span>
+                            </div>
+                          </div>
+                          ${authorObj ? `
+                            <div class="flex items-center gap-2">
+                              <button onclick="app.editAuthor('${authorObj.id}')" title="Editar Autor" class="text-xs text-gray-400 hover:text-white p-1">
+                                <i class="ph-bold ph-pencil-simple"></i>
+                              </button>
+                              <button onclick="app.navigateTo('author', {authorId: '${authorObj.id}'})" class="text-xs text-neon-crimson hover:underline flex items-center gap-1 font-medium">
+                                Ver autor <i class="ph-bold ph-caret-right text-[10px]"></i>
+                              </button>
+                            </div>
+                          ` : ''}
+                        </div>
+                        
+                        <div class="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                          ${booksList.map(book => this.renderBookGridCard(book)).join('')}
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `}
             </section>
           </div>
         `;
       }
 
       renderGenreFolderCard(genre) {
-        const authorsCount = this.data.authors.filter(a => a.genreId === genre.id).length;
+        const authorsCount = this.data.authors.filter(a => a.genreIds && a.genreIds.includes(genre.id)).length;
         const booksCount = this.data.books.filter(b => b.genreId === genre.id).length;
 
         return `
@@ -992,7 +1201,6 @@
               <h4 class="font-bold text-xs sm:text-base text-white truncate mt-0.5 group-hover:text-neon-red transition-colors">${this.escapeHTML(book.title)}</h4>
               <p class="text-[11px] sm:text-xs text-gray-400 truncate">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</p>
               
-              <!-- Pages Read Display -->
               <div class="mt-2.5">
                 <div class="flex justify-between text-[10px] sm:text-[11px] text-gray-400 mb-1">
                   <span><i class="ph-bold ph-bookmark text-neon-crimson"></i> ${current} / ${total} págs</span>
@@ -1038,7 +1246,7 @@
         const genre = this.data.genres.find(g => g.id === this.viewParams.genreId);
         if (!genre) return `<p class="text-white">Género no encontrado.</p>`;
 
-        const authorsInGenre = this.data.authors.filter(a => a.genreId === genre.id);
+        const authorsInGenre = this.data.authors.filter(a => a.genreIds && a.genreIds.includes(genre.id));
 
         return `
           <div class="animate-fade-in space-y-4 sm:space-y-6">
@@ -1076,8 +1284,8 @@
                       <div onclick="app.navigateTo('author', {authorId: '${author.id}'})" class="glass-card rounded-2xl p-4 cursor-pointer group flex flex-col justify-between">
                         <div>
                           <div class="flex items-start justify-between">
-                            <div class="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white font-bold text-xs group-hover:border-neon-red transition-colors">
-                              ${author.name.charAt(0)}
+                            <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white font-bold text-xs group-hover:border-neon-red transition-colors overflow-hidden flex-shrink-0">
+                              ${author.photo ? `<img src="${author.photo}" alt="${this.escapeHTML(author.name)}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100?text=${author.name.charAt(0)}'"/>` : author.name.charAt(0)}
                             </div>
                             <div onclick="event.stopPropagation()" class="flex items-center gap-1">
                               <button onclick="app.editAuthor('${author.id}')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-pencil-simple text-xs"></i></button>
@@ -1106,23 +1314,41 @@
         if (!author) return `<p class="text-white">Autor no encontrado.</p>`;
 
         const booksByAuthor = this.data.books.filter(b => b.authorId === author.id);
+        const authorGenres = (author.genreIds || [])
+          .map(gid => this.data.genres.find(g => g.id === gid))
+          .filter(Boolean);
 
         return `
           <div class="animate-fade-in space-y-4 sm:space-y-6">
             <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/30 flex flex-col sm:flex-row gap-3 sm:items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-gray-800 to-gray-700 border border-neon-red/40 flex items-center justify-center text-neon-crimson text-xl sm:text-2xl font-extrabold flex-shrink-0">
-                  ${author.name.charAt(0)}
+              <div class="flex items-center gap-3.5">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-gray-800 to-gray-700 border border-neon-red/40 flex items-center justify-center text-neon-crimson text-xl sm:text-2xl font-extrabold flex-shrink-0 overflow-hidden">
+                  ${author.photo ? `<img src="${author.photo}" alt="${this.escapeHTML(author.name)}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/150?text=${author.name.charAt(0)}'"/>` : author.name.charAt(0)}
                 </div>
                 <div>
                   <h2 class="text-lg sm:text-2xl font-bold text-white leading-tight">${this.escapeHTML(author.name)}</h2>
-                  <p class="text-[11px] sm:text-xs text-gray-400 line-clamp-1">${author.bio ? this.escapeHTML(author.bio) : 'Carpeta de Autor'}</p>
+                  <p class="text-[11px] sm:text-xs text-gray-400 line-clamp-2 mt-0.5">${author.bio ? this.escapeHTML(author.bio) : 'Carpeta de Autor'}</p>
+                  
+                  ${authorGenres.length > 0 ? `
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      ${authorGenres.map(g => `
+                        <span onclick="app.navigateTo('genre', {genreId: '${g.id}'})" class="cursor-pointer text-[10px] text-gray-300 bg-white/5 hover:bg-white/10 border border-white/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+                          <i class="ph-bold ${g.icon || 'ph-folder'} text-neon-crimson"></i> ${this.escapeHTML(g.name)}
+                        </span>
+                      `).join('')}
+                    </div>
+                  ` : ''}
                 </div>
               </div>
 
-              <button onclick="app.openBookModalForAuthor('${author.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 rounded-xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap w-full sm:w-auto">
-                <i class="ph-bold ph-plus text-sm"></i> Añadir Libro
-              </button>
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button onclick="app.editAuthor('${author.id}')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3 py-2 rounded-xl border border-white/10 flex items-center justify-center gap-1.5 ios-btn-tap">
+                  <i class="ph-bold ph-pencil-simple text-sm"></i> Editar
+                </button>
+                <button onclick="app.openBookModalForAuthor('${author.id}')" class="flex-1 sm:flex-none bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 rounded-xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap">
+                  <i class="ph-bold ph-plus text-sm"></i> Añadir Libro
+                </button>
+              </div>
             </div>
 
             <div>
@@ -1154,6 +1380,8 @@
         const notes = this.data.notes.filter(n => n.bookId === book.id);
         const { current, total, pct } = this.calcBookProgress(book.currentPage, book.totalPages);
 
+        const hasAudio = book.audioUrl || book.hasStoredAudio;
+
         return `
           <div class="animate-fade-in space-y-6 sm:space-y-8">
             <div class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/30 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
@@ -1173,10 +1401,9 @@
                   </div>
 
                   <h2 class="text-xl sm:text-2xl font-extrabold text-white leading-tight">${this.escapeHTML(book.title)}</h2>
-                  <p class="text-xs sm:text-sm text-gray-300 mt-0.5">Por <span class="text-white font-semibold">${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</span></p>
+                  <p class="text-xs sm:text-sm text-gray-300 mt-0.5">Por <span class="text-white font-semibold cursor-pointer hover:text-neon-red transition-colors" ${author ? `onclick="app.navigateTo('author', {authorId: '${author.id}'})"` : ''}>${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</span></p>
                 </div>
 
-                <!-- Page Reading Progress Control Box -->
                 <div class="bg-black/50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-neon-red/30 space-y-2.5">
                   <div class="flex items-center justify-between text-xs text-gray-300">
                     <span class="font-semibold text-white flex items-center gap-1 text-[11px] sm:text-xs">
@@ -1208,7 +1435,6 @@
                   </div>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="flex items-center gap-2 pt-1">
                   <button onclick="app.openNoteModal('${book.id}')" class="flex-1 sm:flex-none bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap">
                     <i class="ph-bold ph-note-pencil text-sm sm:text-base"></i> Nueva Nota
@@ -1223,7 +1449,97 @@
               </div>
             </div>
 
-            <!-- Chapter Notes Section -->
+            <!-- AUDIOLIBRO COMPONENT (DISEÑO NEON RED CUSTOM) -->
+            <section class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/40 shadow-neon-sm space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                  <i class="ph-bold ph-headphones text-neon-red"></i> Reproductor de Audiolibro
+                </h3>
+                <span class="text-[10px] sm:text-xs text-neon-crimson font-medium bg-neon-red/10 px-2.5 py-0.5 rounded-full border border-neon-red/30">
+                  Guardado Automático Local
+                </span>
+              </div>
+
+              ${hasAudio ? `
+                <div class="space-y-4">
+                  <!-- Audio HTML oculto para lógica -->
+                  <audio id="audiobookPlayer" class="hidden" src="${this.escapeHTML(book.audioUrl)}"></audio>
+
+                  <!-- Interfaz Neón Red Personalizada -->
+                  <div class="bg-gradient-to-r from-[#0d0004] via-[#160007] to-[#0d0004] p-4 sm:p-5 rounded-2xl border border-neon-red/30 shadow-neon-md space-y-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-3">
+                        <button id="customPlayBtn" onclick="app.togglePlayPause()" class="w-11 h-11 rounded-full bg-neon-red hover:bg-red-600 text-white flex items-center justify-center shadow-neon-md transition-transform active:scale-90 flex-shrink-0">
+                          <i id="customPlayIcon" class="ph-bold ph-play text-xl ml-0.5"></i>
+                        </button>
+                        <div>
+                          <p class="text-xs font-bold text-white truncate max-w-[180px] sm:max-w-xs">${this.escapeHTML(book.title)}</p>
+                          <p class="text-[10px] text-neon-crimson font-medium">Audiolibro en reproducción</p>
+                        </div>
+                      </div>
+
+                      <div class="flex items-center gap-2">
+                        <i id="volumeIcon" class="ph-bold ph-speaker-high text-neon-red text-sm"></i>
+                        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1" oninput="app.handleVolumeChange(this.value)" class="neon-range w-16 sm:w-20" />
+                      </div>
+                    </div>
+
+                    <!-- Barra de Progreso Personalizada -->
+                    <div class="space-y-1">
+                      <input type="range" id="customProgressBar" min="0" max="100" step="0.1" value="0" oninput="app.handleSeek(this.value)" class="neon-range w-full cursor-pointer" />
+                      <div class="flex justify-between text-[10px] text-gray-400 font-mono">
+                        <span id="currentTimeText">0:00</span>
+                        <span id="durationTimeText">0:00</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-black/40 p-3 rounded-xl border border-white/10">
+                    <div class="flex items-center gap-2 flex-1">
+                      <input type="text" id="bookmarkLabelInput" placeholder="Nombre o nota del marcador (ej: Idea clave...)" class="flex-1 bg-black/60 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:border-neon-red focus:outline-none" />
+                      <button onclick="app.addAudioBookmark('${book.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-1.5 rounded-xl font-semibold shadow-neon-sm flex items-center gap-1 flex-shrink-0 ios-btn-tap">
+                        <i class="ph-bold ph-bookmark-simple"></i> Marcador
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="space-y-2">
+                    <h4 class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
+                      <i class="ph-bold ph-bookmarks text-neon-crimson"></i> Marcadores Guardados (${(book.audioBookmarks || []).length})
+                    </h4>
+                    ${(book.audioBookmarks || []).length === 0 ? `
+                      <p class="text-[11px] text-gray-500 italic pl-1">No hay marcadores aún. Crea uno mientras escuchas.</p>
+                    ` : `
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
+                        ${(book.audioBookmarks || []).map(bm => `
+                          <div class="bg-black/50 border border-white/10 hover:border-neon-red/40 rounded-xl p-2.5 flex items-center justify-between gap-2 transition-all">
+                            <button onclick="app.seekAudioTo(${bm.time})" class="flex-1 min-w-0 text-left flex items-center gap-2 group">
+                              <span class="text-[10px] font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2 py-0.5 rounded-lg flex-shrink-0">
+                                ${this.formatTime(bm.time)}
+                              </span>
+                              <span class="text-xs text-gray-200 group-hover:text-neon-red transition-colors truncate">
+                                ${this.escapeHTML(bm.label || 'Sin título')}
+                              </span>
+                            </button>
+                            <button onclick="app.deleteAudioBookmark('${book.id}', '${bm.id}')" class="text-gray-400 hover:text-red-400 p-1 flex-shrink-0">
+                              <i class="ph-bold ph-trash text-xs"></i>
+                            </button>
+                          </div>
+                        `).join('')}
+                      </div>
+                    `}
+                  </div>
+                </div>
+              ` : `
+                <div class="p-4 rounded-2xl bg-black/40 border border-dashed border-white/10 text-center space-y-2">
+                  <p class="text-xs text-gray-400">No hay ningún enlace o archivo de audiolibro asignado a este libro.</p>
+                  <button onclick="app.editBook('${book.id}')" class="text-xs bg-neon-red/20 text-neon-crimson border border-neon-red/30 px-3.5 py-1.5 rounded-xl hover:bg-neon-red/30 font-semibold inline-flex items-center gap-1.5">
+                    <i class="ph-bold ph-plus"></i> Añadir Audiolibro
+                  </button>
+                </div>
+              `}
+            </section>
+
             <section>
               <div class="flex items-center justify-between mb-4">
                 <div>
@@ -1258,14 +1574,26 @@
       }
 
       renderNoteCard(note) {
+        const book = this.data.books.find(b => b.id === note.bookId);
+        const bookmarks = (book && Array.isArray(book.audioBookmarks) && Array.isArray(note.bookmarkIds))
+          ? note.bookmarkIds.map(bmId => book.audioBookmarks.find(bm => bm.id === bmId)).filter(Boolean)
+          : [];
+
         return `
-          <div class="glass-card rounded-2xl p-4 sm:p-5 border-neon-red/20 space-y-3">
+          <div class="glass-card rounded-2xl p-4 sm:p-5 border-neon-red/20 space-y-3 w-full overflow-hidden">
             <div class="flex items-start justify-between border-b border-white/10 pb-2.5">
-              <div class="min-w-0 pr-2">
-                <span class="text-[10px] font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2 py-0.5 rounded-full inline-block mb-1">
-                  ${this.escapeHTML(note.chapter)}
-                </span>
-                <h4 class="text-sm sm:text-base font-bold text-white truncate">${this.escapeHTML(note.title)}</h4>
+              <div class="min-w-0 pr-2 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                  <span class="text-[10px] font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2 py-0.5 rounded-full inline-block">
+                    ${this.escapeHTML(note.chapter)}
+                  </span>
+                  ${bookmarks.map(bm => `
+                    <button onclick="app.seekAudioTo(${bm.time})" title="Saltar al audio" class="text-[10px] font-bold text-neon-crimson bg-neon-red/20 border border-neon-red/40 px-2 py-0.5 rounded-full inline-flex items-center gap-1 hover:bg-neon-red hover:text-white transition-colors ios-btn-tap">
+                      <i class="ph-bold ph-headphones text-xs"></i> ${this.formatTime(bm.time)} - ${this.escapeHTML(bm.label || 'Marcador')}
+                    </button>
+                  `).join('')}
+                </div>
+                <h4 class="text-sm sm:text-base font-bold text-white break-words">${this.escapeHTML(note.title)}</h4>
               </div>
               
               <div class="flex items-center gap-1 flex-shrink-0">
@@ -1278,21 +1606,21 @@
               <h5 class="text-[11px] sm:text-xs font-bold text-gray-300 flex items-center gap-1">
                 <i class="ph-bold ph-list-checks text-neon-crimson"></i> Resumen & Puntos Clave:
               </h5>
-              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-line">${this.escapeHTML(note.summary)}</p>
+              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-wrap break-words">${this.escapeHTML(note.summary)}</p>
             </div>
 
             <div class="space-y-1">
               <h5 class="text-[11px] sm:text-xs font-bold text-yellow-400 flex items-center gap-1">
                 <i class="ph-bold ph-lightbulb"></i> Enseñanzas Principales:
               </h5>
-              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-line">${this.escapeHTML(note.teachings)}</p>
+              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-wrap break-words">${this.escapeHTML(note.teachings)}</p>
             </div>
 
             <div class="bg-gradient-to-r from-neon-red/15 to-transparent border-l-2 sm:border-l-4 border-neon-red p-2.5 sm:p-3.5 rounded-r-xl">
               <h5 class="text-[11px] sm:text-xs font-extrabold text-neon-red uppercase tracking-wider flex items-center gap-1">
                 <i class="ph-bold ph-lightning"></i> Aplicación en mi Vida:
               </h5>
-              <p class="text-xs text-white font-medium mt-0.5 leading-relaxed whitespace-pre-line">${this.escapeHTML(note.application)}</p>
+              <p class="text-xs text-white font-medium mt-0.5 leading-relaxed whitespace-pre-wrap break-words">${this.escapeHTML(note.application)}</p>
             </div>
           </div>
         `;
@@ -1382,22 +1710,54 @@
         ['genreModal', 'authorModal', 'bookModal', 'noteModal', 'profileModal'].forEach(m => this.closeModal(m));
       }
 
-      saveGenre(e) {
-        e.preventDefault();
+      updateAllGenreDropdowns(selectedAuthorGenreIds = [], selectedBookGenreId = '') {
+        this.populateAuthorGenreSelect(selectedAuthorGenreIds);
+        this.populateBookDropdowns(selectedBookGenreId);
+      }
+
+      populateAuthorGenreSelect(selectedGenreIds = []) {
+        const select = document.getElementById('authorGenreSelect');
+        if (!select) return;
+
+        if (this.data.genres.length === 0) {
+          select.innerHTML = `<option value="" disabled>-- No hay géneros. Crea uno nuevo --</option>`;
+          return;
+        }
+
+        const idsArray = Array.isArray(selectedGenreIds) ? selectedGenreIds : (selectedGenreIds ? [selectedGenreIds] : []);
+
+        select.innerHTML = this.data.genres.map(g => 
+          `<option value="${g.id}" ${idsArray.includes(g.id) ? 'selected' : ''}>📁 ${this.escapeHTML(g.name)}</option>`
+        ).join('');
+      }
+
+      handleAuthorGenreSelectChange(value) {
+        if (value === 'NEW') {
+          this.openModal('genreModal');
+        }
+      }
+
+      saveGenre(event) {
+        event.preventDefault();
         const id = document.getElementById('genreId').value;
         const name = document.getElementById('genreName').value.trim();
         const color = document.getElementById('genreColor').value;
         const icon = document.getElementById('genreIcon').value.trim() || 'ph-books';
 
+        let savedGenreId = id;
+
         if (id) {
           const index = this.data.genres.findIndex(g => g.id === id);
           if (index !== -1) this.data.genres[index] = { ...this.data.genres[index], name, color, icon };
         } else {
-          const newGenre = { id: 'g_' + Date.now(), name, color, icon };
+          savedGenreId = 'g_' + Date.now();
+          const newGenre = { id: savedGenreId, name, color, icon };
           this.data.genres.push(newGenre);
         }
 
         this.saveData();
+        this.updateAllGenreDropdowns([savedGenreId], savedGenreId);
+        
         this.renderView();
         this.closeModal('genreModal');
         this.showToast('Género guardado');
@@ -1418,71 +1778,53 @@
       }
 
       deleteGenre(genreId) {
-        if (confirm('¿Eliminar género?')) {
+        if (confirm('¿Eliminar género? Se desvincularán los autores y libros asociados.')) {
           this.data.genres = this.data.genres.filter(g => g.id !== genreId);
+          this.data.authors.forEach(a => {
+            if (a.genreIds) {
+              a.genreIds = a.genreIds.filter(gid => gid !== genreId);
+            }
+          });
           this.saveData();
+          this.updateAllGenreDropdowns();
           this.renderView();
           this.showToast('Género eliminado');
         }
       }
 
       openAuthorModalForGenre(genreId = '') {
-        const genre = this.data.genres.find(g => g.id === genreId);
-        this.populateGenreDatalist();
         document.getElementById('authorForm').reset();
         document.getElementById('authorId').value = '';
-        document.getElementById('authorGenreInput').value = genre ? genre.name : '';
+        document.getElementById('authorPhoto').value = '';
+        
+        const targetGenreIds = genreId ? [genreId] : (this.data.genres.length > 0 ? [this.data.genres[0].id] : []);
+        this.populateAuthorGenreSelect(targetGenreIds);
+        
         document.getElementById('authorModalTitle').innerHTML = `<i class="ph-bold ph-user-plus text-neon-red"></i> Nuevo Autor`;
         this.openModal('authorModal');
-      }
-
-      populateGenreDatalist() {
-        const datalist = document.getElementById('existingGenresList');
-        if (datalist) {
-          datalist.innerHTML = this.data.genres.map(g => 
-            `<option value="${this.escapeHTML(g.name)}"></option>`
-          ).join('');
-        }
       }
 
       saveAuthor(e) {
         e.preventDefault();
         const id = document.getElementById('authorId').value;
         const name = document.getElementById('authorName').value.trim();
-        const genreInputText = document.getElementById('authorGenreInput').value.trim();
+        const photo = document.getElementById('authorPhoto').value.trim();
+        const selectEl = document.getElementById('authorGenreSelect');
+        const genreIds = Array.from(selectEl.selectedOptions).map(opt => opt.value);
         const bio = document.getElementById('authorBio').value.trim();
 
-        if (!genreInputText) {
-          alert('Por favor ingresa un género para el autor.');
+        if (genreIds.length === 0) {
+          alert('Por favor selecciona al menos un género.');
           return;
-        }
-
-        let genre = this.data.genres.find(g => g.name.toLowerCase() === genreInputText.toLowerCase());
-
-        if (!genre) {
-          genre = {
-            id: 'g_' + Date.now(),
-            name: genreInputText,
-            color: '#ff0033',
-            icon: 'ph-folders'
-          };
-          this.data.genres.push(genre);
         }
 
         if (id) {
           const index = this.data.authors.findIndex(a => a.id === id);
           if (index !== -1) {
-            const oldGenreId = this.data.authors[index].genreId;
-            this.data.authors[index] = { ...this.data.authors[index], name, genreId: genre.id, bio };
-
-            if (oldGenreId !== genre.id) {
-              this.data.books.forEach(b => {
-                if (b.authorId === id) b.genreId = genre.id;
-              });
-            }
+            this.data.authors[index] = { ...this.data.authors[index], name, photo, genreIds, bio };
           }
         } else {
-          const newAuthor = { id: 'a_' + Date.now(), genreId: genre.id, name, bio };
+          const newAuthor = { id: 'a_' + Date.now(), genreIds, name, photo, bio };
           this.data.authors.push(newAuthor);
         }
 
@@ -1497,12 +1839,10 @@
         const author = this.data.authors.find(a => a.id === authorId);
         if (!author) return;
 
-        const genre = this.data.genres.find(g => g.id === author.genreId);
-
-        this.populateGenreDatalist();
         document.getElementById('authorId').value = author.id;
         document.getElementById('authorName').value = author.name;
-        document.getElementById('authorGenreInput').value = genre ? genre.name : '';
+        document.getElementById('authorPhoto').value = author.photo || '';
+        this.populateAuthorGenreSelect(author.genreIds || []);
         document.getElementById('authorBio').value = author.bio || '';
         document.getElementById('authorModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Autor`;
 
@@ -1524,6 +1864,9 @@
         document.getElementById('bookId').value = '';
         document.getElementById('bookCurrentPage').value = 0;
         document.getElementById('bookTotalPages').value = 150;
+        document.getElementById('bookAudioUrl').value = '';
+        document.getElementById('localAudioFileName').innerText = '';
+        this.selectedLocalFile = null;
         document.getElementById('bookModalTitle').innerHTML = `<i class="ph-bold ph-book-bookmark text-neon-red"></i> Agregar Nuevo Libro`;
         this.openModal('bookModal');
       }
@@ -1532,15 +1875,21 @@
         const author = this.data.authors.find(a => a.id === authorId);
         this.openBookModal();
         if (author) {
-          document.getElementById('bookGenreId').value = author.genreId;
-          this.updateAuthorDropdown(author.genreId, author.id);
+          const firstGenreId = (author.genreIds && author.genreIds.length > 0) ? author.genreIds[0] : '';
+          if (firstGenreId) {
+            document.getElementById('bookGenreId').value = firstGenreId;
+            this.updateAuthorDropdown(firstGenreId, author.id);
+          }
         }
       }
 
       populateBookDropdowns(selectedGenreId = '', selectedAuthorId = '') {
         const genreSelect = document.getElementById('bookGenreId');
+        if (!genreSelect) return;
+
         if (this.data.genres.length === 0) {
           genreSelect.innerHTML = `<option value="">Crea primero un género</option>`;
+          document.getElementById('bookAuthorId').innerHTML = `<option value="">Sin autores</option>`;
           return;
         }
 
@@ -1554,7 +1903,9 @@
 
       updateAuthorDropdown(genreId, selectedAuthorId = '') {
         const authorSelect = document.getElementById('bookAuthorId');
-        const filteredAuthors = this.data.authors.filter(a => a.genreId === genreId);
+        if (!authorSelect) return;
+
+        const filteredAuthors = this.data.authors.filter(a => a.genreIds && a.genreIds.includes(genreId));
 
         if (filteredAuthors.length === 0) {
           authorSelect.innerHTML = `<option value="">No hay autores en este género</option>`;
@@ -1566,7 +1917,7 @@
         ).join('');
       }
 
-      saveBook(e) {
+      async saveBook(e) {
         e.preventDefault();
         const id = document.getElementById('bookId').value;
         const title = document.getElementById('bookTitle').value.trim();
@@ -1576,11 +1927,14 @@
         const status = document.getElementById('bookStatus').value;
         const currentPage = parseInt(document.getElementById('bookCurrentPage').value) || 0;
         const totalPages = parseInt(document.getElementById('bookTotalPages').value) || 150;
+        const audioUrl = document.getElementById('bookAudioUrl').value.trim();
 
         if (!genreId || !authorId) {
           alert('Por favor selecciona un género y autor válidos.');
           return;
         }
+
+        let targetBookId = id;
 
         if (id) {
           const index = this.data.books.findIndex(b => b.id === id);
@@ -1588,16 +1942,30 @@
             this.data.books[index] = { 
               ...this.data.books[index], 
               title, genreId, authorId, cover, status, 
-              currentPage, totalPages 
+              currentPage, totalPages, audioUrl 
             };
           }
         } else {
+          targetBookId = 'b_' + Date.now();
           const newBook = { 
-            id: 'b_' + Date.now(), 
+            id: targetBookId, 
             genreId, authorId, title, cover, status, 
-            currentPage, totalPages 
+            currentPage, totalPages, audioUrl,
+            hasStoredAudio: false,
+            audioCurrentTime: 0,
+            audioBookmarks: []
           };
           this.data.books.push(newBook);
+        }
+
+        if (this.selectedLocalFile) {
+          try {
+            await this.audioStore.saveAudio(targetBookId, this.selectedLocalFile);
+            const savedBook = this.data.books.find(b => b.id === targetBookId);
+            if (savedBook) savedBook.hasStoredAudio = true;
+          } catch (err) {
+            console.error('Error al guardar el audio localmente:', err);
+          }
         }
 
         this.saveData();
@@ -1617,25 +1985,110 @@
         document.getElementById('bookStatus').value = book.status;
         document.getElementById('bookCurrentPage').value = book.currentPage || 0;
         document.getElementById('bookTotalPages').value = book.totalPages || 150;
+        document.getElementById('bookAudioUrl').value = book.audioUrl || '';
+        document.getElementById('localAudioFileName').innerText = book.hasStoredAudio ? 'Audio local guardado previamente' : '';
+        this.selectedLocalFile = null;
         document.getElementById('bookModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Libro`;
 
         this.openModal('bookModal');
       }
 
-      deleteBook(bookId) {
+      async deleteBook(bookId) {
         if (confirm('¿Seguro que deseas eliminar este libro?')) {
           this.data.books = this.data.books.filter(b => b.id !== bookId);
           this.data.notes = this.data.notes.filter(n => n.bookId !== bookId);
+          try {
+            await this.audioStore.deleteAudio(bookId);
+          } catch (e) {
+            console.error(e);
+          }
           this.saveData();
           this.navigateTo('dashboard');
           this.showToast('Libro eliminado');
         }
       }
 
+      populateNoteBookmarkSelect(bookId, selectedBookmarkIds = []) {
+        this.selectedNoteBookmarkIds = Array.isArray(selectedBookmarkIds) ? [...selectedBookmarkIds] : (selectedBookmarkIds ? [selectedBookmarkIds] : []);
+        this.renderSelectedBookmarksBadges(bookId);
+        this.renderBookmarksDropdownOptions(bookId);
+        const dropdown = document.getElementById('bookmarksDropdown');
+        if (dropdown) dropdown.classList.add('hidden');
+      }
+
+      renderSelectedBookmarksBadges(bookId) {
+        const badgesContainer = document.getElementById('selectedBookmarksBadges');
+        if (!badgesContainer) return;
+
+        const book = this.data.books.find(b => b.id === bookId);
+        const allBookmarks = (book && Array.isArray(book.audioBookmarks)) ? book.audioBookmarks : [];
+        const selectedBookmarks = allBookmarks.filter(bm => this.selectedNoteBookmarkIds.includes(bm.id));
+
+        if (selectedBookmarks.length === 0) {
+          badgesContainer.innerHTML = `<span class="text-xs text-gray-500 italic">Sin marcadores vinculados</span>`;
+          return;
+        }
+
+        badgesContainer.innerHTML = selectedBookmarks.map(bm => `
+          <span class="bg-neon-red/20 border border-neon-red/40 text-neon-crimson text-xs font-semibold px-2.5 py-1 rounded-xl flex items-center gap-1.5 shadow-neon-sm">
+            <i class="ph-bold ph-headphones text-xs"></i>
+            <span>[${this.formatTime(bm.time)}] ${this.escapeHTML(bm.label || 'Marcador')}</span>
+            <button type="button" onclick="app.removeBookmarkFromNote('${bm.id}')" class="text-neon-crimson hover:text-white ml-0.5 font-bold"><i class="ph-bold ph-x text-xs"></i></button>
+          </span>
+        `).join('');
+      }
+
+      renderBookmarksDropdownOptions(bookId) {
+        const dropdown = document.getElementById('bookmarksDropdown');
+        if (!dropdown) return;
+
+        const book = this.data.books.find(b => b.id === bookId);
+        const allBookmarks = (book && Array.isArray(book.audioBookmarks)) ? book.audioBookmarks : [];
+        const availableBookmarks = allBookmarks.filter(bm => !this.selectedNoteBookmarkIds.includes(bm.id));
+
+        if (availableBookmarks.length === 0) {
+          dropdown.innerHTML = `<p class="text-xs text-gray-500 italic p-2 text-center">No hay más marcadores disponibles</p>`;
+          return;
+        }
+
+        dropdown.innerHTML = availableBookmarks.map(bm => `
+          <div onclick="app.addBookmarkToNote('${bm.id}')" class="p-2 rounded-lg bg-white/5 hover:bg-neon-red/20 hover:border-neon-red/40 border border-transparent cursor-pointer flex items-center justify-between transition-all group">
+            <span class="text-xs text-gray-200 group-hover:text-white font-medium truncate">
+              [${this.formatTime(bm.time)}] ${this.escapeHTML(bm.label || 'Marcador')}
+            </span>
+            <i class="ph-bold ph-plus text-xs text-neon-crimson"></i>
+          </div>
+        `).join('');
+      }
+
+      toggleBookmarksDropdown() {
+        const dropdown = document.getElementById('bookmarksDropdown');
+        if (dropdown) dropdown.classList.toggle('hidden');
+      }
+
+      addBookmarkToNote(bookmarkId) {
+        if (!this.selectedNoteBookmarkIds.includes(bookmarkId)) {
+          this.selectedNoteBookmarkIds.push(bookmarkId);
+        }
+        const bookId = document.getElementById('noteBookId').value;
+        this.renderSelectedBookmarksBadges(bookId);
+        this.renderBookmarksDropdownOptions(bookId);
+        const dropdown = document.getElementById('bookmarksDropdown');
+        if (dropdown) dropdown.classList.add('hidden');
+      }
+
+      removeBookmarkFromNote(bookmarkId) {
+        this.selectedNoteBookmarkIds = this.selectedNoteBookmarkIds.filter(id => id !== bookmarkId);
+        const bookId = document.getElementById('noteBookId').value;
+        this.renderSelectedBookmarksBadges(bookId);
+        this.renderBookmarksDropdownOptions(bookId);
+      }
+
       openNoteModal(bookId) {
         document.getElementById('noteForm').reset();
         document.getElementById('noteId').value = '';
         document.getElementById('noteBookId').value = bookId;
+        this.populateNoteBookmarkSelect(bookId, []);
         document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota`;
         this.openModal('noteModal');
       }
@@ -1646,6 +2099,7 @@
         const bookId = document.getElementById('noteBookId').value;
         const chapter = document.getElementById('noteChapter').value.trim();
         const title = document.getElementById('noteTitle').value.trim();
+        const bookmarkIds = [...this.selectedNoteBookmarkIds];
         const summary = document.getElementById('noteSummary').value.trim();
         const teachings = document.getElementById('noteTeachings').value.trim();
         const application = document.getElementById('noteApplication').value.trim();
@@ -1653,7 +2107,7 @@
         if (id) {
           const index = this.data.notes.findIndex(n => n.id === id);
           if (index !== -1) {
-            this.data.notes[index] = { ...this.data.notes[index], chapter, title, summary, teachings, application };
+            this.data.notes[index] = { ...this.data.notes[index], chapter, title, bookmarkIds, summary, teachings, application };
           }
         } else {
           const newNote = {
@@ -1661,6 +2115,7 @@
             bookId,
             chapter,
             title,
+            bookmarkIds,
             summary,
             teachings,
             application,
@@ -1683,6 +2138,7 @@
         document.getElementById('noteBookId').value = note.bookId;
         document.getElementById('noteChapter').value = note.chapter;
         document.getElementById('noteTitle').value = note.title;
+        this.populateNoteBookmarkSelect(note.bookId, note.bookmarkIds || []);
         document.getElementById('noteSummary').value = note.summary;
         document.getElementById('noteTeachings').value = note.teachings;
         document.getElementById('noteApplication').value = note.application;
@@ -1740,11 +2196,178 @@
           }[tag] || tag)
         );
       }
+
+      // METODOS DEL REPRODUCTOR DE AUDIO CON PERSISTENCIA Y UI NEON RED
+      async setupAudioPlayer() {
+        if (this.currentView !== 'bookDetail' || !this.viewParams.bookId) return;
+        const player = document.getElementById('audiobookPlayer');
+        if (!player) return;
+
+        const book = this.data.books.find(b => b.id === this.viewParams.bookId);
+        if (!book) return;
+
+        if (book.hasStoredAudio) {
+          try {
+            const blob = await this.audioStore.getAudio(book.id);
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              player.src = url;
+            }
+          } catch (e) {
+            console.error('Error al recuperar audio de IndexedDB:', e);
+          }
+        }
+
+        if (book.audioCurrentTime) {
+          player.currentTime = book.audioCurrentTime;
+        }
+
+        const progressBar = document.getElementById('customProgressBar');
+        const currentTimeText = document.getElementById('currentTimeText');
+        const durationTimeText = document.getElementById('durationTimeText');
+
+        player.onloadedmetadata = () => {
+          if (durationTimeText) durationTimeText.innerText = this.formatTime(player.duration);
+        };
+
+        player.ontimeupdate = () => {
+          if (player.currentTime && !isNaN(player.currentTime)) {
+            book.audioCurrentTime = player.currentTime;
+            this.saveData();
+
+            if (currentTimeText) currentTimeText.innerText = this.formatTime(player.currentTime);
+            if (durationTimeText && player.duration) durationTimeText.innerText = this.formatTime(player.duration);
+
+            if (progressBar && player.duration) {
+              progressBar.value = (player.currentTime / player.duration) * 100;
+            }
+          }
+        };
+
+        player.onended = () => {
+          this.updatePlayPauseIcon(false);
+        };
+      }
+
+      togglePlayPause() {
+        const player = document.getElementById('audiobookPlayer');
+        if (!player) return;
+
+        if (player.paused) {
+          player.play();
+          this.updatePlayPauseIcon(true);
+        } else {
+          player.pause();
+          this.updatePlayPauseIcon(false);
+        }
+      }
+
+      updatePlayPauseIcon(isPlaying) {
+        const icon = document.getElementById('customPlayIcon');
+        if (!icon) return;
+        if (isPlaying) {
+          icon.className = 'ph-bold ph-pause text-xl';
+        } else {
+          icon.className = 'ph-bold ph-play text-xl ml-0.5';
+        }
+      }
+
+      handleSeek(value) {
+        const player = document.getElementById('audiobookPlayer');
+        if (player && player.duration) {
+          player.currentTime = (value / 100) * player.duration;
+        }
+      }
+
+      handleVolumeChange(value) {
+        const player = document.getElementById('audiobookPlayer');
+        const icon = document.getElementById('volumeIcon');
+        if (player) {
+          player.volume = value;
+          if (icon) {
+            if (value == 0) icon.className = 'ph-bold ph-speaker-x text-neon-red text-sm';
+            else if (value < 0.5) icon.className = 'ph-bold ph-speaker-low text-neon-red text-sm';
+            else icon.className = 'ph-bold ph-speaker-high text-neon-red text-sm';
+          }
+        }
+      }
+
+      handleLocalAudioFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        this.selectedLocalFile = file;
+        const nameSpan = document.getElementById('localAudioFileName');
+        if (nameSpan) nameSpan.innerText = file.name;
+      }
+
+      formatTime(seconds) {
+        const s = Math.floor(seconds || 0);
+        const mins = Math.floor(s / 60);
+        const secs = s % 60;
+        const hrs = Math.floor(mins / 60);
+        const remMins = mins % 60;
+        if (hrs > 0) {
+          return `${hrs}:${remMins < 10 ? '0' : ''}${remMins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+        return `${remMins}:${secs < 10 ? '0' : ''}${secs}`;
+      }
+
+      addAudioBookmark(bookId) {
+        const book = this.data.books.find(b => b.id === bookId);
+        if (!book) return;
+        const player = document.getElementById('audiobookPlayer');
+        const input = document.getElementById('bookmarkLabelInput');
+        const labelText = input ? input.value.trim() : '';
+        const currentTime = player ? player.currentTime : (book.audioCurrentTime || 0);
+
+        if (!Array.isArray(book.audioBookmarks)) book.audioBookmarks = [];
+
+        book.audioBookmarks.push({
+          id: 'bm_' + Date.now(),
+          time: currentTime,
+          label: labelText || `Marcador en ${this.formatTime(currentTime)}`
+        });
+
+        if (input) input.value = '';
+        this.saveData();
+        this.renderView();
+        this.showToast('Marcador guardado');
+      }
+
+      seekAudioTo(time) {
+        const player = document.getElementById('audiobookPlayer');
+        if (player) {
+          player.currentTime = time;
+          player.play();
+          this.updatePlayPauseIcon(true);
+        }
+      }
+
+      deleteAudioBookmark(bookId, bookmarkId) {
+        const book = this.data.books.find(b => b.id === bookId);
+        if (!book || !Array.isArray(book.audioBookmarks)) return;
+
+        book.audioBookmarks = book.audioBookmarks.filter(bm => bm.id !== bookmarkId);
+        this.data.notes.forEach(n => {
+          if (Array.isArray(n.bookmarkIds)) {
+            n.bookmarkIds = n.bookmarkIds.filter(id => id !== bookmarkId);
+          }
+        });
+        this.saveData();
+        this.renderView();
+        this.showToast('Marcador eliminado');
+      }
     }
 
     let app;
     window.onload = function() {
       app = new BookTrackerApp();
+      const originalRenderView = app.renderView.bind(app);
+      app.renderView = function() {
+        originalRenderView();
+        app.setupAudioPlayer();
+      };
+      app.setupAudioPlayer();
     };
   </script>
 </body>
