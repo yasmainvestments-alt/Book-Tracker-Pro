@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Book Tracker Pro By: YasmaStak</title>
   
-  <!-- Neon Red Book Favicon via Data URI SVG -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23070709'/><rect x='2' y='2' width='96' height='96' rx='20' fill='none' stroke='%23ff0033' stroke-width='4' opacity='0.8'/><path d='M25 30 C 35 25, 45 28, 50 32 C 55 28, 65 25, 75 30 L 75 75 C 65 70, 55 73, 50 77 C 45 73, 35 70, 25 75 Z' fill='%23ff0033' opacity='0.25' stroke='%23ff0033' stroke-width='5' stroke-linejoin='round'/><path d='M50 32 L 50 77' stroke='%23ff0033' stroke-width='5' stroke-linecap='round'/><circle cx='50' cy='32' r='4' fill='%23ff2a55'/></svg>" />
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -120,7 +119,6 @@
       transition: opacity 0.25s ease-out, transform 0.25s ease-out;
     }
 
-    /* Custom Neon Range Inputs */
     input[type=range].neon-range {
       -webkit-appearance: none;
       background: transparent;
@@ -200,6 +198,10 @@
       </div>
 
       <div class="hidden sm:flex items-center gap-2">
+        <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" title="Abrir Gemini para analizar texto" class="flex items-center gap-1.5 bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/40 hover:border-purple-400 text-purple-300 px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
+          <i class="ph-bold ph-sparkle text-sm text-purple-400"></i>
+          <span>Gemini AI</span>
+        </a>
         <button onclick="app.openModal('genreModal')" class="flex items-center gap-1.5 bg-neon-red/10 border border-neon-red/30 hover:bg-neon-red/20 text-neon-crimson px-3 py-1.5 rounded-full text-xs font-medium transition-all ios-btn-tap">
           <i class="ph-bold ph-folder-plus text-sm"></i>
           <span>Género</span>
@@ -233,6 +235,10 @@
       <i class="ph-bold ph-house text-lg"></i>
       <span class="text-[10px] font-medium">Inicio</span>
     </button>
+    <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-0.5 text-purple-400 hover:text-purple-300 ios-btn-tap min-w-[50px] py-1">
+      <i class="ph-bold ph-sparkle text-lg"></i>
+      <span class="text-[10px] font-medium">Gemini</span>
+    </a>
     <button onclick="app.openModal('genreModal')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white ios-btn-tap min-w-[50px] py-1">
       <i class="ph-bold ph-folder-plus text-lg"></i>
       <span class="text-[10px] font-medium">Géneros</span>
@@ -271,7 +277,6 @@
             <input type="color" id="genreColor" value="#ff0033" class="h-10 w-12 rounded-xl bg-transparent border border-white/10 cursor-pointer p-1 flex-shrink-0" />
             <input type="text" id="genreIcon" placeholder="Ej: ph-brain, ph-rocket" value="ph-books" class="flex-1 min-w-0 bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
-          <p class="text-[10px] text-gray-500 mt-1">Usa iconos de Phosphor (ej: ph-lightbulb, ph-code)</p>
         </div>
         <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
           <button type="button" onclick="app.closeModal('genreModal')" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs text-gray-400 hover:bg-white/5">Cancelar</button>
@@ -304,11 +309,9 @@
         <div>
           <label class="block text-xs text-gray-400 font-medium mb-1 flex items-center justify-between">
             <span>Géneros Asignados (Selección Múltiple)</span>
-            <button type="button" onclick="app.openModal('genreModal')" class="text-neon-crimson hover:underline text-[11px] font-normal">+ Crear Nuevo Género</button>
           </label>
           <select id="authorGenreSelect" multiple required class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none h-28">
           </select>
-          <p class="text-[10px] text-gray-500 mt-1">Mantén presionado Ctrl (Cmd) para elegir varios géneros.</p>
         </div>
         <div>
           <label class="block text-xs text-gray-400 font-medium mb-1">Biografía Breve</label>
@@ -382,7 +385,6 @@
               <i class="ph-bold ph-headphones text-sm"></i> URL del Audiolibro (Local o Web)
             </label>
             <input type="text" id="bookAudioUrl" placeholder="Ej: https://domain.com/audio.mp3" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
-            <p class="text-[10px] text-gray-500 mt-1">Puedes pegar un enlace web o seleccionar un archivo local debajo.</p>
             <div class="mt-2 flex items-center gap-2">
               <label class="cursor-pointer bg-white/5 hover:bg-white/10 text-xs px-3 py-1.5 rounded-xl border border-white/10 text-gray-300 flex items-center gap-1.5 transition-colors">
                 <i class="ph-bold ph-upload-simple"></i> Seleccionar archivo local
@@ -406,7 +408,7 @@
     <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-2xl max-h-[88vh] flex flex-col pointer-events-auto">
       <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
         <h3 id="noteModalTitle" class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-          <i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota por Capítulo
+          <i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota / Punto de Capítulo
         </h3>
         <button onclick="app.closeModal('noteModal')" class="text-gray-400 hover:text-white p-1 ios-btn-tap"><i class="ph-bold ph-x text-lg"></i></button>
       </div>
@@ -415,10 +417,14 @@
         <input type="hidden" id="noteId" />
         <input type="hidden" id="noteBookId" />
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-          <div class="sm:col-span-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div>
             <label class="block text-xs text-gray-400 font-medium mb-1">Capítulo / Sección *</label>
             <input type="text" id="noteChapter" required placeholder="Ej: Cap. 1" class="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs text-neon-crimson font-medium mb-1">Carpeta o Subdivisión Temática</label>
+            <input type="text" id="noteFolder" placeholder="Ej: Ideas Principales, Citas, Tareas..." class="w-full bg-black/50 border border-neon-red/30 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none" />
           </div>
           <div class="sm:col-span-2">
             <label class="block text-xs text-gray-400 font-medium mb-1">Título de la Nota *</label>
@@ -430,16 +436,11 @@
           <label class="block text-xs text-neon-crimson font-medium mb-1.5 flex items-center justify-between">
             <span class="flex items-center gap-1"><i class="ph-bold ph-bookmarks"></i> Marcadores del Audiolibro Vinculados</span>
           </label>
-
-          <!-- Badges de Marcadores Seleccionados -->
           <div id="selectedBookmarksBadges" class="flex flex-wrap gap-1.5 mb-2"></div>
-
-          <!-- Botón de Agregar Marcadores con Dropdown Flotante -->
           <div class="relative">
             <button type="button" onclick="app.toggleBookmarksDropdown()" class="bg-white/5 hover:bg-white/10 border border-white/10 text-xs px-3 py-1.5 rounded-xl text-neon-crimson flex items-center gap-1.5 font-medium transition-colors ios-btn-tap">
               <i class="ph-bold ph-plus-circle text-sm"></i> Agregar Marcador
             </button>
-
             <div id="bookmarksDropdown" class="hidden absolute top-full left-0 mt-1.5 z-30 w-full sm:w-80 glass-panel border border-neon-red/30 rounded-xl p-2 shadow-2xl bg-[#121218] max-h-48 overflow-y-auto space-y-1">
             </div>
           </div>
@@ -447,23 +448,23 @@
 
         <div>
           <label class="block text-xs font-semibold text-neon-crimson uppercase tracking-wider mb-1 flex items-center gap-1.5">
-            <i class="ph-bold ph-list-checks"></i> 1. Resumen & Puntos Claves
+            <i class="ph-bold ph-list-checks"></i> 1. Resumen & Puntos Claves (Opcional)
           </label>
-          <textarea id="noteSummary" rows="3" required placeholder="Resumen o citas principales..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
+          <textarea id="noteSummary" rows="2" placeholder="Resumen o citas principales..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-[13px] text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-yellow-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-            <i class="ph-bold ph-lightbulb"></i> 2. Enseñanzas Principales
+            <i class="ph-bold ph-lightbulb"></i> 2. Enseñanzas Principales (Opcional)
           </label>
-          <textarea id="noteTeachings" rows="3" required placeholder="Principios descubiertos..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
+          <textarea id="noteTeachings" rows="2" placeholder="Principios descubiertos..." class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs sm:text-[13px] text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
         </div>
 
         <div class="bg-neon-red/5 p-3 rounded-2xl border border-neon-red/20">
           <label class="block text-xs font-bold text-neon-red uppercase tracking-wider mb-1 flex items-center gap-1.5">
-            <i class="ph-bold ph-lightning"></i> 3. ¿Cómo Aplicarlo a mi Vida Real?
+            <i class="ph-bold ph-lightning"></i> 3. ¿Cómo Aplicarlo a mi Vida Real? (Opcional)
           </label>
-          <textarea id="noteApplication" rows="3" required placeholder="Acciones concretas inmediatas..." class="w-full bg-black/70 border border-neon-red/30 rounded-xl p-2.5 text-xs sm:text-sm text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
+          <textarea id="noteApplication" rows="2" placeholder="Acciones concretas inmediatas..." class="w-full bg-black/70 border border-neon-red/30 rounded-xl p-2.5 text-xs sm:text-[13px] text-white focus:border-neon-red focus:outline-none break-words resize-y"></textarea>
         </div>
 
         <div class="pt-3 border-t border-white/10 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 flex-shrink-0">
@@ -574,16 +575,6 @@
           status: 'Leyendo',
           currentPage: 98,
           totalPages: 150
-        },
-        {
-          id: 'b2',
-          genreId: 'g2',
-          authorId: 'a2',
-          title: 'Meditaciones',
-          cover: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80',
-          status: 'Completado',
-          currentPage: 220,
-          totalPages: 220
         }
       ],
       notes: [
@@ -591,6 +582,7 @@
           id: 'n1',
           bookId: 'b1',
           chapter: 'Capítulo 1',
+          folder: 'Ideas Principales',
           title: 'El sorprendente poder de los hábitos atómicos',
           summary: 'La regla del 1%: Mejorar un 1% cada día produce un resultado compuesto gigantesco.',
           teachings: 'Los resultados son una medida diferida de tus hábitos.',
@@ -668,6 +660,8 @@
         this.searchQuery = '';
         this.selectedLocalFile = null;
         this.selectedNoteBookmarkIds = [];
+        this.activeNoteFolderFilter = 'ALL';
+        this.audioBookmarksCollapsed = true; // Control para desplegar/contraer los marcadores de audio
 
         this.init();
       }
@@ -679,9 +673,7 @@
               a.genreIds = a.genreId ? [a.genreId] : [];
               delete a.genreId;
             }
-            if (a.photo === undefined) {
-              a.photo = '';
-            }
+            if (a.photo === undefined) a.photo = '';
           });
         }
         if (this.data && Array.isArray(this.data.books)) {
@@ -698,6 +690,10 @@
               n.bookmarkIds = n.bookmarkId ? [n.bookmarkId] : [];
               delete n.bookmarkId;
             }
+            if (!n.folder) n.folder = 'General';
+            if (!n.summary) n.summary = '';
+            if (!n.teachings) n.teachings = '';
+            if (!n.application) n.application = '';
           });
         }
       }
@@ -784,7 +780,6 @@
           notes: []
         };
         this.saveProfileData(newProfileId, newProfileData);
-
         this.setActiveProfileId(newProfileId);
       }
 
@@ -925,6 +920,7 @@
       navigateTo(view, params = {}) {
         this.currentView = view;
         this.viewParams = params;
+        this.activeNoteFolderFilter = 'ALL';
         this.renderView();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -1006,13 +1002,10 @@
 
       renderDashboardHTML() {
         const currentlyReading = this.data.books.filter(b => b.status === 'Leyendo');
-        
         const booksByAuthor = {};
         this.data.books.forEach(book => {
           const authorId = book.authorId || 'unknown';
-          if (!booksByAuthor[authorId]) {
-            booksByAuthor[authorId] = [];
-          }
+          if (!booksByAuthor[authorId]) booksByAuthor[authorId] = [];
           booksByAuthor[authorId].push(book);
         });
 
@@ -1047,6 +1040,9 @@
                   <button onclick="app.openModal('genreModal')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/10 flex items-center gap-1.5 sm:gap-2 ios-btn-tap">
                     <i class="ph-bold ph-folder-plus text-sm sm:text-base text-neon-crimson"></i> Crear Género
                   </button>
+                  <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2 ios-btn-tap">
+                    <i class="ph-bold ph-sparkle text-sm sm:text-base text-purple-400"></i> Analizar en Gemini
+                  </a>
                 </div>
               </div>
             </div>
@@ -1059,7 +1055,6 @@
                   </h3>
                   <span class="text-[11px] sm:text-xs text-gray-400">${currentlyReading.length} en curso</span>
                 </div>
-                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                   ${currentlyReading.map(book => this.renderBookCardHorizontal(book)).join('')}
                 </div>
@@ -1114,7 +1109,7 @@
                       <div class="glass-panel p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/10 bg-[#0c0c12]">
                         <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-white/10">
                           <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neon-red/20 border border-neon-red/40 flex items-center justify-center text-neon-crimson font-bold text-xs sm:text-sm overflow-hidden flex-shrink-0">
+                            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neon-red/25 border border-neon-red/40 flex items-center justify-center text-neon-crimson font-bold text-xs sm:text-sm overflow-hidden flex-shrink-0">
                               ${authorObj && authorObj.photo ? `<img src="${authorObj.photo}" alt="${this.escapeHTML(authorName)}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100?text=${authorName.charAt(0)}'"/>` : `<i class="ph-bold ph-user"></i>`}
                             </div>
                             <div>
@@ -1159,7 +1154,6 @@
               <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-neon-red/20 to-transparent border border-neon-red/30 flex items-center justify-center text-neon-red group-hover:scale-110 transition-transform">
                 <i class="ph-bold ${genre.icon || 'ph-folder'} text-xl sm:text-2xl" style="color: ${genre.color || '#ff0033'}"></i>
               </div>
-              
               <div class="flex items-center gap-1 opacity-80 hover:opacity-100" onclick="event.stopPropagation()">
                 <button onclick="app.editGenre('${genre.id}')" title="Editar Género" class="text-gray-400 hover:text-white p-1">
                   <i class="ph-bold ph-pencil-simple text-xs sm:text-sm"></i>
@@ -1169,7 +1163,6 @@
                 </button>
               </div>
             </div>
-
             <div class="mt-3">
               <h4 class="font-bold text-sm sm:text-base text-white group-hover:text-neon-crimson transition-colors truncate">${this.escapeHTML(genre.name)}</h4>
               <div class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-400 mt-1">
@@ -1210,7 +1203,6 @@
                   <div class="h-full bg-gradient-to-r from-red-800 to-neon-red rounded-full transition-all duration-500" style="width: ${pct}%"></div>
                 </div>
               </div>
-
               <div class="mt-1.5 text-[10px] sm:text-[11px] text-gray-400 flex items-center gap-1.5">
                 <i class="ph-bold ph-notebook text-neon-crimson"></i> ${notesCount} notas
               </div>
@@ -1245,7 +1237,6 @@
       renderGenreViewHTML() {
         const genre = this.data.genres.find(g => g.id === this.viewParams.genreId);
         if (!genre) return `<p class="text-white">Género no encontrado.</p>`;
-
         const authorsInGenre = this.data.authors.filter(a => a.genreIds && a.genreIds.includes(genre.id));
 
         return `
@@ -1260,7 +1251,6 @@
                   <p class="text-[11px] sm:text-xs text-gray-400">Carpeta • ${authorsInGenre.length} Autores</p>
                 </div>
               </div>
-
               <button onclick="app.openAuthorModalForGenre('${genre.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 rounded-xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap w-full sm:w-auto">
                 <i class="ph-bold ph-user-plus text-sm"></i> Nuevo Autor
               </button>
@@ -1270,7 +1260,6 @@
               <h3 class="text-base sm:text-lg font-bold text-white mb-3 flex items-center gap-2">
                 <i class="ph-bold ph-users text-neon-red"></i> Autores en ${this.escapeHTML(genre.name)}
               </h3>
-
               ${authorsInGenre.length === 0 ? `
                 <div class="glass-panel p-6 rounded-2xl text-center border-dashed border-white/10">
                   <p class="text-xs sm:text-sm text-gray-400">Aún no hay autores en este género.</p>
@@ -1312,11 +1301,8 @@
       renderAuthorViewHTML() {
         const author = this.data.authors.find(a => a.id === this.viewParams.authorId);
         if (!author) return `<p class="text-white">Autor no encontrado.</p>`;
-
         const booksByAuthor = this.data.books.filter(b => b.authorId === author.id);
-        const authorGenres = (author.genreIds || [])
-          .map(gid => this.data.genres.find(g => g.id === gid))
-          .filter(Boolean);
+        const authorGenres = (author.genreIds || []).map(gid => this.data.genres.find(g => g.id === gid)).filter(Boolean);
 
         return `
           <div class="animate-fade-in space-y-4 sm:space-y-6">
@@ -1328,7 +1314,6 @@
                 <div>
                   <h2 class="text-lg sm:text-2xl font-bold text-white leading-tight">${this.escapeHTML(author.name)}</h2>
                   <p class="text-[11px] sm:text-xs text-gray-400 line-clamp-2 mt-0.5">${author.bio ? this.escapeHTML(author.bio) : 'Carpeta de Autor'}</p>
-                  
                   ${authorGenres.length > 0 ? `
                     <div class="flex flex-wrap gap-1.5 mt-2">
                       ${authorGenres.map(g => `
@@ -1340,7 +1325,6 @@
                   ` : ''}
                 </div>
               </div>
-
               <div class="flex items-center gap-2 w-full sm:w-auto">
                 <button onclick="app.editAuthor('${author.id}')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3 py-2 rounded-xl border border-white/10 flex items-center justify-center gap-1.5 ios-btn-tap">
                   <i class="ph-bold ph-pencil-simple text-sm"></i> Editar
@@ -1355,7 +1339,6 @@
               <h3 class="text-base sm:text-lg font-bold text-white mb-3 flex items-center gap-2">
                 <i class="ph-bold ph-books text-neon-red"></i> Libros de este Autor
               </h3>
-
               ${booksByAuthor.length === 0 ? `
                 <div class="glass-panel p-6 rounded-2xl text-center border-dashed border-white/10">
                   <p class="text-xs sm:text-sm text-gray-400">Aún no hay libros de este autor.</p>
@@ -1377,10 +1360,15 @@
 
         const author = this.data.authors.find(a => a.id === book.authorId);
         const genre = this.data.genres.find(g => g.id === book.genreId);
-        const notes = this.data.notes.filter(n => n.bookId === book.id);
+        const allNotes = this.data.notes.filter(n => n.bookId === book.id);
         const { current, total, pct } = this.calcBookProgress(book.currentPage, book.totalPages);
-
         const hasAudio = book.audioUrl || book.hasStoredAudio;
+
+        const availableFolders = ['ALL', ...new Set(allNotes.map(n => n.folder ? n.folder.trim() : 'General'))];
+        
+        const notes = this.activeNoteFolderFilter === 'ALL' 
+          ? allNotes 
+          : allNotes.filter(n => (n.folder ? n.folder.trim() : 'General') === this.activeNoteFolderFilter);
 
         return `
           <div class="animate-fade-in space-y-6 sm:space-y-8">
@@ -1399,7 +1387,6 @@
                     </span>
                     ${genre ? `<span class="text-[10px] text-gray-300 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full"><i class="ph-bold ${genre.icon}"></i> ${this.escapeHTML(genre.name)}</span>` : ''}
                   </div>
-
                   <h2 class="text-xl sm:text-2xl font-extrabold text-white leading-tight">${this.escapeHTML(book.title)}</h2>
                   <p class="text-xs sm:text-sm text-gray-300 mt-0.5">Por <span class="text-white font-semibold cursor-pointer hover:text-neon-red transition-colors" ${author ? `onclick="app.navigateTo('author', {authorId: '${author.id}'})"` : ''}>${author ? this.escapeHTML(author.name) : 'Autor Desconocido'}</span></p>
                 </div>
@@ -1411,16 +1398,13 @@
                     </span>
                     <span class="font-extrabold text-neon-crimson text-xs sm:text-sm">${pct}% Completado</span>
                   </div>
-
                   <div class="w-full h-2 sm:h-2.5 bg-black rounded-full overflow-hidden border border-white/10">
                     <div class="h-full bg-gradient-to-r from-red-800 to-neon-red rounded-full transition-all duration-500 shadow-neon-sm" style="width: ${pct}%"></div>
                   </div>
-
                   <div class="flex items-center justify-between pt-0.5 gap-2 flex-wrap">
                     <div class="text-[11px] sm:text-xs text-gray-300 flex items-center gap-1">
                       <span class="text-white font-bold">${current}</span> / <span class="text-gray-400">${total} páginas</span>
                     </div>
-
                     <div class="flex items-center gap-1.5">
                       <label class="text-[10px] sm:text-[11px] text-gray-400">Pág actual:</label>
                       <input 
@@ -1435,10 +1419,13 @@
                   </div>
                 </div>
 
-                <div class="flex items-center gap-2 pt-1">
+                <div class="flex items-center gap-2 pt-1 flex-wrap">
                   <button onclick="app.openNoteModal('${book.id}')" class="flex-1 sm:flex-none bg-neon-red hover:bg-red-600 text-white text-xs px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap">
                     <i class="ph-bold ph-note-pencil text-sm sm:text-base"></i> Nueva Nota
                   </button>
+                  <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-purple-900/40 to-blue-900/40 hover:from-purple-900/60 hover:to-blue-900/60 text-purple-200 text-xs px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl border border-purple-500/40 font-semibold flex items-center justify-center gap-1.5 ios-btn-tap" title="Copiar resumen y analizar en Gemini">
+                    <i class="ph-bold ph-sparkle text-sm text-purple-400"></i> Gemini AI
+                  </a>
                   <button onclick="app.editBook('${book.id}')" class="bg-white/5 hover:bg-white/10 text-white text-xs px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl border border-white/10 flex items-center justify-center gap-1 ios-btn-tap">
                     <i class="ph-bold ph-pencil-simple text-sm"></i>
                   </button>
@@ -1449,32 +1436,38 @@
               </div>
             </div>
 
-            <!-- AUDIOLIBRO COMPONENT (DISEÑO NEON RED CUSTOM) -->
+            <!-- REPRODUCTOR DE AUDIOLIBRO CON 1s Y MARCADORES PLEGABLES -->
             <section class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/40 shadow-neon-sm space-y-4">
               <div class="flex items-center justify-between pb-2 border-b border-white/10">
                 <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                   <i class="ph-bold ph-headphones text-neon-red"></i> Reproductor de Audiolibro
                 </h3>
                 <span class="text-[10px] sm:text-xs text-neon-crimson font-medium bg-neon-red/10 px-2.5 py-0.5 rounded-full border border-neon-red/30">
-                  Guardado Automático Local
+                  Control Independiente
                 </span>
               </div>
 
               ${hasAudio ? `
                 <div class="space-y-4">
-                  <!-- Audio HTML oculto para lógica -->
                   <audio id="audiobookPlayer" class="hidden" src="${this.escapeHTML(book.audioUrl)}"></audio>
 
-                  <!-- Interfaz Neón Red Personalizada -->
                   <div class="bg-gradient-to-r from-[#0d0004] via-[#160007] to-[#0d0004] p-4 sm:p-5 rounded-2xl border border-neon-red/30 shadow-neon-md space-y-3">
-                    <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center justify-between gap-3 flex-wrap">
                       <div class="flex items-center gap-3">
-                        <button id="customPlayBtn" onclick="app.togglePlayPause()" class="w-11 h-11 rounded-full bg-neon-red hover:bg-red-600 text-white flex items-center justify-center shadow-neon-md transition-transform active:scale-90 flex-shrink-0">
-                          <i id="customPlayIcon" class="ph-bold ph-play text-xl ml-0.5"></i>
-                        </button>
-                        <div>
-                          <p class="text-xs font-bold text-white truncate max-w-[180px] sm:max-w-xs">${this.escapeHTML(book.title)}</p>
-                          <p class="text-[10px] text-neon-crimson font-medium">Audiolibro en reproducción</p>
+                        <div class="flex items-center gap-1.5">
+                          <button onclick="app.playAudio()" class="w-10 h-10 rounded-full bg-neon-red hover:bg-red-600 text-white flex items-center justify-center shadow-neon-sm transition-transform active:scale-90" title="Play">
+                            <i class="ph-bold ph-play text-base ml-0.5"></i>
+                          </button>
+                          <button onclick="app.pauseAudio()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center border border-white/20 transition-transform active:scale-90" title="Pausa">
+                            <i class="ph-bold ph-pause text-base"></i>
+                          </button>
+                          <button onclick="app.stopAudio()" class="w-10 h-10 rounded-full bg-red-950/60 hover:bg-red-900/60 text-red-400 flex items-center justify-center border border-red-500/30 transition-transform active:scale-90" title="Stop & Reiniciar">
+                            <i class="ph-bold ph-stop text-base"></i>
+                          </button>
+                        </div>
+                        <div class="min-w-0">
+                          <p class="text-xs font-bold text-white truncate max-w-[150px] sm:max-w-xs">${this.escapeHTML(book.title)}</p>
+                          <p id="playerStatusText" class="text-[10px] text-neon-crimson font-medium">Listo</p>
                         </div>
                       </div>
 
@@ -1484,8 +1477,37 @@
                       </div>
                     </div>
 
-                    <!-- Barra de Progreso Personalizada -->
-                    <div class="space-y-1">
+                    <div class="flex items-center justify-between gap-2 pt-2 border-t border-neon-red/20 flex-wrap">
+                      <div class="flex items-center gap-1.5">
+                        <button onclick="app.skipBackward()" class="bg-black/60 hover:bg-neon-red/20 border border-white/10 hover:border-neon-red/40 text-xs px-3 py-1.5 rounded-xl text-white flex items-center gap-1 ios-btn-tap">
+                          <i class="ph-bold ph-arrow-counter-clockwise text-neon-crimson"></i> Retroceder
+                        </button>
+                        <select id="rewindSecondsSelect" class="bg-black/80 border border-white/10 rounded-xl px-2 py-1.5 text-xs text-white focus:outline-none focus:border-neon-red">
+                          <option value="1">1 seg</option>
+                          <option value="5">5 seg</option>
+                          <option value="10" selected>10 seg</option>
+                          <option value="15">15 seg</option>
+                          <option value="30">30 seg</option>
+                          <option value="60">60 seg</option>
+                        </select>
+                      </div>
+
+                      <div class="flex items-center gap-1.5">
+                        <select id="forwardSecondsSelect" class="bg-black/80 border border-white/10 rounded-xl px-2 py-1.5 text-xs text-white focus:outline-none focus:border-neon-red">
+                          <option value="1">1 seg</option>
+                          <option value="5">5 seg</option>
+                          <option value="10" selected>10 seg</option>
+                          <option value="15">15 seg</option>
+                          <option value="30">30 seg</option>
+                          <option value="60">60 seg</option>
+                        </select>
+                        <button onclick="app.skipForward()" class="bg-black/60 hover:bg-neon-red/20 border border-white/10 hover:border-neon-red/40 text-xs px-3 py-1.5 rounded-xl text-white flex items-center gap-1 ios-btn-tap">
+                          Adelantar <i class="ph-bold ph-arrow-clockwise text-neon-crimson"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="space-y-1 pt-1">
                       <input type="range" id="customProgressBar" min="0" max="100" step="0.1" value="0" oninput="app.handleSeek(this.value)" class="neon-range w-full cursor-pointer" />
                       <div class="flex justify-between text-[10px] text-gray-400 font-mono">
                         <span id="currentTimeText">0:00</span>
@@ -1503,31 +1525,51 @@
                     </div>
                   </div>
 
-                  <div class="space-y-2">
-                    <h4 class="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                      <i class="ph-bold ph-bookmarks text-neon-crimson"></i> Marcadores Guardados (${(book.audioBookmarks || []).length})
-                    </h4>
-                    ${(book.audioBookmarks || []).length === 0 ? `
-                      <p class="text-[11px] text-gray-500 italic pl-1">No hay marcadores aún. Crea uno mientras escuchas.</p>
-                    ` : `
-                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
-                        ${(book.audioBookmarks || []).map(bm => `
-                          <div class="bg-black/50 border border-white/10 hover:border-neon-red/40 rounded-xl p-2.5 flex items-center justify-between gap-2 transition-all">
-                            <button onclick="app.seekAudioTo(${bm.time})" class="flex-1 min-w-0 text-left flex items-center gap-2 group">
-                              <span class="text-[10px] font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2 py-0.5 rounded-lg flex-shrink-0">
-                                ${this.formatTime(bm.time)}
-                              </span>
-                              <span class="text-xs text-gray-200 group-hover:text-neon-red transition-colors truncate">
-                                ${this.escapeHTML(bm.label || 'Sin título')}
-                              </span>
-                            </button>
-                            <button onclick="app.deleteAudioBookmark('${book.id}', '${bm.id}')" class="text-gray-400 hover:text-red-400 p-1 flex-shrink-0">
-                              <i class="ph-bold ph-trash text-xs"></i>
-                            </button>
-                          </div>
-                        `).join('')}
-                      </div>
-                    `}
+                  <!-- LISTA DE MARCADORES PLEGABLE -->
+                  <div class="space-y-2 bg-black/30 p-3 rounded-2xl border border-white/10">
+                    <div onclick="app.toggleAudioBookmarksCollapse()" class="flex items-center justify-between cursor-pointer select-none py-1 group">
+                      <h4 class="text-xs font-semibold text-gray-200 group-hover:text-neon-crimson flex items-center gap-1.5 transition-colors">
+                        <i class="ph-bold ph-bookmarks text-neon-crimson"></i> 
+                        Marcadores de Audio (${(book.audioBookmarks || []).length})
+                        <span class="text-[10px] text-gray-400 font-normal ml-1">(Haz clic para desplegar/contraer)</span>
+                      </h4>
+                      <i id="audioBookmarksChevron" class="ph-bold ${this.audioBookmarksCollapsed ? 'ph-caret-down' : 'ph-caret-up'} text-gray-400 group-hover:text-white text-sm transition-transform"></i>
+                    </div>
+
+                    <div id="audioBookmarksListContainer" class="${this.audioBookmarksCollapsed ? 'hidden' : 'block'} space-y-2.5 pt-2 border-t border-white/10">
+                      ${(book.audioBookmarks || []).length === 0 ? `
+                        <p class="text-[11px] text-gray-500 italic pl-1">No hay marcadores aún. Crea uno mientras escuchas.</p>
+                      ` : `
+                        <div class="grid grid-cols-1 gap-2.5 max-h-60 overflow-y-auto pr-1">
+                          ${(book.audioBookmarks || []).map(bm => `
+                            <div class="bg-black/60 border border-white/10 hover:border-neon-red/40 rounded-xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 transition-all">
+                              <div class="flex items-center gap-2 flex-1 flex-wrap sm:flex-nowrap">
+                                <button onclick="app.seekAudioTo(${bm.time})" class="text-[10px] font-bold text-neon-crimson bg-neon-red/20 border border-neon-red/40 px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-neon-red hover:text-white transition-colors flex-shrink-0">
+                                  <i class="ph-bold ph-play-circle text-xs"></i> Ir (${this.formatTime(bm.time)})
+                                </button>
+                                
+                                <div class="flex items-center gap-1 flex-1 min-w-[200px]">
+                                  <input type="text" id="bmLabel_${bm.id}" value="${this.escapeHTML(bm.label || '')}" placeholder="Nombre del marcador..." class="flex-1 bg-black/80 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white focus:border-neon-red focus:outline-none" />
+                                  <div class="flex items-center gap-1">
+                                    <span class="text-[10px] text-gray-400">Seg:</span>
+                                    <input type="number" id="bmTime_${bm.id}" value="${Math.floor(bm.time)}" min="0" step="1" class="w-16 bg-black/80 border border-white/10 rounded-lg px-2 py-1 text-xs text-white text-center focus:border-neon-red focus:outline-none" />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="flex items-center gap-1.5 justify-end flex-shrink-0">
+                                <button onclick="app.updateAudioBookmark('${book.id}', '${bm.id}')" class="bg-neon-red/20 hover:bg-neon-red text-neon-crimson hover:text-white text-xs px-3 py-1 rounded-lg border border-neon-red/40 font-semibold transition-colors ios-btn-tap flex items-center gap-1">
+                                  <i class="ph-bold ph-floppy-disk"></i> Actualizar
+                                </button>
+                                <button onclick="app.deleteAudioBookmark('${book.id}', '${bm.id}')" class="text-gray-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-950/40">
+                                  <i class="ph-bold ph-trash text-sm"></i>
+                                </button>
+                              </div>
+                            </div>
+                          `).join('')}
+                        </div>
+                      `}
+                    </div>
                   </div>
                 </div>
               ` : `
@@ -1540,37 +1582,77 @@
               `}
             </section>
 
-            <section>
-              <div class="flex items-center justify-between mb-4">
+            <!-- SECCIÓN DE NOTAS CON FUENTE DE TAMAÑO 13 -->
+            <section class="space-y-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
                 <div>
                   <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                    <i class="ph-bold ph-notebook text-neon-red"></i> Notas por Capítulo
+                    <i class="ph-bold ph-notebook text-neon-red"></i> Notas y Puntos por Capítulos
                   </h3>
-                  <p class="text-[11px] sm:text-xs text-gray-400">Estudio activo y aplicación práctica</p>
+                  <p class="text-[11px] sm:text-xs text-gray-400">Organizadas por carpetas temáticas</p>
                 </div>
-                
-                <button onclick="app.openNoteModal('${book.id}')" class="text-xs text-neon-crimson hover:underline flex items-center gap-1 font-medium">
-                  + Agregar
+                <button onclick="app.openNoteModal('${book.id}')" class="bg-neon-red hover:bg-red-600 text-white text-xs px-4 py-2 rounded-xl font-semibold shadow-neon-sm flex items-center justify-center gap-1.5 ios-btn-tap">
+                  <i class="ph-bold ph-plus"></i> Nueva Nota
                 </button>
               </div>
+
+              ${availableFolders.length > 1 ? `
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-2 hide-scrollbar">
+                  <span class="text-xs text-gray-400 font-semibold mr-1 flex items-center gap-1 flex-shrink-0">
+                    <i class="ph-bold ph-folder"></i> Carpeta:
+                  </span>
+                  ${availableFolders.map(folder => {
+                    const isActive = this.activeNoteFolderFilter === folder;
+                    const folderNameDisplay = folder === 'ALL' ? 'Todas las carpetas' : folder;
+                    const count = folder === 'ALL' ? allNotes.length : allNotes.filter(n => (n.folder ? n.folder.trim() : 'General') === folder).length;
+                    return `
+                      <button onclick="app.setNoteFolderFilter('${folder}')" class="text-xs px-3.5 py-1.5 rounded-full font-medium transition-all flex items-center gap-1.5 flex-shrink-0 ios-btn-tap ${
+                        isActive 
+                          ? 'bg-neon-red text-white shadow-neon-sm border border-neon-red' 
+                          : 'bg-black/60 text-gray-300 hover:bg-white/10 border border-white/10'
+                      }">
+                        <i class="ph-bold ${folder === 'ALL' ? 'ph-squares-four' : 'ph-folder-open'}"></i>
+                        <span>${this.escapeHTML(folderNameDisplay)} (${count})</span>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+              ` : ''}
 
               ${notes.length === 0 ? `
                 <div class="glass-panel p-6 sm:p-10 rounded-2xl sm:rounded-3xl text-center border-dashed border-white/10">
                   <i class="ph-bold ph-notepad text-3xl sm:text-5xl text-gray-600 mb-2 sm:mb-3"></i>
-                  <h4 class="text-sm sm:text-base font-bold text-white">No hay notas para este libro</h4>
-                  <p class="text-[11px] sm:text-xs text-gray-400 mt-1 max-w-md mx-auto">Registra resúmenes y define cómo aplicar lo aprendido.</p>
-                  <button onclick="app.openNoteModal('${book.id}')" class="mt-3 sm:mt-4 bg-neon-red text-white text-xs px-4 py-2 rounded-xl sm:rounded-2xl font-semibold shadow-neon-sm">
-                    Crear nota de estudio
-                  </button>
+                  <h4 class="text-sm sm:text-base font-bold text-white">No hay notas en esta carpeta</h4>
+                  <p class="text-[11px] sm:text-xs text-gray-400 mt-1 max-w-md mx-auto">Selecciona otra carpeta arriba o crea una nueva nota.</p>
                 </div>
               ` : `
-                <div class="space-y-3 sm:space-y-4">
+                <div class="space-y-3">
                   ${notes.map(note => this.renderNoteCard(note)).join('')}
                 </div>
               `}
             </section>
           </div>
         `;
+      }
+
+      toggleAudioBookmarksCollapse() {
+        this.audioBookmarksCollapsed = !this.audioBookmarksCollapsed;
+        const container = document.getElementById('audioBookmarksListContainer');
+        const chevron = document.getElementById('audioBookmarksChevron');
+        if (container && chevron) {
+          if (this.audioBookmarksCollapsed) {
+            container.classList.add('hidden');
+            chevron.className = 'ph-bold ph-caret-down text-gray-400 group-hover:text-white text-sm transition-transform';
+          } else {
+            container.classList.remove('hidden');
+            chevron.className = 'ph-bold ph-caret-up text-gray-400 group-hover:text-white text-sm transition-transform';
+          }
+        }
+      }
+
+      setNoteFolderFilter(folderName) {
+        this.activeNoteFolderFilter = folderName;
+        this.renderView();
       }
 
       renderNoteCard(note) {
@@ -1587,6 +1669,9 @@
                   <span class="text-[10px] font-bold text-neon-crimson bg-neon-red/10 border border-neon-red/20 px-2 py-0.5 rounded-full inline-block">
                     ${this.escapeHTML(note.chapter)}
                   </span>
+                  <span class="text-[10px] font-semibold text-gray-300 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                    <i class="ph-bold ph-folder text-neon-crimson"></i> ${this.escapeHTML(note.folder || 'General')}
+                  </span>
                   ${bookmarks.map(bm => `
                     <button onclick="app.seekAudioTo(${bm.time})" title="Saltar al audio" class="text-[10px] font-bold text-neon-crimson bg-neon-red/20 border border-neon-red/40 px-2 py-0.5 rounded-full inline-flex items-center gap-1 hover:bg-neon-red hover:text-white transition-colors ios-btn-tap">
                       <i class="ph-bold ph-headphones text-xs"></i> ${this.formatTime(bm.time)} - ${this.escapeHTML(bm.label || 'Marcador')}
@@ -1595,35 +1680,53 @@
                 </div>
                 <h4 class="text-sm sm:text-base font-bold text-white break-words">${this.escapeHTML(note.title)}</h4>
               </div>
-              
               <div class="flex items-center gap-1 flex-shrink-0">
+                <button onclick="app.copyNoteToClipboard('${note.id}')" title="Copiar texto para Gemini" class="text-purple-400 hover:text-purple-300 p-1"><i class="ph-bold ph-copy text-xs sm:text-sm"></i></button>
                 <button onclick="app.editNote('${note.id}')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-pencil-simple text-xs sm:text-sm"></i></button>
                 <button onclick="app.deleteNote('${note.id}')" class="text-gray-400 hover:text-red-400 p-1"><i class="ph-bold ph-trash text-xs sm:text-sm"></i></button>
               </div>
             </div>
 
-            <div class="space-y-1">
-              <h5 class="text-[11px] sm:text-xs font-bold text-gray-300 flex items-center gap-1">
-                <i class="ph-bold ph-list-checks text-neon-crimson"></i> Resumen & Puntos Clave:
-              </h5>
-              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-wrap break-words">${this.escapeHTML(note.summary)}</p>
-            </div>
+            ${note.summary ? `
+              <div class="space-y-1">
+                <h5 class="text-[11px] sm:text-xs font-bold text-gray-300 flex items-center gap-1">
+                  <i class="ph-bold ph-list-checks text-neon-crimson"></i> Resumen & Puntos Clave:
+                </h5>
+                <p class="text-[13px] text-gray-300 leading-relaxed pl-4 whitespace-pre-wrap break-words">${this.escapeHTML(note.summary)}</p>
+              </div>
+            ` : ''}
 
-            <div class="space-y-1">
-              <h5 class="text-[11px] sm:text-xs font-bold text-yellow-400 flex items-center gap-1">
-                <i class="ph-bold ph-lightbulb"></i> Enseñanzas Principales:
-              </h5>
-              <p class="text-xs text-gray-300 leading-relaxed pl-4 whitespace-pre-wrap break-words">${this.escapeHTML(note.teachings)}</p>
-            </div>
+            ${note.teachings ? `
+              <div class="space-y-1">
+                <h5 class="text-[11px] sm:text-xs font-bold text-yellow-400 flex items-center gap-1">
+                  <i class="ph-bold ph-lightbulb"></i> Enseñanzas Principales:
+                </h5>
+                <p class="text-[13px] text-gray-300 leading-relaxed pl-4 whitespace-pre-wrap break-words">${this.escapeHTML(note.teachings)}</p>
+              </div>
+            ` : ''}
 
-            <div class="bg-gradient-to-r from-neon-red/15 to-transparent border-l-2 sm:border-l-4 border-neon-red p-2.5 sm:p-3.5 rounded-r-xl">
-              <h5 class="text-[11px] sm:text-xs font-extrabold text-neon-red uppercase tracking-wider flex items-center gap-1">
-                <i class="ph-bold ph-lightning"></i> Aplicación en mi Vida:
-              </h5>
-              <p class="text-xs text-white font-medium mt-0.5 leading-relaxed whitespace-pre-wrap break-words">${this.escapeHTML(note.application)}</p>
-            </div>
+            ${note.application ? `
+              <div class="bg-gradient-to-r from-neon-red/15 to-transparent border-l-2 sm:border-l-4 border-neon-red p-2.5 sm:p-3.5 rounded-r-xl">
+                <h5 class="text-[11px] sm:text-xs font-extrabold text-neon-red uppercase tracking-wider flex items-center gap-1">
+                  <i class="ph-bold ph-lightning"></i> Aplicación en mi Vida:
+                </h5>
+                <p class="text-[13px] text-white font-medium mt-0.5 leading-relaxed whitespace-pre-wrap break-words">${this.escapeHTML(note.application)}</p>
+              </div>
+            ` : ''}
           </div>
         `;
+      }
+
+      copyNoteToClipboard(noteId) {
+        const note = this.data.notes.find(n => n.id === noteId);
+        if (!note) return;
+        const textToCopy = `Título: ${note.title}\nCapítulo: ${note.chapter}\nResumen: ${note.summary}\nEnseñanzas: ${note.teachings}\nAplicación: ${note.application}`;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          this.showToast('¡Texto copiado! Abriendo Gemini...');
+          window.open('https://gemini.google.com', '_blank');
+        }).catch(() => {
+          alert('No se pudo copiar automáticamente.');
+        });
       }
 
       renderSearchViewHTML() {
@@ -1641,7 +1744,6 @@
         return `
           <div class="animate-fade-in space-y-4">
             <h2 class="text-base sm:text-lg font-bold text-white">Búsqueda: "<span class="text-neon-red">${this.escapeHTML(this.searchQuery)}</span>"</h2>
-
             ${matchedBooks.length === 0 ? `
               <div class="glass-panel p-6 rounded-2xl text-center">
                 <i class="ph-bold ph-magnifying-glass text-3xl text-gray-600 mb-2"></i>
@@ -1681,7 +1783,6 @@
 
         const backdrop = document.getElementById('modalBackdrop');
         const modal = document.getElementById(modalId);
-        
         backdrop.classList.remove('hidden');
         modal.classList.remove('hidden');
 
@@ -1725,16 +1826,9 @@
         }
 
         const idsArray = Array.isArray(selectedGenreIds) ? selectedGenreIds : (selectedGenreIds ? [selectedGenreIds] : []);
-
         select.innerHTML = this.data.genres.map(g => 
           `<option value="${g.id}" ${idsArray.includes(g.id) ? 'selected' : ''}>📁 ${this.escapeHTML(g.name)}</option>`
         ).join('');
-      }
-
-      handleAuthorGenreSelectChange(value) {
-        if (value === 'NEW') {
-          this.openModal('genreModal');
-        }
       }
 
       saveGenre(event) {
@@ -1743,7 +1837,6 @@
         const name = document.getElementById('genreName').value.trim();
         const color = document.getElementById('genreColor').value;
         const icon = document.getElementById('genreIcon').value.trim() || 'ph-books';
-
         let savedGenreId = id;
 
         if (id) {
@@ -1757,7 +1850,6 @@
 
         this.saveData();
         this.updateAllGenreDropdowns([savedGenreId], savedGenreId);
-        
         this.renderView();
         this.closeModal('genreModal');
         this.showToast('Género guardado');
@@ -1773,7 +1865,6 @@
         document.getElementById('genreColor').value = genre.color || '#ff0033';
         document.getElementById('genreIcon').value = genre.icon || 'ph-books';
         document.getElementById('genreModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Género`;
-
         this.openModal('genreModal');
       }
 
@@ -1781,9 +1872,7 @@
         if (confirm('¿Eliminar género? Se desvincularán los autores y libros asociados.')) {
           this.data.genres = this.data.genres.filter(g => g.id !== genreId);
           this.data.authors.forEach(a => {
-            if (a.genreIds) {
-              a.genreIds = a.genreIds.filter(gid => gid !== genreId);
-            }
+            if (a.genreIds) a.genreIds = a.genreIds.filter(gid => gid !== genreId);
           });
           this.saveData();
           this.updateAllGenreDropdowns();
@@ -1796,10 +1885,8 @@
         document.getElementById('authorForm').reset();
         document.getElementById('authorId').value = '';
         document.getElementById('authorPhoto').value = '';
-        
         const targetGenreIds = genreId ? [genreId] : (this.data.genres.length > 0 ? [this.data.genres[0].id] : []);
         this.populateAuthorGenreSelect(targetGenreIds);
-        
         document.getElementById('authorModalTitle').innerHTML = `<i class="ph-bold ph-user-plus text-neon-red"></i> Nuevo Autor`;
         this.openModal('authorModal');
       }
@@ -1845,7 +1932,6 @@
         this.populateAuthorGenreSelect(author.genreIds || []);
         document.getElementById('authorBio').value = author.bio || '';
         document.getElementById('authorModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Autor`;
-
         this.openModal('authorModal');
       }
 
@@ -1906,7 +1992,6 @@
         if (!authorSelect) return;
 
         const filteredAuthors = this.data.authors.filter(a => a.genreIds && a.genreIds.includes(genreId));
-
         if (filteredAuthors.length === 0) {
           authorSelect.innerHTML = `<option value="">No hay autores en este género</option>`;
           return;
@@ -1935,25 +2020,16 @@
         }
 
         let targetBookId = id;
-
         if (id) {
           const index = this.data.books.findIndex(b => b.id === id);
           if (index !== -1) {
-            this.data.books[index] = { 
-              ...this.data.books[index], 
-              title, genreId, authorId, cover, status, 
-              currentPage, totalPages, audioUrl 
-            };
+            this.data.books[index] = { ...this.data.books[index], title, genreId, authorId, cover, status, currentPage, totalPages, audioUrl };
           }
         } else {
           targetBookId = 'b_' + Date.now();
           const newBook = { 
-            id: targetBookId, 
-            genreId, authorId, title, cover, status, 
-            currentPage, totalPages, audioUrl,
-            hasStoredAudio: false,
-            audioCurrentTime: 0,
-            audioBookmarks: []
+            id: targetBookId, genreId, authorId, title, cover, status, currentPage, totalPages, audioUrl,
+            hasStoredAudio: false, audioCurrentTime: 0, audioBookmarks: []
           };
           this.data.books.push(newBook);
         }
@@ -1964,7 +2040,7 @@
             const savedBook = this.data.books.find(b => b.id === targetBookId);
             if (savedBook) savedBook.hasStoredAudio = true;
           } catch (err) {
-            console.error('Error al guardar el audio localmente:', err);
+            console.error('Error al guardar audio:', err);
           }
         }
 
@@ -1989,7 +2065,6 @@
         document.getElementById('localAudioFileName').innerText = book.hasStoredAudio ? 'Audio local guardado previamente' : '';
         this.selectedLocalFile = null;
         document.getElementById('bookModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Libro`;
-
         this.openModal('bookModal');
       }
 
@@ -1997,11 +2072,7 @@
         if (confirm('¿Seguro que deseas eliminar este libro?')) {
           this.data.books = this.data.books.filter(b => b.id !== bookId);
           this.data.notes = this.data.notes.filter(n => n.bookId !== bookId);
-          try {
-            await this.audioStore.deleteAudio(bookId);
-          } catch (e) {
-            console.error(e);
-          }
+          try { await this.audioStore.deleteAudio(bookId); } catch (e) { console.error(e); }
           this.saveData();
           this.navigateTo('dashboard');
           this.showToast('Libro eliminado');
@@ -2088,6 +2159,7 @@
         document.getElementById('noteForm').reset();
         document.getElementById('noteId').value = '';
         document.getElementById('noteBookId').value = bookId;
+        document.getElementById('noteFolder').value = 'General';
         this.populateNoteBookmarkSelect(bookId, []);
         document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-notebook text-neon-red"></i> Nueva Nota`;
         this.openModal('noteModal');
@@ -2098,6 +2170,7 @@
         const id = document.getElementById('noteId').value;
         const bookId = document.getElementById('noteBookId').value;
         const chapter = document.getElementById('noteChapter').value.trim();
+        const folder = document.getElementById('noteFolder').value.trim() || 'General';
         const title = document.getElementById('noteTitle').value.trim();
         const bookmarkIds = [...this.selectedNoteBookmarkIds];
         const summary = document.getElementById('noteSummary').value.trim();
@@ -2107,13 +2180,14 @@
         if (id) {
           const index = this.data.notes.findIndex(n => n.id === id);
           if (index !== -1) {
-            this.data.notes[index] = { ...this.data.notes[index], chapter, title, bookmarkIds, summary, teachings, application };
+            this.data.notes[index] = { ...this.data.notes[index], chapter, folder, title, bookmarkIds, summary, teachings, application };
           }
         } else {
           const newNote = {
             id: 'n_' + Date.now(),
             bookId,
             chapter,
+            folder,
             title,
             bookmarkIds,
             summary,
@@ -2137,13 +2211,13 @@
         document.getElementById('noteId').value = note.id;
         document.getElementById('noteBookId').value = note.bookId;
         document.getElementById('noteChapter').value = note.chapter;
+        document.getElementById('noteFolder').value = note.folder || 'General';
         document.getElementById('noteTitle').value = note.title;
         this.populateNoteBookmarkSelect(note.bookId, note.bookmarkIds || []);
-        document.getElementById('noteSummary').value = note.summary;
-        document.getElementById('noteTeachings').value = note.teachings;
-        document.getElementById('noteApplication').value = note.application;
+        document.getElementById('noteSummary').value = note.summary || '';
+        document.getElementById('noteTeachings').value = note.teachings || '';
+        document.getElementById('noteApplication').value = note.application || '';
         document.getElementById('noteModalTitle').innerHTML = `<i class="ph-bold ph-pencil-simple text-neon-red"></i> Editar Nota`;
-
         this.openModal('noteModal');
       }
 
@@ -2158,17 +2232,14 @@
 
       updateProfileUI() {
         const initials = (this.data.user.name || '').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'US';
-
         const avatarEl = document.getElementById('userAvatarText');
         const avatarElMobile = document.getElementById('userAvatarTextMobile');
-
         if (avatarEl) avatarEl.innerText = initials;
         if (avatarElMobile) avatarElMobile.innerText = initials;
 
         const totalBooks = document.getElementById('statTotalBooks');
         const totalNotes = document.getElementById('statTotalNotes');
         const totalCompleted = document.getElementById('statCompleted');
-
         if (totalBooks) totalBooks.innerText = this.data.books.length;
         if (totalNotes) totalNotes.innerText = this.data.notes.length;
         if (totalCompleted) totalCompleted.innerText = this.data.books.filter(b => b.status === 'Completado').length;
@@ -2178,7 +2249,6 @@
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMessage');
         toastMsg.innerText = message;
-
         toast.classList.remove('-translate-y-20', 'opacity-0');
         setTimeout(() => {
           toast.classList.add('-translate-y-20', 'opacity-0');
@@ -2197,7 +2267,6 @@
         );
       }
 
-      // METODOS DEL REPRODUCTOR DE AUDIO CON PERSISTENCIA Y UI NEON RED
       async setupAudioPlayer() {
         if (this.currentView !== 'bookDetail' || !this.viewParams.bookId) return;
         const player = document.getElementById('audiobookPlayer');
@@ -2209,18 +2278,13 @@
         if (book.hasStoredAudio) {
           try {
             const blob = await this.audioStore.getAudio(book.id);
-            if (blob) {
-              const url = URL.createObjectURL(blob);
-              player.src = url;
-            }
+            if (blob) player.src = URL.createObjectURL(blob);
           } catch (e) {
-            console.error('Error al recuperar audio de IndexedDB:', e);
+            console.error(e);
           }
         }
 
-        if (book.audioCurrentTime) {
-          player.currentTime = book.audioCurrentTime;
-        }
+        if (book.audioCurrentTime) player.currentTime = book.audioCurrentTime;
 
         const progressBar = document.getElementById('customProgressBar');
         const currentTimeText = document.getElementById('currentTimeText');
@@ -2234,10 +2298,8 @@
           if (player.currentTime && !isNaN(player.currentTime)) {
             book.audioCurrentTime = player.currentTime;
             this.saveData();
-
             if (currentTimeText) currentTimeText.innerText = this.formatTime(player.currentTime);
             if (durationTimeText && player.duration) durationTimeText.innerText = this.formatTime(player.duration);
-
             if (progressBar && player.duration) {
               progressBar.value = (player.currentTime / player.duration) * 100;
             }
@@ -2245,31 +2307,56 @@
         };
 
         player.onended = () => {
-          this.updatePlayPauseIcon(false);
+          this.updatePlayerStatus('Finalizado');
         };
       }
 
-      togglePlayPause() {
+      playAudio() {
         const player = document.getElementById('audiobookPlayer');
         if (!player) return;
-
-        if (player.paused) {
-          player.play();
-          this.updatePlayPauseIcon(true);
-        } else {
-          player.pause();
-          this.updatePlayPauseIcon(false);
-        }
+        player.play();
+        this.updatePlayerStatus('Reproduciendo');
       }
 
-      updatePlayPauseIcon(isPlaying) {
-        const icon = document.getElementById('customPlayIcon');
-        if (!icon) return;
-        if (isPlaying) {
-          icon.className = 'ph-bold ph-pause text-xl';
-        } else {
-          icon.className = 'ph-bold ph-play text-xl ml-0.5';
+      pauseAudio() {
+        const player = document.getElementById('audiobookPlayer');
+        if (!player) return;
+        player.pause();
+        this.updatePlayerStatus('Pausado');
+      }
+
+      stopAudio() {
+        const player = document.getElementById('audiobookPlayer');
+        if (!player) return;
+        player.pause();
+        player.currentTime = 0;
+        const book = this.data.books.find(b => b.id === this.viewParams.bookId);
+        if (book) {
+          book.audioCurrentTime = 0;
+          this.saveData();
         }
+        this.updatePlayerStatus('Detenido (Reiniciado)');
+      }
+
+      skipForward() {
+        const player = document.getElementById('audiobookPlayer');
+        const select = document.getElementById('forwardSecondsSelect');
+        if (!player || !select) return;
+        const secs = parseInt(select.value) || 10;
+        player.currentTime = Math.min(player.duration || player.currentTime + secs, player.currentTime + secs);
+      }
+
+      skipBackward() {
+        const player = document.getElementById('audiobookPlayer');
+        const select = document.getElementById('rewindSecondsSelect');
+        if (!player || !select) return;
+        const secs = parseInt(select.value) || 10;
+        player.currentTime = Math.max(0, player.currentTime - secs);
+      }
+
+      updatePlayerStatus(status) {
+        const statusEl = document.getElementById('playerStatusText');
+        if (statusEl) statusEl.innerText = status;
       }
 
       handleSeek(value) {
@@ -2321,7 +2408,6 @@
         const currentTime = player ? player.currentTime : (book.audioCurrentTime || 0);
 
         if (!Array.isArray(book.audioBookmarks)) book.audioBookmarks = [];
-
         book.audioBookmarks.push({
           id: 'bm_' + Date.now(),
           time: currentTime,
@@ -2334,12 +2420,30 @@
         this.showToast('Marcador guardado');
       }
 
+      updateAudioBookmark(bookId, bookmarkId) {
+        const book = this.data.books.find(b => b.id === bookId);
+        if (!book || !Array.isArray(book.audioBookmarks)) return;
+
+        const bm = book.audioBookmarks.find(b => b.id === bookmarkId);
+        if (!bm) return;
+
+        const labelInput = document.getElementById(`bmLabel_${bookmarkId}`);
+        const timeInput = document.getElementById(`bmTime_${bookmarkId}`);
+
+        if (labelInput) bm.label = labelInput.value.trim() || 'Sin título';
+        if (timeInput) bm.time = Math.max(0, parseFloat(timeInput.value) || 0);
+
+        this.saveData();
+        this.renderView();
+        this.showToast('Marcador actualizado');
+      }
+
       seekAudioTo(time) {
         const player = document.getElementById('audiobookPlayer');
         if (player) {
           player.currentTime = time;
           player.play();
-          this.updatePlayPauseIcon(true);
+          this.updatePlayerStatus('Reproduciendo');
         }
       }
 
