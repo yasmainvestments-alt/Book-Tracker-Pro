@@ -255,7 +255,7 @@
 
   <div id="modalBackdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden transition-opacity duration-300 opacity-0" onclick="app.closeAllModals()"></div>
 
-  <!-- 1. GENRE MODAL -->
+  <!-- GENRE MODAL -->
   <div id="genreModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
     <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-md max-h-[88vh] flex flex-col pointer-events-auto">
       <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
@@ -286,7 +286,7 @@
     </div>
   </div>
 
-  <!-- 2. AUTHOR MODAL -->
+  <!-- AUTHOR MODAL -->
   <div id="authorModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
     <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-md max-h-[88vh] flex flex-col pointer-events-auto">
       <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
@@ -325,7 +325,7 @@
     </div>
   </div>
 
-  <!-- 3. BOOK MODAL -->
+  <!-- BOOK MODAL -->
   <div id="bookModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
     <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-lg max-h-[88vh] flex flex-col pointer-events-auto">
       <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
@@ -403,7 +403,7 @@
     </div>
   </div>
 
-  <!-- 4. NOTE MODAL -->
+  <!-- NOTE MODAL -->
   <div id="noteModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
     <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-2xl max-h-[88vh] flex flex-col pointer-events-auto">
       <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
@@ -475,7 +475,111 @@
     </div>
   </div>
 
-  <!-- 5. PROFILE MODAL -->
+  <!-- NOTE PLAYER MODAL (DEDICADO PARA EDITAR SEGMENTO / REPRODUCIR LA NOTA / VENTANA ESPEJO) -->
+  <div id="notePlayerModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
+    <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-xl max-h-[88vh] flex flex-col pointer-events-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
+        <h3 id="notePlayerModalTitle" class="text-base sm:text-lg font-bold text-white flex items-center gap-2 truncate">
+          <i class="ph-bold ph-note text-neon-red"></i> <span id="notePlayerTitleDisplay">Nota de Audio</span>
+        </h3>
+        <button onclick="app.closeModal('notePlayerModal')" class="text-gray-400 hover:text-white p-1 ios-btn-tap"><i class="ph-bold ph-x text-lg"></i></button>
+      </div>
+
+      <div class="space-y-4 pt-3 overflow-y-auto pr-1">
+        <input type="hidden" id="notePlayerNoteId" />
+        <input type="hidden" id="notePlayerBookId" />
+
+        <div id="notePlayerDetails" class="bg-black/40 p-3 rounded-xl border border-white/10 text-xs text-gray-300 space-y-1">
+        </div>
+
+        <!-- Reproductor Dedicado exclusivo para el rango de la Nota -->
+        <div class="bg-gradient-to-r from-[#0d0004] via-[#160007] to-[#0d0004] p-4 rounded-2xl border border-neon-red/30 shadow-neon-md space-y-3">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <button id="notePlayBtn" onclick="app.playNoteSegment()" class="w-10 h-10 rounded-full bg-neon-red hover:bg-red-600 text-white flex items-center justify-center shadow-neon-sm transition-transform active:scale-90" title="Reproducir Nota">
+                <i class="ph-bold ph-play text-base ml-0.5"></i>
+              </button>
+              <button onclick="app.pauseAudio()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center border border-white/20 transition-transform active:scale-90" title="Pausa">
+                <i class="ph-bold ph-pause text-base"></i>
+              </button>
+              <button onclick="app.stopAudio()" class="w-10 h-10 rounded-full bg-red-950/60 hover:bg-red-900/60 text-red-400 flex items-center justify-center border border-red-500/30 transition-transform active:scale-90" title="Detener">
+                <i class="ph-bold ph-stop text-base"></i>
+              </button>
+            </div>
+            <div class="text-right">
+              <span id="notePlayerStatus" class="text-[10px] text-neon-crimson font-semibold uppercase tracking-wider">Listo</span>
+              <div id="noteTimeDisplay" class="text-xs font-mono text-gray-300">0:00 / 0:00</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 pt-2 border-t border-neon-red/20 flex-wrap">
+            <div class="flex items-center gap-1.5">
+              <button onclick="app.skipBackward()" class="bg-black/60 hover:bg-neon-red/20 border border-white/10 text-xs px-2.5 py-1 rounded-xl text-white flex items-center gap-1 ios-btn-tap">
+                <i class="ph-bold ph-arrow-counter-clockwise text-neon-crimson"></i> Retroceder
+              </button>
+              <select id="noteRewindSecs" class="bg-black/80 border border-white/10 rounded-xl px-1.5 py-1 text-xs text-white focus:outline-none">
+                <option value="1">1s</option>
+                <option value="5">5s</option>
+                <option value="10" selected>10s</option>
+                <option value="15">15s</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <select id="noteForwardSecs" class="bg-black/80 border border-white/10 rounded-xl px-1.5 py-1 text-xs text-white focus:outline-none">
+                <option value="1">1s</option>
+                <option value="5">5s</option>
+                <option value="10" selected>10s</option>
+                <option value="15">15s</option>
+              </select>
+              <button onclick="app.skipForward()" class="bg-black/60 hover:bg-neon-red/20 border border-white/10 text-xs px-2.5 py-1 rounded-xl text-white flex items-center gap-1 ios-btn-tap">
+                Adelantar <i class="ph-bold ph-arrow-clockwise text-neon-crimson"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-1 pt-1">
+            <input type="range" id="noteProgressBar" min="0" max="100" step="0.1" value="0" oninput="app.handleNoteSeek(this.value)" class="neon-range w-full cursor-pointer" />
+          </div>
+        </div>
+
+        <!-- Ajuste Manual: Inicio y Acabado/Finalización de la Nota (M:S) -->
+        <div class="bg-black/50 p-3 sm:p-4 rounded-2xl border border-white/10 space-y-3">
+          <h4 class="text-xs font-bold text-neon-crimson flex items-center gap-1.5 uppercase tracking-wider">
+            <i class="ph-bold ph-clock"></i> Configuración de Tiempo Exacto
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Tiempo de Inicio de la Nota (M:S)</label>
+              <input type="text" id="noteStartTimeInput" placeholder="Ej: 1:30 o 90" class="w-full bg-black/80 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:border-neon-red focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Tiempo de Acabado de la Nota (M:S)</label>
+              <input type="text" id="noteEndTimeInput" placeholder="Ej: 3:05 o 185" class="w-full bg-black/80 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:border-neon-red focus:outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] text-gray-400 mb-1">Nombre / Título de la Nota</label>
+            <input type="text" id="noteEditTitleInput" placeholder="Título de la nota..." class="w-full bg-black/80 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:border-neon-red focus:outline-none" />
+          </div>
+
+          <div class="flex items-center justify-between gap-2 pt-2 border-t border-white/10 flex-wrap">
+            <button onclick="app.saveNotePlayerSettings()" class="bg-neon-red hover:bg-red-600 text-white text-xs px-4 py-2 rounded-xl font-semibold shadow-neon-sm flex items-center gap-1.5 ios-btn-tap">
+              <i class="ph-bold ph-floppy-disk"></i> Guardar Cambios
+            </button>
+            <button onclick="app.deleteNoteFromPlayer()" class="bg-red-950/40 hover:bg-red-900/40 text-red-400 border border-red-500/30 text-xs px-3 py-2 rounded-xl font-medium flex items-center gap-1.5 ios-btn-tap">
+              <i class="ph-bold ph-trash"></i> Eliminar Nota
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE MODAL -->
   <div id="profileModal" class="modal-centered-container fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 pointer-events-none opacity-0 scale-95">
     <div class="glass-panel border border-neon-red/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl bg-[#0e0e14] w-[95vw] sm:w-full sm:max-w-lg max-h-[88vh] flex flex-col pointer-events-auto">
       <div class="flex items-center justify-between pb-3 border-b border-white/10 flex-shrink-0">
@@ -587,6 +691,8 @@
           summary: 'La regla del 1%: Mejorar un 1% cada día produce un resultado compuesto gigantesco.',
           teachings: 'Los resultados son una medida diferida de tus hábitos.',
           application: 'Diseñar un checklist de 3 acciones mínimas para mi mañana.',
+          startTime: 0,
+          endTime: 95,
           createdAt: new Date().toISOString()
         }
       ]
@@ -661,7 +767,11 @@
         this.selectedLocalFile = null;
         this.selectedNoteBookmarkIds = [];
         this.activeNoteFolderFilter = 'ALL';
-        this.audioBookmarksCollapsed = true; // Control para desplegar/contraer los marcadores de audio
+        this.audioBookmarksCollapsed = true;
+
+        // Estado del Reproductor Dedicado de Notas
+        this.noteSegmentStart = 0;
+        this.noteSegmentEnd = 0;
 
         this.init();
       }
@@ -694,6 +804,10 @@
             if (!n.summary) n.summary = '';
             if (!n.teachings) n.teachings = '';
             if (!n.application) n.application = '';
+            if (n.startTime === undefined) n.startTime = 0;
+            if (n.endTime === undefined) {
+              n.endTime = n.startTime + (n.duration || 0);
+            }
           });
         }
       }
@@ -1364,7 +1478,12 @@
         const { current, total, pct } = this.calcBookProgress(book.currentPage, book.totalPages);
         const hasAudio = book.audioUrl || book.hasStoredAudio;
 
-        const availableFolders = ['ALL', ...new Set(allNotes.map(n => n.folder ? n.folder.trim() : 'General'))];
+        const uniqueFolderList = [];
+        allNotes.forEach(n => {
+          const f = (n.folder ? n.folder.trim() : 'General');
+          if (!uniqueFolderList.includes(f)) uniqueFolderList.push(f);
+        });
+        const availableFolders = ['ALL', ...uniqueFolderList];
         
         const notes = this.activeNoteFolderFilter === 'ALL' 
           ? allNotes 
@@ -1436,14 +1555,14 @@
               </div>
             </div>
 
-            <!-- REPRODUCTOR DE AUDIOLIBRO CON 1s Y MARCADORES PLEGABLES -->
+            <!-- REPRODUCTOR GENERAL DE AUDIOLIBRO -->
             <section class="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-neon-red/40 shadow-neon-sm space-y-4">
               <div class="flex items-center justify-between pb-2 border-b border-white/10">
                 <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                   <i class="ph-bold ph-headphones text-neon-red"></i> Reproductor de Audiolibro
                 </h3>
                 <span class="text-[10px] sm:text-xs text-neon-crimson font-medium bg-neon-red/10 px-2.5 py-0.5 rounded-full border border-neon-red/30">
-                  Control Independiente
+                  Control General
                 </span>
               </div>
 
@@ -1525,7 +1644,7 @@
                     </div>
                   </div>
 
-                  <!-- LISTA DE MARCADORES PLEGABLE -->
+                  <!-- LISTA DE MARCADORES PLEGABLE CON ACCESO ESPEJO DIRECTO -->
                   <div class="space-y-2 bg-black/30 p-3 rounded-2xl border border-white/10">
                     <div onclick="app.toggleAudioBookmarksCollapse()" class="flex items-center justify-between cursor-pointer select-none py-1 group">
                       <h4 class="text-xs font-semibold text-gray-200 group-hover:text-neon-crimson flex items-center gap-1.5 transition-colors">
@@ -1541,27 +1660,29 @@
                         <p class="text-[11px] text-gray-500 italic pl-1">No hay marcadores aún. Crea uno mientras escuchas.</p>
                       ` : `
                         <div class="grid grid-cols-1 gap-2.5 max-h-60 overflow-y-auto pr-1">
-                          ${(book.audioBookmarks || []).map(bm => `
-                            <div class="bg-black/60 border border-white/10 hover:border-neon-red/40 rounded-xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 transition-all">
-                              <div class="flex items-center gap-2 flex-1 flex-wrap sm:flex-nowrap">
+                          ${(book.audioBookmarks || []).map((bm, index) => `
+                            <div class="bg-black/60 border border-white/10 hover:border-neon-red/40 rounded-xl p-3 flex items-center justify-between gap-3 transition-all">
+                              <div class="flex items-center gap-2 flex-1 min-w-0">
+                                <div class="flex items-center gap-0.5">
+                                  <button onclick="app.reorderAudioBookmark('${book.id}', ${index}, -1)" ${index === 0 ? 'disabled' : ''} class="text-gray-400 hover:text-white disabled:opacity-30 p-0.5">
+                                    <i class="ph-bold ph-caret-up text-xs"></i>
+                                  </button>
+                                  <button onclick="app.reorderAudioBookmark('${book.id}', ${index}, 1)" ${index === book.audioBookmarks.length - 1 ? 'disabled' : ''} class="text-gray-400 hover:text-white disabled:opacity-30 p-0.5">
+                                    <i class="ph-bold ph-caret-down text-xs"></i>
+                                  </button>
+                                </div>
                                 <button onclick="app.seekAudioTo(${bm.time})" class="text-[10px] font-bold text-neon-crimson bg-neon-red/20 border border-neon-red/40 px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-neon-red hover:text-white transition-colors flex-shrink-0">
                                   <i class="ph-bold ph-play-circle text-xs"></i> Ir (${this.formatTime(bm.time)})
                                 </button>
-                                
-                                <div class="flex items-center gap-1 flex-1 min-w-[200px]">
-                                  <input type="text" id="bmLabel_${bm.id}" value="${this.escapeHTML(bm.label || '')}" placeholder="Nombre del marcador..." class="flex-1 bg-black/80 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white focus:border-neon-red focus:outline-none" />
-                                  <div class="flex items-center gap-1">
-                                    <span class="text-[10px] text-gray-400">Seg:</span>
-                                    <input type="number" id="bmTime_${bm.id}" value="${Math.floor(bm.time)}" min="0" step="1" class="w-16 bg-black/80 border border-white/10 rounded-lg px-2 py-1 text-xs text-white text-center focus:border-neon-red focus:outline-none" />
-                                  </div>
-                                </div>
+                                <span class="text-xs text-white font-medium truncate flex-1 min-w-0">${this.escapeHTML(bm.label || 'Marcador')}</span>
                               </div>
 
-                              <div class="flex items-center gap-1.5 justify-end flex-shrink-0">
-                                <button onclick="app.updateAudioBookmark('${book.id}', '${bm.id}')" class="bg-neon-red/20 hover:bg-neon-red text-neon-crimson hover:text-white text-xs px-3 py-1 rounded-lg border border-neon-red/40 font-semibold transition-colors ios-btn-tap flex items-center gap-1">
-                                  <i class="ph-bold ph-floppy-disk"></i> Actualizar
+                              <div class="flex items-center gap-1 flex-shrink-0">
+                                <!-- BOTÓN DE EDICIÓN QUE ABRE LA MISMA VENTANA MODAL ESPEJO QUE EN NOTAS -->
+                                <button onclick="app.openNotePlayerModalFromBookmark('${book.id}', '${bm.id}')" title="Editar Nota / Marcador" class="bg-white/5 hover:bg-white/15 text-gray-200 hover:text-white p-2 rounded-lg border border-white/10 flex items-center justify-center transition-colors ios-btn-tap">
+                                  <i class="ph-bold ph-pencil-simple text-sm text-neon-crimson"></i>
                                 </button>
-                                <button onclick="app.deleteAudioBookmark('${book.id}', '${bm.id}')" class="text-gray-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-950/40">
+                                <button onclick="app.deleteAudioBookmark('${book.id}', '${bm.id}')" title="Eliminar Marcador" class="text-gray-400 hover:text-red-400 p-2 rounded-lg hover:bg-red-950/40">
                                   <i class="ph-bold ph-trash text-sm"></i>
                                 </button>
                               </div>
@@ -1582,7 +1703,7 @@
               `}
             </section>
 
-            <!-- SECCIÓN DE NOTAS CON FUENTE DE TAMAÑO 13 -->
+            <!-- SECCIÓN DE NOTAS -->
             <section class="space-y-4">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
                 <div>
@@ -1601,19 +1722,31 @@
                   <span class="text-xs text-gray-400 font-semibold mr-1 flex items-center gap-1 flex-shrink-0">
                     <i class="ph-bold ph-folder"></i> Carpeta:
                   </span>
-                  ${availableFolders.map(folder => {
+                  ${availableFolders.map((folder, folderIdx) => {
                     const isActive = this.activeNoteFolderFilter === folder;
                     const folderNameDisplay = folder === 'ALL' ? 'Todas las carpetas' : folder;
                     const count = folder === 'ALL' ? allNotes.length : allNotes.filter(n => (n.folder ? n.folder.trim() : 'General') === folder).length;
                     return `
-                      <button onclick="app.setNoteFolderFilter('${folder}')" class="text-xs px-3.5 py-1.5 rounded-full font-medium transition-all flex items-center gap-1.5 flex-shrink-0 ios-btn-tap ${
-                        isActive 
-                          ? 'bg-neon-red text-white shadow-neon-sm border border-neon-red' 
-                          : 'bg-black/60 text-gray-300 hover:bg-white/10 border border-white/10'
-                      }">
-                        <i class="ph-bold ${folder === 'ALL' ? 'ph-squares-four' : 'ph-folder-open'}"></i>
-                        <span>${this.escapeHTML(folderNameDisplay)} (${count})</span>
-                      </button>
+                      <div class="flex items-center gap-0.5 bg-black/60 rounded-full border border-white/10 px-1 py-0.5 flex-shrink-0 ${isActive ? 'border-neon-red/60 bg-neon-red/10' : ''}">
+                        ${folder !== 'ALL' ? `
+                          <button onclick="app.reorderFolder('${book.id}', '${this.escapeHTML(folder)}', -1)" ${folderIdx === 1 ? 'disabled' : ''} class="text-gray-400 hover:text-white disabled:opacity-30 p-1 text-[10px]">
+                            <i class="ph-bold ph-caret-left"></i>
+                          </button>
+                        ` : ''}
+                        <button onclick="app.setNoteFolderFilter('${this.escapeHTML(folder)}')" class="text-xs px-2.5 py-1 rounded-full font-medium transition-all flex items-center gap-1.5 ${
+                          isActive 
+                            ? 'bg-neon-red text-white shadow-neon-sm' 
+                            : 'text-gray-300 hover:text-white'
+                        }">
+                          <i class="ph-bold ${folder === 'ALL' ? 'ph-squares-four' : 'ph-folder-open'}"></i>
+                          <span>${this.escapeHTML(folderNameDisplay)} (${count})</span>
+                        </button>
+                        ${folder !== 'ALL' ? `
+                          <button onclick="app.reorderFolder('${book.id}', '${this.escapeHTML(folder)}', 1)" ${folderIdx === availableFolders.length - 1 ? 'disabled' : ''} class="text-gray-400 hover:text-white disabled:opacity-30 p-1 text-[10px]">
+                            <i class="ph-bold ph-caret-right"></i>
+                          </button>
+                        ` : ''}
+                      </div>
                     `;
                   }).join('')}
                 </div>
@@ -1655,14 +1788,63 @@
         this.renderView();
       }
 
+      reorderFolder(bookId, folderName, direction) {
+        const bookNotes = this.data.notes.filter(n => n.bookId === bookId);
+        const folderOrder = [];
+        bookNotes.forEach(n => {
+          const f = n.folder ? n.folder.trim() : 'General';
+          if (!folderOrder.includes(f)) folderOrder.push(f);
+        });
+
+        const currentIndex = folderOrder.indexOf(folderName);
+        if (currentIndex === -1) return;
+
+        const targetIndex = currentIndex + direction;
+        if (targetIndex < 0 || targetIndex >= folderOrder.length) return;
+
+        const temp = folderOrder[currentIndex];
+        folderOrder[currentIndex] = folderOrder[targetIndex];
+        folderOrder[targetIndex] = temp;
+
+        const otherNotes = this.data.notes.filter(n => n.bookId !== bookId);
+        const reorderedBookNotes = [];
+        folderOrder.forEach(fName => {
+          const notesInFolder = bookNotes.filter(n => (n.folder ? n.folder.trim() : 'General') === fName);
+          reorderedBookNotes.push(...notesInFolder);
+        });
+
+        this.data.notes = [...otherNotes, ...reorderedBookNotes];
+        this.saveData();
+        this.renderView();
+        this.showToast('Orden de carpetas actualizado');
+      }
+
+      reorderAudioBookmark(bookId, index, direction) {
+        const book = this.data.books.find(b => b.id === bookId);
+        if (!book || !Array.isArray(book.audioBookmarks)) return;
+
+        const targetIndex = index + direction;
+        if (targetIndex < 0 || targetIndex >= book.audioBookmarks.length) return;
+
+        const temp = book.audioBookmarks[index];
+        book.audioBookmarks[index] = book.audioBookmarks[targetIndex];
+        book.audioBookmarks[targetIndex] = temp;
+
+        this.saveData();
+        this.renderView();
+        this.showToast('Orden de marcadores actualizado');
+      }
+
       renderNoteCard(note) {
         const book = this.data.books.find(b => b.id === note.bookId);
         const bookmarks = (book && Array.isArray(book.audioBookmarks) && Array.isArray(note.bookmarkIds))
           ? note.bookmarkIds.map(bmId => book.audioBookmarks.find(bm => bm.id === bmId)).filter(Boolean)
           : [];
 
+        const totalSegmentDuration = Math.max(0, (note.endTime || 0) - (note.startTime || 0));
+
         return `
-          <div class="glass-card rounded-2xl p-4 sm:p-5 border-neon-red/20 space-y-3 w-full overflow-hidden">
+          <div onclick="app.openNotePlayerModal('${note.id}')" class="glass-card rounded-2xl p-4 sm:p-5 border-neon-red/20 space-y-3 w-full overflow-hidden cursor-pointer hover:border-neon-red/50 transition-all">
             <div class="flex items-start justify-between border-b border-white/10 pb-2.5">
               <div class="min-w-0 pr-2 flex-1">
                 <div class="flex items-center gap-1.5 flex-wrap mb-1">
@@ -1672,15 +1854,20 @@
                   <span class="text-[10px] font-semibold text-gray-300 bg-white/5 border border-white/10 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                     <i class="ph-bold ph-folder text-neon-crimson"></i> ${this.escapeHTML(note.folder || 'General')}
                   </span>
+                  ${(note.startTime > 0 || note.endTime > 0) ? `
+                    <span class="text-[10px] font-bold text-neon-crimson bg-neon-red/20 border border-neon-red/40 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                      <i class="ph-bold ph-clock-afternoon"></i> ${this.formatTime(note.startTime)} - ${this.formatTime(note.endTime)} (${this.formatTime(totalSegmentDuration)})
+                    </span>
+                  ` : ''}
                   ${bookmarks.map(bm => `
-                    <button onclick="app.seekAudioTo(${bm.time})" title="Saltar al audio" class="text-[10px] font-bold text-neon-crimson bg-neon-red/20 border border-neon-red/40 px-2 py-0.5 rounded-full inline-flex items-center gap-1 hover:bg-neon-red hover:text-white transition-colors ios-btn-tap">
+                    <button onclick="event.stopPropagation(); app.seekAudioTo(${bm.time})" title="Saltar al audio" class="text-[10px] font-bold text-neon-crimson bg-neon-red/20 border border-neon-red/40 px-2 py-0.5 rounded-full inline-flex items-center gap-1 hover:bg-neon-red hover:text-white transition-colors ios-btn-tap">
                       <i class="ph-bold ph-headphones text-xs"></i> ${this.formatTime(bm.time)} - ${this.escapeHTML(bm.label || 'Marcador')}
                     </button>
                   `).join('')}
                 </div>
                 <h4 class="text-sm sm:text-base font-bold text-white break-words">${this.escapeHTML(note.title)}</h4>
               </div>
-              <div class="flex items-center gap-1 flex-shrink-0">
+              <div class="flex items-center gap-1 flex-shrink-0" onclick="event.stopPropagation()">
                 <button onclick="app.copyNoteToClipboard('${note.id}')" title="Copiar texto para Gemini" class="text-purple-400 hover:text-purple-300 p-1"><i class="ph-bold ph-copy text-xs sm:text-sm"></i></button>
                 <button onclick="app.editNote('${note.id}')" class="text-gray-400 hover:text-white p-1"><i class="ph-bold ph-pencil-simple text-xs sm:text-sm"></i></button>
                 <button onclick="app.deleteNote('${note.id}')" class="text-gray-400 hover:text-red-400 p-1"><i class="ph-bold ph-trash text-xs sm:text-sm"></i></button>
@@ -1715,6 +1902,162 @@
             ` : ''}
           </div>
         `;
+      }
+
+      openNotePlayerModalFromBookmark(bookId, bookmarkId) {
+        const book = this.data.books.find(b => b.id === bookId);
+        if (!book || !Array.isArray(book.audioBookmarks)) return;
+
+        const bm = book.audioBookmarks.find(b => b.id === bookmarkId);
+        if (!bm) return;
+
+        let note = this.data.notes.find(n => n.bookId === bookId && Array.isArray(n.bookmarkIds) && n.bookmarkIds.includes(bookmarkId));
+
+        if (!note) {
+          note = {
+            id: 'n_' + Date.now(),
+            bookId: bookId,
+            chapter: 'Marcador de Audio',
+            folder: 'Marcadores',
+            title: bm.label || 'Marcador de Audio',
+            bookmarkIds: [bookmarkId],
+            summary: '',
+            teachings: '',
+            application: '',
+            startTime: bm.time || 0,
+            endTime: (bm.time || 0) + 30,
+            createdAt: new Date().toISOString()
+          };
+          this.data.notes.push(note);
+          this.saveData();
+        }
+
+        this.openNotePlayerModal(note.id);
+      }
+
+      openNotePlayerModal(noteId) {
+        const note = this.data.notes.find(n => n.id === noteId);
+        if (!note) return;
+
+        const book = this.data.books.find(b => b.id === note.bookId);
+
+        document.getElementById('notePlayerNoteId').value = note.id;
+        document.getElementById('notePlayerBookId').value = note.bookId;
+        document.getElementById('notePlayerTitleDisplay').innerText = note.title;
+        document.getElementById('noteEditTitleInput').value = note.title;
+
+        this.noteSegmentStart = note.startTime || 0;
+        this.noteSegmentEnd = note.endTime || (this.noteSegmentStart + 30);
+
+        document.getElementById('noteStartTimeInput').value = this.formatTime(this.noteSegmentStart);
+        document.getElementById('noteEndTimeInput').value = this.formatTime(this.noteSegmentEnd);
+
+        const detailsEl = document.getElementById('notePlayerDetails');
+        detailsEl.innerHTML = `
+          <p><span class="font-bold text-white">Capítulo:</span> ${this.escapeHTML(note.chapter)} | <span class="font-bold text-white">Carpeta:</span> ${this.escapeHTML(note.folder || 'General')}</p>
+          <p class="text-gray-400"><span class="font-bold text-white">Libro:</span> ${book ? this.escapeHTML(book.title) : 'Sin Libro'}</p>
+        `;
+
+        this.openModal('notePlayerModal');
+        this.resetNotePlayerProgressBar();
+      }
+
+      resetNotePlayerProgressBar() {
+        const noteProgBar = document.getElementById('noteProgressBar');
+        const noteTimeDisp = document.getElementById('noteTimeDisplay');
+        const duration = Math.max(0, this.noteSegmentEnd - this.noteSegmentStart);
+        if (noteProgBar) noteProgBar.value = 0;
+        if (noteTimeDisp) {
+          noteTimeDisp.innerText = `0:00 / ${this.formatTime(duration)}`;
+        }
+      }
+
+      parseTimeToSeconds(inputVal) {
+        if (!inputVal) return 0;
+        const str = String(inputVal).trim();
+        if (str.includes(':')) {
+          const parts = str.split(':').map(p => parseFloat(p) || 0);
+          if (parts.length === 2) return parts[0] * 60 + parts[1];
+          if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+        }
+        return parseFloat(str) || 0;
+      }
+
+      playNoteSegment() {
+        const noteId = document.getElementById('notePlayerNoteId').value;
+        const note = this.data.notes.find(n => n.id === noteId);
+        if (!note) return;
+
+        const player = document.getElementById('audiobookPlayer');
+        if (!player || !player.src) {
+          alert('No hay audiolibro cargado o disponible para reproducir.');
+          return;
+        }
+
+        this.noteSegmentStart = this.parseTimeToSeconds(document.getElementById('noteStartTimeInput').value);
+        this.noteSegmentEnd = this.parseTimeToSeconds(document.getElementById('noteEndTimeInput').value);
+
+        player.currentTime = this.noteSegmentStart;
+        player.play();
+        const statusEl = document.getElementById('notePlayerStatus');
+        if (statusEl) statusEl.innerText = 'Reproduciendo segmento';
+      }
+
+      handleNoteSeek(percentage) {
+        const player = document.getElementById('audiobookPlayer');
+        const totalDuration = Math.max(0, this.noteSegmentEnd - this.noteSegmentStart);
+        if (player && totalDuration > 0) {
+          const seekSeconds = (percentage / 100) * totalDuration;
+          player.currentTime = this.noteSegmentStart + seekSeconds;
+        }
+      }
+
+      saveNotePlayerSettings() {
+        const noteId = document.getElementById('notePlayerNoteId').value;
+        const note = this.data.notes.find(n => n.id === noteId);
+        if (!note) return;
+
+        const startSecs = this.parseTimeToSeconds(document.getElementById('noteStartTimeInput').value);
+        const endSecs = this.parseTimeToSeconds(document.getElementById('noteEndTimeInput').value);
+        const newTitle = document.getElementById('noteEditTitleInput').value.trim();
+
+        if (endSecs <= startSecs) {
+          alert('El tiempo de acabado debe ser mayor al tiempo de inicio.');
+          return;
+        }
+
+        note.startTime = startSecs;
+        note.endTime = endSecs;
+        if (newTitle) {
+          note.title = newTitle;
+          document.getElementById('notePlayerTitleDisplay').innerText = newTitle;
+
+          // Sincronización reflejo bidireccional con marcadores de audio
+          const book = this.data.books.find(b => b.id === note.bookId);
+          if (book && Array.isArray(book.audioBookmarks) && Array.isArray(note.bookmarkIds)) {
+            note.bookmarkIds.forEach(bmId => {
+              const bm = book.audioBookmarks.find(b => b.id === bmId);
+              if (bm) {
+                bm.label = newTitle;
+                bm.time = startSecs;
+              }
+            });
+          }
+        }
+
+        this.noteSegmentStart = startSecs;
+        this.noteSegmentEnd = endSecs;
+
+        this.saveData();
+        this.renderView();
+        this.resetNotePlayerProgressBar();
+        this.showToast('Configuración sincronizada correctamente');
+      }
+
+      deleteNoteFromPlayer() {
+        const noteId = document.getElementById('notePlayerNoteId').value;
+        this.deleteNote(noteId);
+        this.closeModal('notePlayerModal');
       }
 
       copyNoteToClipboard(noteId) {
@@ -1808,7 +2151,7 @@
       }
 
       closeAllModals() {
-        ['genreModal', 'authorModal', 'bookModal', 'noteModal', 'profileModal'].forEach(m => this.closeModal(m));
+        ['genreModal', 'authorModal', 'bookModal', 'noteModal', 'notePlayerModal', 'profileModal'].forEach(m => this.closeModal(m));
       }
 
       updateAllGenreDropdowns(selectedAuthorGenreIds = [], selectedBookGenreId = '') {
@@ -2193,6 +2536,8 @@
             summary,
             teachings,
             application,
+            startTime: 0,
+            endTime: 30,
             createdAt: new Date().toISOString()
           };
           this.data.notes.push(newNote);
@@ -2296,6 +2641,33 @@
 
         player.ontimeupdate = () => {
           if (player.currentTime && !isNaN(player.currentTime)) {
+            const isNoteModalOpen = !document.getElementById('notePlayerModal').classList.contains('hidden');
+            
+            // Pausa automática EXCLUSIVA dentro de la ventana de Note Player Modal
+            if (isNoteModalOpen && this.noteSegmentEnd > this.noteSegmentStart) {
+              const totalSegmentDuration = this.noteSegmentEnd - this.noteSegmentStart;
+              const elapsedInNote = Math.max(0, player.currentTime - this.noteSegmentStart);
+
+              if (player.currentTime >= this.noteSegmentEnd) {
+                player.pause();
+                player.currentTime = this.noteSegmentStart;
+                this.updatePlayerStatus('Pausado (Fin de Nota)');
+                const nStatus = document.getElementById('notePlayerStatus');
+                if (nStatus) nStatus.innerText = 'Fin de Nota';
+              }
+
+              const noteProgBar = document.getElementById('noteProgressBar');
+              const noteTimeDisp = document.getElementById('noteTimeDisplay');
+              if (noteProgBar) {
+                const pct = Math.min(100, (elapsedInNote / totalSegmentDuration) * 100);
+                noteProgBar.value = pct;
+              }
+              if (noteTimeDisp) {
+                noteTimeDisp.innerText = `${this.formatTime(Math.min(elapsedInNote, totalSegmentDuration))} / ${this.formatTime(totalSegmentDuration)}`;
+              }
+            }
+
+            // Actualización normal para el reproductor principal (sigue reproduciendo sin pausas)
             book.audioCurrentTime = player.currentTime;
             this.saveData();
             if (currentTimeText) currentTimeText.innerText = this.formatTime(player.currentTime);
@@ -2329,18 +2701,25 @@
         const player = document.getElementById('audiobookPlayer');
         if (!player) return;
         player.pause();
-        player.currentTime = 0;
-        const book = this.data.books.find(b => b.id === this.viewParams.bookId);
-        if (book) {
-          book.audioCurrentTime = 0;
-          this.saveData();
+
+        const isNoteModalOpen = !document.getElementById('notePlayerModal').classList.contains('hidden');
+        if (isNoteModalOpen) {
+          player.currentTime = this.noteSegmentStart;
+          this.resetNotePlayerProgressBar();
+        } else {
+          player.currentTime = 0;
+          const book = this.data.books.find(b => b.id === this.viewParams.bookId);
+          if (book) {
+            book.audioCurrentTime = 0;
+            this.saveData();
+          }
         }
         this.updatePlayerStatus('Detenido (Reiniciado)');
       }
 
       skipForward() {
         const player = document.getElementById('audiobookPlayer');
-        const select = document.getElementById('forwardSecondsSelect');
+        const select = document.getElementById('forwardSecondsSelect') || document.getElementById('noteForwardSecs');
         if (!player || !select) return;
         const secs = parseInt(select.value) || 10;
         player.currentTime = Math.min(player.duration || player.currentTime + secs, player.currentTime + secs);
@@ -2348,7 +2727,7 @@
 
       skipBackward() {
         const player = document.getElementById('audiobookPlayer');
-        const select = document.getElementById('rewindSecondsSelect');
+        const select = document.getElementById('rewindSecondsSelect') || document.getElementById('noteRewindSecs');
         if (!player || !select) return;
         const secs = parseInt(select.value) || 10;
         player.currentTime = Math.max(0, player.currentTime - secs);
@@ -2408,34 +2787,36 @@
         const currentTime = player ? player.currentTime : (book.audioCurrentTime || 0);
 
         if (!Array.isArray(book.audioBookmarks)) book.audioBookmarks = [];
+        const bmId = 'bm_' + Date.now();
+        const newBmLabel = labelText || `Marcador en ${this.formatTime(currentTime)}`;
+
         book.audioBookmarks.push({
-          id: 'bm_' + Date.now(),
+          id: bmId,
           time: currentTime,
-          label: labelText || `Marcador en ${this.formatTime(currentTime)}`
+          label: newBmLabel
         });
+
+        // Crear automáticamente la nota correspondiente para garantizar la sincronización espejo
+        const newNote = {
+          id: 'n_' + Date.now(),
+          bookId: bookId,
+          chapter: 'Marcador de Audio',
+          folder: 'Marcadores',
+          title: newBmLabel,
+          bookmarkIds: [bmId],
+          summary: '',
+          teachings: '',
+          application: '',
+          startTime: currentTime,
+          endTime: currentTime + 30,
+          createdAt: new Date().toISOString()
+        };
+        this.data.notes.push(newNote);
 
         if (input) input.value = '';
         this.saveData();
         this.renderView();
-        this.showToast('Marcador guardado');
-      }
-
-      updateAudioBookmark(bookId, bookmarkId) {
-        const book = this.data.books.find(b => b.id === bookId);
-        if (!book || !Array.isArray(book.audioBookmarks)) return;
-
-        const bm = book.audioBookmarks.find(b => b.id === bookmarkId);
-        if (!bm) return;
-
-        const labelInput = document.getElementById(`bmLabel_${bookmarkId}`);
-        const timeInput = document.getElementById(`bmTime_${bookmarkId}`);
-
-        if (labelInput) bm.label = labelInput.value.trim() || 'Sin título';
-        if (timeInput) bm.time = Math.max(0, parseFloat(timeInput.value) || 0);
-
-        this.saveData();
-        this.renderView();
-        this.showToast('Marcador actualizado');
+        this.showToast('Marcador y nota espejo vinculados');
       }
 
       seekAudioTo(time) {
